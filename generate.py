@@ -467,7 +467,7 @@ var deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', function(e){{
     e.preventDefault(); deferredPrompt = e;
     var b = document.createElement('div');
-    b.className = 'install-banner'; b.style.display = 'flex'; b.innerHTML = '<span>📱 安装到桌面</span><button onclick="installApp()" style="background:#FF9F0A;color:#05080C;border:none;padding:6px 14px;border-radius:4px;font-weight:700;font-family:\'JetBrains Mono\',monospace;cursor:pointer">安装</button>';
+    b.className = 'install-banner'; b.style.display = 'flex'; b.innerHTML = '<span>📱 安装到桌面</span><button onclick=\"installApp()\" style=\"background:#FF9F0A;color:#05080C;border:none;padding:6px 14px;border-radius:4px;font-weight:700;font-family:JetBrains Mono,monospace;cursor:pointer\">安装</button>';
     document.body.insertBefore(b, document.body.firstChild);
 }});
 function installApp() {{
