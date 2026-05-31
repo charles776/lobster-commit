@@ -296,12 +296,12 @@ body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;col
 </div>
 
 <script>
-console.log('Commit v8 loaded');
-try {{
+var API = '{api or ""}';
 var locked = {str(plan_locked).lower()};
 var overrideItemId = null, selectedTag = '';
 var qTimer = null, isOnline = false;
-var localState = JSON.parse(localStorage.getItem('commit_state') || '{{"locked":false,"executed":[],"overridden":[]}}');
+var localState = {{}};
+try {{ localState = JSON.parse(localStorage.getItem('commit_state') || '{{"locked":false,"executed":[],"overridden":[]}}'); }} catch(e) {{}};
 if (localState.locked) locked = true;
 
 function saveState() {{ localStorage.setItem('commit_state', JSON.stringify(localState)); }}
@@ -474,9 +474,8 @@ function installApp() {{
     if (deferredPrompt){{ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(r){{ }}); }}
 }}
 
-}} catch(e) {{ console.error('Commit init error:', e); }}
-if ('serviceWorker' in navigator) {{ navigator.serviceWorker.register('./sw.js?t=8'); }}
-document.getElementById('verTag').textContent = 'v8';
+if ('serviceWorker' in navigator) {{ navigator.serviceWorker.register('./sw.js?t=9'); }}
+document.getElementById('verTag').textContent = 'v9';
 // Load quarantine state
 (function() {{
     if (apiCall) {{
