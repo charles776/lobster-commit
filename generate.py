@@ -79,20 +79,19 @@ def build(data):
         elif a == '买入': row_cls = 'buy'; badge_cls = 'badge-buy'
         else: row_cls = 'hold'; badge_cls = 'badge-hold'
 
-        if status == 'done':
+        if status == 'done' or f'executed.indexOf({item_id})' in locals():
             row_cls += ' executed'
             action_html = f'<span class="exec-tag done-tag">✓</span>'
         elif status == 'overridden':
             row_cls += ' overridden'
             action_html = f'<span class="exec-tag override-tag">⚠</span>'
-        elif plan_locked:
-            action_html = f'<span class="exec-btn" onclick="execItem({item_id})">执行</span>'
         else:
-            action_html = ''
+            # Always render execute button, hidden by default, shown when locked
+            action_html = f'<span class="exec-btn-placeholder" style="display:none" onclick="execItem({item_id})">执行</span>'
 
         crit_border = ' critical' if is_critical else ''
 
-        items_html += f'''<div class="item {row_cls}{crit_border}">
+        items_html += f'''<div class="item {row_cls}{crit_border}" data-id="{item_id}">
             <div class="item-left"><span class="badge {badge_cls}">{a}</span></div>
             <div class="item-main">
                 <div class="item-head"><span class="code">{code}</span> <span class="name">{name}</span> {action_html}</div>
@@ -175,8 +174,8 @@ body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;col
 .exec-tag{{font-size:8px;font-family:'JetBrains Mono',monospace;margin-left:6px}}
 .done-tag{{color:#30D158}}
 .override-tag{{color:#FF3B30}}
-.exec-btn{{font-size:9px;font-weight:700;padding:3px 8px;border:1px solid #30D158;border-radius:3px;color:#30D158;cursor:pointer;font-family:'JetBrains Mono',monospace;background:rgba(48,209,88,.08);transition:all .15s}}
-.exec-btn:active{{background:rgba(48,209,88,.2)}}
+.exec-btn-placeholder{{font-size:9px;font-weight:700;padding:3px 8px;border:1px solid #30D158;border-radius:3px;color:#30D158;cursor:pointer;font-family:'JetBrains Mono',monospace;background:rgba(48,209,88,.08);transition:all .15s;display:none}}
+.exec-btn-placeholder:active{{background:rgba(48,209,88,.2)}}
 .conn-dot{{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;vertical-align:middle}}
 .conn-on{{background:#30D158}}.conn-off{{background:#FF3B30}}
 .override-link{{font-size:9px;color:#485268;cursor:pointer;padding:2px 6px;border:1px solid transparent;font-family:'JetBrains Mono',monospace;flex-shrink:0;border-radius:2px}}
@@ -294,27 +293,60 @@ var API = '{api or ""}';
 var locked = {str(plan_locked).lower()};
 var overrideItemId = null, selectedTag = '';
 var qTimer = null, isOnline = false;
+var localState = JSON.parse(localStorage.getItem('commit_state') || '{{"locked":false,"executed":[],"overridden":[]}}');
+if (localState.locked) locked = true;
+
+function saveState() {{ localStorage.setItem('commit_state', JSON.stringify(localState)); }}
+function isExecuted(id) {{ return localState.executed.indexOf(id) !== -1; }}
+function isOverridden(id) {{ return localState.overridden.indexOf(id) !== -1; }}
 
 async function checkConn() {{
     if (!API) {{ isOnline = false; return; }}
-    try {{
-        var r = await fetch(API + '/api/state', {{method:'GET'}});
-        isOnline = r.ok;
-    }} catch(e) {{ isOnline = false; }}
+    try {{ var r = await fetch(API + '/api/state', {{method:'GET'}}); isOnline = r.ok; }} catch(e) {{ isOnline = false; }}
     var el = document.getElementById('connStatus');
-    if (el) el.innerHTML = isOnline ? '<span class="conn-dot conn-on"></span>已连接' : '<span class="conn-dot conn-off"></span>离线·仅查看';
+    if (el) el.innerHTML = isOnline ? '<span class="conn-dot conn-on"></span>已连接' : '<span class="conn-dot conn-off"></span>离线模式';
+    if (isOnline) syncToServer();
 }}
 checkConn(); setInterval(checkConn, 30000);
 
 async function apiCall(path, method, body) {{
-    if (!API || !isOnline) {{ showToast('离线模式·无法操作'); return null; }}
+    if (!API) return null;
     try {{
         var opts = {{method: method || 'GET', headers: {{'Content-Type': 'application/json'}}}};
         if (body) opts.body = JSON.stringify(body);
         var r = await fetch(API + path, opts);
         return r.json();
-    }} catch(e) {{ showToast('连接失败'); return null; }}
+    }} catch(e) {{ return null; }}
 }}
+
+async function syncToServer() {{
+    if (!isOnline) return;
+    if (localState.locked) await apiCall('/api/plan/lock', 'POST', {{content:'',items:[]}});
+    for (var i = 0; i < localState.executed.length; i++) await apiCall('/api/plan/execute', 'POST', {{id: localState.executed[i]}});
+    for (var j = 0; j < localState.overridden.length; j++) {{
+        var ov = localState.overridden[j];
+        await apiCall('/api/override', 'POST', {{item_id: ov.id, code: ov.code, name: ov.name, reason: ov.tag, tag: ov.tag}});
+    }}
+}}
+
+function updateUI() {{
+    var items = document.querySelectorAll('.item');
+    for (var i = 0; i < items.length; i++) {{
+        var id = parseInt(items[i].getAttribute('data-id') || '0');
+        if (isExecuted(id)) {{ items[i].classList.add('executed'); }}
+        if (isOverridden(id)) {{ items[i].classList.add('overridden'); }}
+    }}
+    if (locked) {{
+        document.getElementById('lockBtn').className = 'lock-btn locked';
+        document.getElementById('lockBtn').innerHTML = '<span style=\"position:relative;z-index:1\">🔒 已封印</span><div class=\"sub\" style=\"position:relative;z-index:1\">盘中照此执行</div><div class=\"progress\"></div>';
+        document.getElementById('stateBadge').textContent = 'LOCKED 🔒';
+        document.getElementById('stateBadge').className = 'state-badge state-locked';
+        // Show execute buttons
+        var btns = document.querySelectorAll('.exec-btn-placeholder');
+        for (var k = 0; k < btns.length; k++) btns[k].style.display = 'inline-block';
+    }}
+}}
+updateUI();
 
 // Lock with progress bar
 var holdTimer = null, holdStart = 0;
@@ -332,25 +364,32 @@ function cancelHold() {{
     clearInterval(holdTimer); holdTimer = null;
     document.getElementById('lockProgress').style.width = '0%';
 }}
-async function triggerLock() {{
+function triggerLock() {{
+    cancelHold();
     if (navigator.vibrate) navigator.vibrate([30,50,30,50,100]);
     showToast('🔒 计划已封印');
-    document.getElementById('lockBtn').classList.add('locked');
-    document.getElementById('lockBtn').innerHTML = '<span style="position:relative;z-index:1">🔒 已封印</span><div class="sub" style="position:relative;z-index:1">盘中照此执行</div><div class="progress"></div>';
+    locked = true;
+    localState.locked = true; saveState();
+    document.getElementById('lockBtn').className = 'lock-btn locked';
+    document.getElementById('lockBtn').innerHTML = '<span style=\"position:relative;z-index:1\">🔒 已封印</span><div class=\"sub\" style=\"position:relative;z-index:1\">盘中照此执行</div><div class=\"progress\"></div>';
     document.getElementById('stateBadge').textContent = 'LOCKED 🔒';
     document.getElementById('stateBadge').className = 'state-badge state-locked';
-    locked = true;
     document.getElementById('lockProgress').style.width = '0%';
-    // Try to lock on server
-    await apiCall('/api/plan/lock', 'POST', {{content: '', items: []}});
+    var btns = document.querySelectorAll('.exec-btn-placeholder');
+    for (var k = 0; k < btns.length; k++) btns[k].style.display = 'inline-block';
+    apiCall('/api/plan/lock', 'POST', {{content: '', items: []}});
 }}
 
 // Execute item
-async function execItem(id) {{
+function execItem(id) {{
     if (!locked) {{ showToast('请先封印计划'); return; }}
+    if (isExecuted(id)) return;
     if (navigator.vibrate) navigator.vibrate(50);
-    var r = await apiCall('/api/plan/execute', 'POST', {{id: id}});
-    if (r && r.ok) {{ showToast('✓ 已执行'); setTimeout(function(){{ location.reload(); }}, 800); }}
+    localState.executed.push(id); saveState();
+    var item = document.querySelector('.item[data-id=\"' + id + '\"]');
+    if (item) {{ item.classList.add('executed'); var b = item.querySelector('.exec-btn-placeholder'); if (b) b.style.display = 'none'; }}
+    showToast('✓ 已执行');
+    apiCall('/api/plan/execute', 'POST', {{id: id}});
 }}
 
 // Override

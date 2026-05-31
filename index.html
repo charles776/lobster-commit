@@ -52,8 +52,8 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
 .exec-tag{font-size:8px;font-family:'JetBrains Mono',monospace;margin-left:6px}
 .done-tag{color:#30D158}
 .override-tag{color:#FF3B30}
-.exec-btn{font-size:9px;font-weight:700;padding:3px 8px;border:1px solid #30D158;border-radius:3px;color:#30D158;cursor:pointer;font-family:'JetBrains Mono',monospace;background:rgba(48,209,88,.08);transition:all .15s}
-.exec-btn:active{background:rgba(48,209,88,.2)}
+.exec-btn-placeholder{font-size:9px;font-weight:700;padding:3px 8px;border:1px solid #30D158;border-radius:3px;color:#30D158;cursor:pointer;font-family:'JetBrains Mono',monospace;background:rgba(48,209,88,.08);transition:all .15s;display:none}
+.exec-btn-placeholder:active{background:rgba(48,209,88,.2)}
 .conn-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;vertical-align:middle}
 .conn-on{background:#30D158}.conn-off{background:#FF3B30}
 .override-link{font-size:9px;color:#485268;cursor:pointer;padding:2px 6px;border:1px solid transparent;font-family:'JetBrains Mono',monospace;flex-shrink:0;border-radius:2px}
@@ -116,80 +116,80 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
     <div class="tab-btn" data-tab="2">📊 状态</div>
 </div>
 
-<div class="tab-content active" id="tab0"><div class="item sell critical">
+<div class="tab-content active" id="tab0"><div class="item sell critical" data-id="190">
             <div class="item-left"><span class="badge badge-sell">清仓</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">603083</span> <span class="name">剑桥科技</span> </div>
+                <div class="item-head"><span class="code">603083</span> <span class="name">剑桥科技</span> <span class="exec-btn-placeholder" style="display:none" onclick="execItem(190)">执行</span></div>
                 <div class="item-meta">9:30开盘执行。PE209+减持+H配售=三杀</div>
             </div>
             <span class="override-link" onclick="openOverride(190,'603083','剑桥科技')" title="覆盖">✎</span>
-        </div><div class="item hold critical">
+        </div><div class="item hold critical" data-id="191">
             <div class="item-left"><span class="badge badge-hold">减仓1/4</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> </div>
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" style="display:none" onclick="execItem(191)">执行</span></div>
                 <div class="item-meta">止损150。等反弹158-160。32%→24%</div>
             </div>
             <span class="override-link" onclick="openOverride(191,'000988','华工科技')" title="覆盖">✎</span>
-        </div><div class="item hold critical">
+        </div><div class="item hold critical" data-id="192">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> </div>
+                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> <span class="exec-btn-placeholder" style="display:none" onclick="execItem(192)">执行</span></div>
                 <div class="item-meta">止损137.5。核心底仓</div>
             </div>
             <span class="override-link" onclick="openOverride(192,'600183','生益科技')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold" data-id="193">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">601138</span> <span class="name">工业富联</span> </div>
+                <div class="item-head"><span class="code">601138</span> <span class="name">工业富联</span> <span class="exec-btn-placeholder" style="display:none" onclick="execItem(193)">执行</span></div>
                 <div class="item-meta">止损70。关税已证伪</div>
             </div>
             <span class="override-link" onclick="openOverride(193,'601138','工业富联')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold" data-id="194">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002475</span> <span class="name">立讯精密</span> </div>
+                <div class="item-head"><span class="code">002475</span> <span class="name">立讯精密</span> <span class="exec-btn-placeholder" style="display:none" onclick="execItem(194)">执行</span></div>
                 <div class="item-meta">止损68</div>
             </div>
             <span class="override-link" onclick="openOverride(194,'002475','立讯精密')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold" data-id="195">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> </div>
+                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-btn-placeholder" style="display:none" onclick="execItem(195)">执行</span></div>
                 <div class="item-meta">止损380</div>
             </div>
             <span class="override-link" onclick="openOverride(195,'002916','深南电路')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold" data-id="196">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> </div>
+                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" style="display:none" onclick="execItem(196)">执行</span></div>
                 <div class="item-meta">止损85</div>
             </div>
             <span class="override-link" onclick="openOverride(196,'603019','中科曙光')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold" data-id="197">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">003031</span> <span class="name">中瓷电子</span> </div>
+                <div class="item-head"><span class="code">003031</span> <span class="name">中瓷电子</span> <span class="exec-btn-placeholder" style="display:none" onclick="execItem(197)">执行</span></div>
                 <div class="item-meta">止损138</div>
             </div>
             <span class="override-link" onclick="openOverride(197,'003031','中瓷电子')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold" data-id="198">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002230</span> <span class="name">科大讯飞</span> </div>
+                <div class="item-head"><span class="code">002230</span> <span class="name">科大讯飞</span> <span class="exec-btn-placeholder" style="display:none" onclick="execItem(198)">执行</span></div>
                 <div class="item-meta">止损42。Q2中报前无改善→清仓</div>
             </div>
             <span class="override-link" onclick="openOverride(198,'002230','科大讯飞')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold" data-id="199">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000725</span> <span class="name">京东方A</span> </div>
+                <div class="item-head"><span class="code">000725</span> <span class="name">京东方A</span> <span class="exec-btn-placeholder" style="display:none" onclick="execItem(199)">执行</span></div>
                 <div class="item-meta">止损4.85。反弹6.0减1/4</div>
             </div>
             <span class="override-link" onclick="openOverride(199,'000725','京东方A')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold" data-id="200">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002935</span> <span class="name">天奥电子</span> </div>
+                <div class="item-head"><span class="code">002935</span> <span class="name">天奥电子</span> <span class="exec-btn-placeholder" style="display:none" onclick="execItem(200)">执行</span></div>
                 <div class="item-meta">止损18.00</div>
             </div>
             <span class="override-link" onclick="openOverride(200,'002935','天奥电子')" title="覆盖">✎</span>
@@ -266,27 +266,60 @@ var API = 'http://192.168.1.5:8766';
 var locked = false;
 var overrideItemId = null, selectedTag = '';
 var qTimer = null, isOnline = false;
+var localState = JSON.parse(localStorage.getItem('commit_state') || '{"locked":false,"executed":[],"overridden":[]}');
+if (localState.locked) locked = true;
+
+function saveState() { localStorage.setItem('commit_state', JSON.stringify(localState)); }
+function isExecuted(id) { return localState.executed.indexOf(id) !== -1; }
+function isOverridden(id) { return localState.overridden.indexOf(id) !== -1; }
 
 async function checkConn() {
     if (!API) { isOnline = false; return; }
-    try {
-        var r = await fetch(API + '/api/state', {method:'GET'});
-        isOnline = r.ok;
-    } catch(e) { isOnline = false; }
+    try { var r = await fetch(API + '/api/state', {method:'GET'}); isOnline = r.ok; } catch(e) { isOnline = false; }
     var el = document.getElementById('connStatus');
-    if (el) el.innerHTML = isOnline ? '<span class="conn-dot conn-on"></span>已连接' : '<span class="conn-dot conn-off"></span>离线·仅查看';
+    if (el) el.innerHTML = isOnline ? '<span class="conn-dot conn-on"></span>已连接' : '<span class="conn-dot conn-off"></span>离线模式';
+    if (isOnline) syncToServer();
 }
 checkConn(); setInterval(checkConn, 30000);
 
 async function apiCall(path, method, body) {
-    if (!API || !isOnline) { showToast('离线模式·无法操作'); return null; }
+    if (!API) return null;
     try {
         var opts = {method: method || 'GET', headers: {'Content-Type': 'application/json'}};
         if (body) opts.body = JSON.stringify(body);
         var r = await fetch(API + path, opts);
         return r.json();
-    } catch(e) { showToast('连接失败'); return null; }
+    } catch(e) { return null; }
 }
+
+async function syncToServer() {
+    if (!isOnline) return;
+    if (localState.locked) await apiCall('/api/plan/lock', 'POST', {content:'',items:[]});
+    for (var i = 0; i < localState.executed.length; i++) await apiCall('/api/plan/execute', 'POST', {id: localState.executed[i]});
+    for (var j = 0; j < localState.overridden.length; j++) {
+        var ov = localState.overridden[j];
+        await apiCall('/api/override', 'POST', {item_id: ov.id, code: ov.code, name: ov.name, reason: ov.tag, tag: ov.tag});
+    }
+}
+
+function updateUI() {
+    var items = document.querySelectorAll('.item');
+    for (var i = 0; i < items.length; i++) {
+        var id = parseInt(items[i].getAttribute('data-id') || '0');
+        if (isExecuted(id)) { items[i].classList.add('executed'); }
+        if (isOverridden(id)) { items[i].classList.add('overridden'); }
+    }
+    if (locked) {
+        document.getElementById('lockBtn').className = 'lock-btn locked';
+        document.getElementById('lockBtn').innerHTML = '<span style="position:relative;z-index:1">🔒 已封印</span><div class="sub" style="position:relative;z-index:1">盘中照此执行</div><div class="progress"></div>';
+        document.getElementById('stateBadge').textContent = 'LOCKED 🔒';
+        document.getElementById('stateBadge').className = 'state-badge state-locked';
+        // Show execute buttons
+        var btns = document.querySelectorAll('.exec-btn-placeholder');
+        for (var k = 0; k < btns.length; k++) btns[k].style.display = 'inline-block';
+    }
+}
+updateUI();
 
 // Lock with progress bar
 var holdTimer = null, holdStart = 0;
@@ -304,25 +337,32 @@ function cancelHold() {
     clearInterval(holdTimer); holdTimer = null;
     document.getElementById('lockProgress').style.width = '0%';
 }
-async function triggerLock() {
+function triggerLock() {
+    cancelHold();
     if (navigator.vibrate) navigator.vibrate([30,50,30,50,100]);
     showToast('🔒 计划已封印');
-    document.getElementById('lockBtn').classList.add('locked');
+    locked = true;
+    localState.locked = true; saveState();
+    document.getElementById('lockBtn').className = 'lock-btn locked';
     document.getElementById('lockBtn').innerHTML = '<span style="position:relative;z-index:1">🔒 已封印</span><div class="sub" style="position:relative;z-index:1">盘中照此执行</div><div class="progress"></div>';
     document.getElementById('stateBadge').textContent = 'LOCKED 🔒';
     document.getElementById('stateBadge').className = 'state-badge state-locked';
-    locked = true;
     document.getElementById('lockProgress').style.width = '0%';
-    // Try to lock on server
-    await apiCall('/api/plan/lock', 'POST', {content: '', items: []});
+    var btns = document.querySelectorAll('.exec-btn-placeholder');
+    for (var k = 0; k < btns.length; k++) btns[k].style.display = 'inline-block';
+    apiCall('/api/plan/lock', 'POST', {content: '', items: []});
 }
 
 // Execute item
-async function execItem(id) {
+function execItem(id) {
     if (!locked) { showToast('请先封印计划'); return; }
+    if (isExecuted(id)) return;
     if (navigator.vibrate) navigator.vibrate(50);
-    var r = await apiCall('/api/plan/execute', 'POST', {id: id});
-    if (r && r.ok) { showToast('✓ 已执行'); setTimeout(function(){ location.reload(); }, 800); }
+    localState.executed.push(id); saveState();
+    var item = document.querySelector('.item[data-id="' + id + '"]');
+    if (item) { item.classList.add('executed'); var b = item.querySelector('.exec-btn-placeholder'); if (b) b.style.display = 'none'; }
+    showToast('✓ 已执行');
+    apiCall('/api/plan/execute', 'POST', {id: id});
 }
 
 // Override
