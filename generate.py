@@ -87,7 +87,7 @@ def build(data):
             action_html = f'<span class="exec-tag override-tag">⚠</span>'
         else:
             # Always render execute button, hidden by default, shown when locked
-            action_html = f'<span class="exec-btn-placeholder" style="display:none" onclick="execItem({item_id})">执行</span>'
+            action_html = f'<span class="exec-btn-placeholder" onclick="execItem({item_id})">执行</span>'
 
         crit_border = ' critical' if is_critical else ''
 
