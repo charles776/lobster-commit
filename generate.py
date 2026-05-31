@@ -6,7 +6,7 @@ Calls local API (http://192.168.1.5:8766) when on same WiFi.
 import json, datetime, os, requests, sys
 
 HERE = os.path.dirname(__file__)
-LOCAL_API = 'http://192.168.1.5:8766'
+LOCAL_API = 'http://10.170.89.9:8766'
 FALLBACK_API = 'http://127.0.0.1:8766'
 
 def fetch():
