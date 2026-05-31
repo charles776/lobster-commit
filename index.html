@@ -104,15 +104,15 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
 </style></head>
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
-    <div><div class="date">2026-05-31 · MONDAY</div><div class="countdown" id="countdown">距离开盘 周一 06/01</div></div>
-    <div class="state-badge state-prep" id="stateBadge">PREP</div>
+    <div><div class="date">2026-06-01 · 周一</div><div class="countdown" id="countdown">距离开盘 8时40分</div></div>
+    <div class="state-badge state-locked" id="stateBadge">LOCKED 🔒</div>
 </div>
 
 <div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'JetBrains Mono',monospace"></div>
 <div style="text-align:center;padding:4px;font-size:8px;font-family:monospace"><span id="verTag" style="color:#485268">v?</span> · <a href="javascript:navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));caches.keys().then(k=>k.forEach(x=>caches.delete(x)));location.reload();" style="color:#FF3B30;text-decoration:none">硬核重置</a></div>
-<div style="background:rgba(255,59,48,.08);border:1px solid rgba(255,59,48,.2);color:#FF3B30;padding:8px 14px;margin:8px 16px;font-size:10px;font-family:monospace;text-align:center;border-radius:4px">⚠ 未连接到本地服务器 · 仅查看模式<br>请确保手机与电脑在同一WiFi</div>
 
 
+<div class="lock-banner">🔒 计划已封印 · 盘中只执行计划内操作</div>
 
 <input type="radio" class="tab-radio" name="tab" id="tr0" checked>
 <input type="radio" class="tab-radio" name="tab" id="tr1">
@@ -123,24 +123,91 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
     <label class="tab-label" for="tr2">📊 状态</label>
 </div>
 
-<div class="tab-panel" id="tp0"></div>
-<div class="tab-panel" id="tp1"><div style="color:#7A8290;font-size:12px;text-align:center;padding:30px;font-family:monospace">等待选股</div></div>
+<div class="tab-panel" id="tp0"><div class="item hold" data-id="212">
+            <div class="item-left"><span class="badge badge-hold">检查</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">600406</span> <span class="name">国电南瑞</span> <span class="exec-btn-placeholder" onclick="execItem(212)">执行</span></div>
+                <div class="item-meta">BUY WATCH #1: 检查触发条件是否满足</div>
+            </div>
+            <span class="override-link" onclick="openOverride(212,'600406','国电南瑞')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="213">
+            <div class="item-left"><span class="badge badge-hold">检查</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">600487</span> <span class="name">亨通光电</span> <span class="exec-btn-placeholder" onclick="execItem(213)">执行</span></div>
+                <div class="item-meta">BUY WATCH #2: 检查触发条件是否满足</div>
+            </div>
+            <span class="override-link" onclick="openOverride(213,'600487','亨通光电')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="214">
+            <div class="item-left"><span class="badge badge-hold">检查</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">603986</span> <span class="name">兆易创新</span> <span class="exec-btn-placeholder" onclick="execItem(214)">执行</span></div>
+                <div class="item-meta">BUY WATCH #3: 检查触发条件是否满足</div>
+            </div>
+            <span class="override-link" onclick="openOverride(214,'603986','兆易创新')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="215">
+            <div class="item-left"><span class="badge badge-hold">检查</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">600869</span> <span class="name">远东股份</span> <span class="exec-btn-placeholder" onclick="execItem(215)">执行</span></div>
+                <div class="item-meta">BUY WATCH #4: 检查触发条件是否满足</div>
+            </div>
+            <span class="override-link" onclick="openOverride(215,'600869','远东股份')" title="覆盖">✎</span>
+        </div><div class="item hold critical" data-id="216">
+            <div class="item-left"><span class="badge badge-hold">检查</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002364</span> <span class="name">中恒电气</span> <span class="exec-btn-placeholder" onclick="execItem(216)">执行</span></div>
+                <div class="item-meta">BUY WATCH #5: 特殊锁-10日内RSI未回落至65以下自动移除</div>
+            </div>
+            <span class="override-link" onclick="openOverride(216,'002364','中恒电气')" title="覆盖">✎</span>
+        </div><div class="item hold critical" data-id="217">
+            <div class="item-left"><span class="badge badge-hold">检查</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">300308</span> <span class="name">中际旭创</span> <span class="exec-btn-placeholder" onclick="execItem(217)">执行</span></div>
+                <div class="item-meta">BUY WATCH #6: 特殊锁-华工科技仓位需降至20%以下方可触发买入</div>
+            </div>
+            <span class="override-link" onclick="openOverride(217,'300308','中际旭创')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="218">
+            <div class="item-left"><span class="badge badge-hold">持有</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(218)">执行</span></div>
+                <div class="item-meta">关注仓位占比，若超20%限制中际旭创买入触发</div>
+            </div>
+            <span class="override-link" onclick="openOverride(218,'000988','华工科技')" title="覆盖">✎</span>
+        </div></div>
+<div class="tab-panel" id="tp1"><div class="buy-item">
+            <div class="bw-top"><span class="code">600406</span> 国电南瑞<span class="eta">周一</span></div>
+            <div class="trigger">RSI 55.9+520亿订单，现价可买</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">600487</span> 亨通光电<span class="eta">周一-周二</span></div>
+            <div class="trigger">回踩10日线≈72元</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">603986</span> 兆易创新<span class="eta">周二-周四</span></div>
+            <div class="trigger">KD金叉+站上5日线≈490元</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">600869</span> 远东股份<span class="eta">周二-周四</span></div>
+            <div class="trigger">回调10-15%，AI订单+2395%</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">002364</span> 中恒电气<span class="eta">周二-周五</span></div>
+            <div class="trigger">RSI回落至70以下或回调5%</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">300308</span> 中际旭创<span class="eta">周三-周五</span></div>
+            <div class="trigger">华工减仓后置换</div>
+        </div></div>
 <div class="tab-panel" id="tp2">
     <div class="stats-row">
-        <div class="stat-card"><div class="v" style="color:#30D158">0</div><div class="l">连续遵守</div></div>
+        <div class="stat-card"><div class="v" style="color:#30D158">3</div><div class="l">连续遵守</div></div>
         <div class="stat-card"><div class="v" style="color:#FF3B30">0</div><div class="l">本月覆盖</div></div>
-        <div class="stat-card"><div class="v" style="color:#0A84FF">0</div><div class="l">候选</div></div>
+        <div class="stat-card"><div class="v" style="color:#0A84FF">6</div><div class="l">候选</div></div>
     </div>
     <div class="section-title">操作日志</div>
     
 </div>
 
 <div class="float-lock">
-    <div class="lock-btn " id="lockBtn"
+    <div class="lock-btn locked" id="lockBtn"
          ontouchstart="startHold()" ontouchend="cancelHold()" ontouchmove="cancelHold()"
          onmousedown="startHold()" onmouseup="cancelHold()" onmouseleave="cancelHold()">
-        <span style="position:relative;z-index:1">🔓 封印计划</span>
-        <div class="sub" style="position:relative;z-index:1">按住3秒封印</div>
+        <span style="position:relative;z-index:1">🔒 已封印</span>
+        <div class="sub" style="position:relative;z-index:1">盘中照此执行</div>
         <div class="progress" id="lockProgress"></div>
     </div>
 </div>
@@ -174,8 +241,9 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
 </div>
 
 <script>
-var API = '';
-var locked = false;
+var API = 'http://192.168.1.5:8766';
+var API_CANDIDATES = ["http://192.168.1.5:8766", "http://192.168.43.100:8766", "http://192.168.43.101:8766", "http://172.20.10.2:8766", "http://172.20.10.3:8766", "http://127.0.0.1:8766"];
+var locked = true;
 var overrideItemId = null, selectedTag = '';
 var qTimer = null, isOnline = false;
 var localState = {};
@@ -186,10 +254,41 @@ function saveState() { localStorage.setItem('commit_state', JSON.stringify(local
 function isExecuted(id) { return localState.executed.indexOf(id) !== -1; }
 function isOverridden(id) { return localState.overridden.indexOf(id) !== -1; }
 
+async function tryApi(url) {
+    try { var r = await fetch(url + '/api/state'); if (r.ok) return url; } catch(e) {}
+    return null;
+}
+async function discoverApi() {
+    // Try current API first if set
+    if (API) { var ok = await tryApi(API); if (ok) return true; }
+    // Try last known good API
+    var lastApi = localStorage.getItem('last_api');
+    if (lastApi) { var ok = await tryApi(lastApi); if (ok) { API = ok; return true; } }
+    // Try all candidates
+    for (var i = 0; i < API_CANDIDATES.length; i++) {
+        var ok = await tryApi(API_CANDIDATES[i]);
+        if (ok) { API = ok; localStorage.setItem('last_api', API); return true; }
+    }
+    return false;
+}
 async function checkConn() {
-    if (!API) { isOnline = false; return; }
-    try { var r = await fetch(API + '/api/state', {method:'GET'}); isOnline = r.ok; } catch(e) { isOnline = false; }
     var el = document.getElementById('connStatus');
+    if (!API) {
+        var found = await discoverApi();
+        if (found) {
+            if (el) el.innerHTML = '<span class="conn-dot conn-on"></span>已连接';
+            syncToServer();
+        } else {
+            isOnline = false;
+            if (el) el.innerHTML = '<span class="conn-dot conn-off"></span>离线 · 缓存数据';
+        }
+        return;
+    }
+    try { var r = await fetch(API + '/api/state', {method:'GET'}); isOnline = r.ok; } catch(e) { isOnline = false; }
+    if (!isOnline) {
+        var found = await discoverApi();
+        if (found) isOnline = true;
+    }
     if (el) el.innerHTML = isOnline ? '<span class="conn-dot conn-on"></span>已连接' : '<span class="conn-dot conn-off"></span>离线模式';
     if (isOnline) syncToServer();
 }
@@ -347,11 +446,11 @@ function installApp() {
     if (deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(r){ }); }
 }
 
-if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js?t=10'); }
-document.getElementById('verTag').textContent = 'v10';
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js?t=11'); }
+document.getElementById('verTag').textContent = 'v11';
 // Load quarantine state
 (function() {
-    if (apiCall) {
+    if (API) {
         apiCall('/api/quarantine', 'GET').then(function(q) {
             if (q && q.active) startQCountdown(q.expires_at);
         });
