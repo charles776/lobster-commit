@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>Lobster Commit</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Commit">
+<meta name="theme-color" content="#05080C">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:120px;overflow-x:hidden}
+.header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px 8px;position:sticky;top:0;background:rgba(5,8,12,.92);backdrop-filter:blur(12px);z-index:10;border-bottom:1px solid #1C2532}
+.header .date{font-size:15px;font-weight:700;font-family:monospace}
+.header .gen{font-size:9px;color:#485268;font-family:monospace}
+.lock-banner{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;margin:8px 16px;background:rgba(255,159,10,.06);border:1px solid rgba(255,159,10,.15);border-radius:6px;font-size:12px;font-family:monospace;color:#FF9F0A;letter-spacing:1px}
+
+/* ── Tabs ── */
+.tab-bar{display:flex;margin:8px 16px;background:#0D1117;border-radius:8px;padding:3px;border:1px solid #1C2532}
+.tab-btn{flex:1;text-align:center;padding:8px;font-size:11px;font-weight:600;color:#7A8290;cursor:pointer;border-radius:6px;transition:.2s;font-family:monospace;letter-spacing:.5px}
+.tab-btn.active{background:#141B24;color:#E8ECF2}
+.tab-content{display:none;padding:0 16px}
+.tab-content.active{display:block}
+
+/* ── Plan card ── */
+.plan-text{font-size:13px;line-height:1.6;white-space:pre-wrap;font-family:monospace;padding:12px 16px;background:#0D1117;border:1px solid #1C2532;border-radius:6px;margin:8px 16px}
+.item{display:flex;align-items:center;gap:8px;padding:10px 8px;border-bottom:1px solid rgba(28,37,50,.4);font-size:12px}
+.item:last-child{border-bottom:none}
+.item.sell{background:rgba(255,59,48,.04);border-radius:4px;margin-bottom:2px}
+.item.reduce{background:rgba(255,159,10,.03);border-radius:4px;margin-bottom:2px}
+.item.hold{background:rgba(48,209,88,.02);border-radius:4px;margin-bottom:2px}
+.item .body{flex:1;min-width:0}
+.item .body .title{font-size:12px;font-weight:500}
+.item .body .title .code{font-family:monospace;font-size:10px;color:#0A84FF;margin:0 3px}
+.item .body .meta{font-size:10px;color:#7A8290;line-height:1.4;margin-top:1px}
+.item.critical{border-left:3px solid #FF3B30;padding-left:6px}
+.pill{font-size:8px;font-weight:700;padding:2px 6px;border-radius:8px;font-family:monospace;flex-shrink:0}
+.pill-sell{background:rgba(255,59,48,.15);color:#FF3B30}
+.pill-reduce{background:rgba(255,159,10,.12);color:#FF9F0A}
+.pill-hold{background:rgba(48,209,88,.1);color:#30D158}
+
+/* ── BUY WATCH ── */
+.buy-item{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 8px;border-bottom:1px solid rgba(28,37,50,.3);font-size:11px;background:#0D1117;border-radius:4px;margin-bottom:4px}
+.buy-item:last-child{border-bottom:none;margin-bottom:0}
+.buy-item .bw-left{flex:1;min-width:0}
+.buy-item .code{font-family:monospace;font-weight:700;color:#E8ECF2;font-size:12px}
+.buy-item .trigger{color:#7A8290;font-size:10px;margin-top:3px;line-height:1.5}
+.buy-item .trigger .hl{color:#FF9F0A;font-weight:600;font-family:monospace}
+.buy-item .eta{font-family:monospace;font-size:11px;font-weight:700;color:#FF9F0A;margin-left:8px;text-align:right;min-width:65px}
+
+/* ── Status ── */
+.stats-row{display:flex;gap:8px;margin-bottom:12px}
+.stat-card{flex:1;text-align:center;padding:14px 8px;background:#0D1117;border:1px solid #1C2532;border-radius:6px}
+.stat-card .v{font-family:monospace;font-size:28px;font-weight:700}
+.stat-card .l{font-size:9px;color:#7A8290;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;font-family:monospace}
+.section-title{font-size:10px;font-weight:700;color:#7A8290;text-transform:uppercase;letter-spacing:1px;font-family:monospace;margin-bottom:8px}
+.log-line{font-size:10px;color:#7A8290;padding:3px 0;font-family:monospace;border-bottom:1px solid rgba(28,37,50,.2)}
+.log-time{color:#485268;margin-right:6px}
+
+/* ── Floating Lock ── */
+.float-lock{position:fixed;bottom:20px;left:16px;right:16px;z-index:100}
+.lock-btn{display:block;width:100%;padding:16px;font-size:16px;font-weight:700;cursor:pointer;border:2px solid #FF9F0A;background:rgba(5,8,12,.96);color:#FF9F0A;letter-spacing:2px;font-family:monospace;text-transform:uppercase;border-radius:8px;text-align:center;backdrop-filter:blur(12px);box-shadow:0 0 40px rgba(255,159,10,.1);transition:all .3s}
+.lock-btn:active{transform:scale(.96);background:rgba(255,159,10,.1)}
+.lock-btn.locked{border-color:#485268;color:#485268;box-shadow:none;cursor:default;pointer-events:none}
+.lock-btn .sub{font-size:9px;opacity:.4;display:block;margin-top:4px;letter-spacing:1px;font-weight:400}
+@keyframes pulse{0%,100%{box-shadow:0 0 24px rgba(255,159,10,.06)}50%{box-shadow:0 0 48px rgba(255,159,10,.15)}}
+.lock-btn:not(.locked){animation:pulse 3s ease-in-out infinite}
+
+/* ── Toast ── */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#FF9F0A;color:#05080C;padding:10px 24px;border-radius:20px;font-weight:700;font-family:monospace;font-size:13px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+</style></head>
+<body>
+<div class="header"><div class="date">2026-05-31 · MONDAY</div><div class="gen">2026-05-31 14:28</div></div>
+<div class="lock-banner">🔒 计划已封印 · 盘中只执行计划内操作</div>
+
+<div class="tab-bar">
+  <div class="tab-btn active" onclick="switchTab(0,this)">📋 计划区</div>
+  <div class="tab-btn" onclick="switchTab(1,this)">🎯 BUY WATCH</div>
+  <div class="tab-btn" onclick="switchTab(2,this)">📊 状态</div>
+</div>
+
+<div class="tab-content active" id="tab0">
+  <div class="plan-text">周一: 9:30剑桥清仓+华工减1/4+其余持有止损。计划外冻结。</div>
+  <div style="margin:8px 0"><div class="item sell critical"><div class="body"><div class="title">清仓 <span class="code">603083</span> 剑桥科技</div><div class="meta">9:30开盘执行。PE209+减持+H配售=三杀</div></div><span class="pill pill-sell">清仓</span></div><div class="item hold critical"><div class="body"><div class="title">减仓1/4 <span class="code">000988</span> 华工科技</div><div class="meta">止损150。等反弹158-160。32%→24%</div></div><span class="pill pill-hold">减仓1/4</span></div><div class="item hold critical"><div class="body"><div class="title">持有 <span class="code">600183</span> 生益科技</div><div class="meta">止损137.5。核心底仓</div></div><span class="pill pill-hold">持有</span></div><div class="item hold"><div class="body"><div class="title">持有 <span class="code">601138</span> 工业富联</div><div class="meta">止损70。关税已证伪</div></div><span class="pill pill-hold">持有</span></div><div class="item hold"><div class="body"><div class="title">持有 <span class="code">002475</span> 立讯精密</div><div class="meta">止损68。PE31最低</div></div><span class="pill pill-hold">持有</span></div><div class="item hold"><div class="body"><div class="title">持有 <span class="code">002916</span> 深南电路</div><div class="meta">止损380</div></div><span class="pill pill-hold">持有</span></div><div class="item hold"><div class="body"><div class="title">持有 <span class="code">603019</span> 中科曙光</div><div class="meta">止损85</div></div><span class="pill pill-hold">持有</span></div><div class="item hold"><div class="body"><div class="title">持有 <span class="code">003031</span> 中瓷电子</div><div class="meta">止损138</div></div><span class="pill pill-hold">持有</span></div><div class="item hold"><div class="body"><div class="title">持有 <span class="code">002230</span> 科大讯飞</div><div class="meta">止损42。Q2中报前无改善→清仓</div></div><span class="pill pill-hold">持有</span></div><div class="item hold"><div class="body"><div class="title">持有 <span class="code">000725</span> 京东方A</div><div class="meta">止损4.85。反弹6.0减1/4</div></div><span class="pill pill-hold">持有</span></div><div class="item hold"><div class="body"><div class="title">持有 <span class="code">002935</span> 天奥电子</div><div class="meta">止损18.00</div></div><span class="pill pill-hold">持有</span></div></div>
+</div>
+
+<div class="tab-content" id="tab1">
+  <div style="margin:8px 0"><div class="buy-item"><div class="bw-left"><span class="code">600406</span> 国电南瑞<div class="trigger">RSI 55.9+520亿订单，现价可买</div></div><div class="eta">周一</div></div><div class="buy-item"><div class="bw-left"><span class="code">600487</span> 亨通光电<div class="trigger">回踩10日线<span class="hl">≈72</span>元</div></div><div class="eta">周一-周二</div></div><div class="buy-item"><div class="bw-left"><span class="code">603986</span> 兆易创新<div class="trigger">KD金叉+站上5日线<span class="hl">≈490</span>元</div></div><div class="eta">周二-周四</div></div><div class="buy-item"><div class="bw-left"><span class="code">600869</span> 远东股份<div class="trigger">回调10-<span class="hl">15%</span>，AI订单+<span class="hl">2395%</span></div></div><div class="eta">周二-周四</div></div><div class="buy-item"><div class="bw-left"><span class="code">002364</span> 中恒电气<div class="trigger">RSI回落至70以下或回调<span class="hl">5%</span></div></div><div class="eta">周二-周五</div></div><div class="buy-item"><div class="bw-left"><span class="code">300308</span> 中际旭创<div class="trigger">华工减仓后置换</div></div><div class="eta">周三-周五</div></div></div>
+</div>
+
+<div class="tab-content" id="tab2">
+  <div class="stats-row">
+    <div class="stat-card"><div class="v" style="color:#30D158">2</div><div class="l">连续遵守</div></div>
+    <div class="stat-card"><div class="v" style="color:#FF3B30">0</div><div class="l">本月覆盖</div></div>
+    <div class="stat-card"><div class="v" style="color:#0A84FF">6</div><div class="l">Watch</div></div>
+  </div>
+  <div class="section-title">操作日志</div>
+  <div class="log-line" style="color:#485268">暂无</div>
+  <div class="section-title" style="margin-top:16px">覆盖历史</div>
+  <div class="log-line" style="color:#485268">暂无</div>
+</div>
+
+<div class="float-lock">
+  <div class="lock-btn locked" id="lockBtn" onclick="handleLock()">
+    🔒 已封印
+    <div class="sub">计划已封印 · 盘中照此执行</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var locked = true;
+
+function switchTab(n, el) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab' + n).classList.add('active');
+}
+
+var holdTimer = null;
+var lockBtn = document.getElementById('lockBtn');
+
+lockBtn.addEventListener('touchstart', function(e) {
+  if (locked) return;
+  holdTimer = setTimeout(function() {
+    if (navigator.vibrate) navigator.vibrate(50);
+    showToast('🔒 计划已封印');
+    lockBtn.classList.add('locked');
+    lockBtn.innerHTML = '🔒 已封印<div class="sub">计划已封印 · 盘中照此执行</div>';
+    locked = true;
+  }, 3000);
+});
+
+lockBtn.addEventListener('touchend', function() { clearTimeout(holdTimer); });
+lockBtn.addEventListener('touchmove', function() { clearTimeout(holdTimer); });
+
+function handleLock() {
+  if (!locked) {
+    if (navigator.vibrate) navigator.vibrate(30);
+    showToast('请长按3秒封印');
+  }
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2000);
+}
+</script>
+</body></html>
