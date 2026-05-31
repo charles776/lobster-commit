@@ -134,6 +134,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHe
 /* ── Toast ── */
 .toast{{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#FF9F0A;color:#05080C;padding:10px 24px;border-radius:20px;font-weight:700;font-family:monospace;font-size:13px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none}}
 .toast.show{{opacity:1}}
+.install-banner{{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;margin:0 16px 8px;background:#0D1117;border:1px solid #FF9F0A;border-radius:8px;font-size:13px;color:#FF9F0A;font-family:monospace}}
 </style></head>
 <body>
 <div class="header"><div class="date">{plan["date"]} · MONDAY</div><div class="gen">{data["generated_at"]}</div></div>
@@ -175,9 +176,28 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHe
 
 <div class="toast" id="toast"></div>
 
+<div class="install-banner" id="installBanner" style="display:none">
+  <span>📱 安装到桌面</span>
+  <button onclick="installApp()" style="background:#FF9F0A;color:#05080C;border:none;padding:8px 16px;border-radius:4px;font-weight:700;font-family:monospace;cursor:pointer">安装</button>
+</div>
+
 <script>
 if('serviceWorker' in navigator){{navigator.serviceWorker.register('/sw.js')}}
 var locked = {str(plan_locked).lower()};
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e){{
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBanner').style.display = 'flex';
+}});
+function installApp(){{
+  if(deferredPrompt){{
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(r){{
+      document.getElementById('installBanner').style.display = 'none';
+    }});
+  }}
+}}
 
 function switchTab(n, el) {{
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
