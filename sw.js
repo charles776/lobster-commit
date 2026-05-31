@@ -12,7 +12,7 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     fetch(e.request).then(resp => {
       const clone = resp.clone();
-      caches.open('commit-v7').then(c => c.put(e.request, clone));
+      caches.open('commit-v8').then(c => c.put(e.request, clone));
       return resp;
     }).catch(() => caches.match(e.request))
   );

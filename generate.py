@@ -146,10 +146,13 @@ body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;col
 .q-info{{font-size:10px;color:rgba(255,59,48,.3)}}
 .lock-banner{{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px;margin:8px 16px;background:rgba(255,159,10,.06);border:1px solid rgba(255,159,10,.15);border-radius:4px;font-size:11px;font-family:'JetBrains Mono',monospace;color:#FF9F0A;letter-spacing:1px}}
 .tab-bar{{display:flex;margin:8px 16px;background:#0D1117;border-radius:6px;padding:3px;border:1px solid #1C2532}}
-.tab-btn{{flex:1;text-align:center;padding:8px;font-size:11px;font-weight:600;color:#7A8290;cursor:pointer;border-radius:4px;transition:.15s;font-family:'JetBrains Mono',monospace;letter-spacing:.5px}}
-.tab-btn.active{{background:#141B24;color:#E8ECF2}}
-.tab-content{{display:none;padding:0 16px}}
-.tab-content.active{{display:block}}
+.tab-radio{{display:none}}
+.tab-radio:checked+.tab-label{{background:#141B24;color:#E8ECF2}}
+.tab-label{{flex:1;text-align:center;padding:8px;font-size:11px;font-weight:600;color:#7A8290;cursor:pointer;border-radius:4px;transition:.15s;font-family:'JetBrains Mono',monospace;letter-spacing:.5px;display:block}}
+.tab-panel{{display:none;padding:0 16px}}
+#tr0:checked~#tp0{{display:block}}
+#tr1:checked~#tp1{{display:block}}
+#tr2:checked~#tp2{{display:block}}
 
 .item{{display:flex;gap:10px;align-items:flex-start;padding:10px 8px;border-bottom:1px solid rgba(28,37,50,.35);font-size:12px;transition:all .15s;border-radius:2px;margin-bottom:1px}}
 .item.sell{{background:rgba(255,59,48,.04)}}
@@ -233,15 +236,18 @@ body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;col
 {q_html}
 {'<div class="lock-banner">🔒 计划已封印 · 盘中只执行计划内操作</div>' if plan_locked else ''}
 
+<input type="radio" class="tab-radio" name="tab" id="tr0" checked>
+<input type="radio" class="tab-radio" name="tab" id="tr1">
+<input type="radio" class="tab-radio" name="tab" id="tr2">
 <div class="tab-bar">
-    <div class="tab-btn active" data-tab="0">📋 计划</div>
-    <div class="tab-btn" data-tab="1">🎯 候选</div>
-    <div class="tab-btn" data-tab="2">📊 状态</div>
+    <label class="tab-label" for="tr0">📋 计划</label>
+    <label class="tab-label" for="tr1">🎯 候选</label>
+    <label class="tab-label" for="tr2">📊 状态</label>
 </div>
 
-<div class="tab-content active" id="tab0">{items_html}</div>
-<div class="tab-content" id="tab1">{bw_html if bw else '<div style="color:#7A8290;font-size:12px;text-align:center;padding:30px;font-family:monospace">等待选股</div>'}</div>
-<div class="tab-content" id="tab2">
+<div class="tab-panel" id="tp0">{items_html}</div>
+<div class="tab-panel" id="tp1">{bw_html if bw else '<div style="color:#7A8290;font-size:12px;text-align:center;padding:30px;font-family:monospace">等待选股</div>'}</div>
+<div class="tab-panel" id="tp2">
     <div class="stats-row">
         <div class="stat-card"><div class="v" style="color:#30D158">{stats.get("streak",0)}</div><div class="l">连续遵守</div></div>
         <div class="stat-card"><div class="v" style="color:#FF3B30">{stats.get("month_overrides",0)}</div><div class="l">本月覆盖</div></div>
@@ -290,7 +296,7 @@ body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;col
 </div>
 
 <script>
-console.log('Commit v7 loaded');
+console.log('Commit v8 loaded');
 try {{
 var locked = {str(plan_locked).lower()};
 var overrideItemId = null, selectedTag = '';
@@ -449,22 +455,7 @@ function countdownTick() {{
 }}
 
 // Utility
-function initTabs() {{
-    var btns = document.querySelectorAll('.tab-btn');
-    for (var i = 0; i < btns.length; i++) {{
-        btns[i].onclick = function() {{
-            var n = this.getAttribute('data-tab');
-            for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
-            var contents = document.querySelectorAll('.tab-content');
-            for (var k = 0; k < contents.length; k++) contents[k].classList.remove('active');
-            this.classList.add('active');
-            var target = document.getElementById('tab' + n);
-            if (target) target.classList.add('active');
-        }};
-    }}
-}}
-if (document.readyState === 'loading') {{ document.addEventListener('DOMContentLoaded', initTabs); }}
-else {{ initTabs(); }}
+// Tabs use pure CSS radio buttons - no JS needed
 function showToast(msg) {{
     var t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
@@ -484,8 +475,8 @@ function installApp() {{
 }}
 
 }} catch(e) {{ console.error('Commit init error:', e); }}
-if ('serviceWorker' in navigator) {{ navigator.serviceWorker.register('./sw.js?t=7'); }}
-document.getElementById('verTag').textContent = 'v7';
+if ('serviceWorker' in navigator) {{ navigator.serviceWorker.register('./sw.js?t=8'); }}
+document.getElementById('verTag').textContent = 'v8';
 // Load quarantine state
 (function() {{
     if (apiCall) {{
