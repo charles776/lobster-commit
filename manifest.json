@@ -1,12 +1,14 @@
 {
   "name": "Lobster Commit",
   "short_name": "Commit",
-  "description": "交易纪律仪表盘",
+  "description": "交易纪律仪表盘 - 锁定计划 冻结冲动",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#05080C",
   "theme_color": "#05080C",
   "orientation": "portrait",
+  "lang": "zh-CN",
   "icons": [
     {
       "src": "/icon.png",
