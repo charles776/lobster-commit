@@ -228,6 +228,7 @@ body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;col
 </div>
 
 <div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'JetBrains Mono',monospace"></div>
+<div style="text-align:center;padding:4px;font-size:8px;font-family:monospace"><span id=\"verTag\" style=\"color:#485268\">v?</span> · <a href=\"javascript:navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));caches.keys().then(k=>k.forEach(x=>caches.delete(x)));location.reload();\" style=\"color:#FF3B30;text-decoration:none\">硬核重置</a></div>
 {offline_note}
 {q_html}
 {'<div class="lock-banner">🔒 计划已封印 · 盘中只执行计划内操作</div>' if plan_locked else ''}
@@ -289,7 +290,8 @@ body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;col
 </div>
 
 <script>
-var API = '{api or ""}';
+console.log('Commit v7 loaded');
+try {{
 var locked = {str(plan_locked).lower()};
 var overrideItemId = null, selectedTag = '';
 var qTimer = null, isOnline = false;
@@ -481,7 +483,9 @@ function installApp() {{
     if (deferredPrompt){{ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(r){{ }}); }}
 }}
 
-if ('serviceWorker' in navigator) {{ navigator.serviceWorker.register('./sw.js'); }}
+}} catch(e) {{ console.error('Commit init error:', e); }}
+if ('serviceWorker' in navigator) {{ navigator.serviceWorker.register('./sw.js?t=7'); }}
+document.getElementById('verTag').textContent = 'v7';
 // Load quarantine state
 (function() {{
     if (apiCall) {{
