@@ -408,10 +408,10 @@ function countdownTick() {{
 }}
 
 // Utility
-document.addEventListener('DOMContentLoaded', function() {{
+function initTabs() {{
     var btns = document.querySelectorAll('.tab-btn');
     for (var i = 0; i < btns.length; i++) {{
-        btns[i].addEventListener('click', function() {{
+        btns[i].onclick = function() {{
             var n = this.getAttribute('data-tab');
             for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
             var contents = document.querySelectorAll('.tab-content');
@@ -419,9 +419,11 @@ document.addEventListener('DOMContentLoaded', function() {{
             this.classList.add('active');
             var target = document.getElementById('tab' + n);
             if (target) target.classList.add('active');
-        }});
+        }};
     }}
-}});
+}}
+if (document.readyState === 'loading') {{ document.addEventListener('DOMContentLoaded', initTabs); }}
+else {{ initTabs(); }}
 function showToast(msg) {{
     var t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
