@@ -81,12 +81,12 @@ def build(data):
 
         if status == 'done':
             row_cls += ' executed'
-            action_html = f'<span class="exec-tag done-tag">✓ 已执行</span>'
+            action_html = f'<span class="exec-tag done-tag">✓</span>'
         elif status == 'overridden':
             row_cls += ' overridden'
-            action_html = f'<span class="exec-tag override-tag">⚠ 覆盖: {it.get("override_tag","")}</span>'
-        elif plan_locked:
-            action_html = f'<span class="item-action" onclick="execItem({item_id})" title="点击执行">⬤</span>'
+            action_html = f'<span class="exec-tag override-tag">⚠</span>'
+        elif plan_locked and a in ('清仓','卖出','减仓','买入'):
+            action_html = f'<span class="exec-btn" onclick="execItem({item_id})">执行</span>'
         else:
             action_html = ''
 
@@ -175,8 +175,10 @@ body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;col
 .exec-tag{{font-size:8px;font-family:'JetBrains Mono',monospace;margin-left:6px}}
 .done-tag{{color:#30D158}}
 .override-tag{{color:#FF3B30}}
-.item-action{{width:16px;height:16px;border:2px solid #485268;border-radius:50%;display:inline-block;cursor:pointer;transition:all .15s;vertical-align:middle;margin-left:4px}}
-.item-action:hover{{border-color:#FF9F0A;background:rgba(255,159,10,.1)}}
+.exec-btn{{font-size:9px;font-weight:700;padding:3px 8px;border:1px solid #30D158;border-radius:3px;color:#30D158;cursor:pointer;font-family:'JetBrains Mono',monospace;background:rgba(48,209,88,.08);transition:all .15s}}
+.exec-btn:active{{background:rgba(48,209,88,.2)}}
+.conn-dot{{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;vertical-align:middle}}
+.conn-on{{background:#30D158}}.conn-off{{background:#FF3B30}}
 .override-link{{font-size:9px;color:#485268;cursor:pointer;padding:2px 6px;border:1px solid transparent;font-family:'JetBrains Mono',monospace;flex-shrink:0;border-radius:2px}}
 .override-link:hover{{color:#FF3B30;border-color:rgba(255,59,48,.3)}}
 
@@ -226,6 +228,7 @@ body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;col
     <div class="state-badge {state_cls}" id="stateBadge">{state_label}</div>
 </div>
 
+<div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'JetBrains Mono',monospace"></div>
 {offline_note}
 {q_html}
 {'<div class="lock-banner">🔒 计划已封印 · 盘中只执行计划内操作</div>' if plan_locked else ''}
@@ -290,16 +293,27 @@ body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;col
 var API = '{api or ""}';
 var locked = {str(plan_locked).lower()};
 var overrideItemId = null, selectedTag = '';
-var qTimer = null;
+var qTimer = null, isOnline = false;
+
+async function checkConn() {{
+    if (!API) {{ isOnline = false; return; }}
+    try {{
+        var r = await fetch(API + '/api/state', {{method:'GET'}});
+        isOnline = r.ok;
+    }} catch(e) {{ isOnline = false; }}
+    var el = document.getElementById('connStatus');
+    if (el) el.innerHTML = isOnline ? '<span class="conn-dot conn-on"></span>已连接' : '<span class="conn-dot conn-off"></span>离线·仅查看';
+}}
+checkConn(); setInterval(checkConn, 30000);
 
 async function apiCall(path, method, body) {{
-    if (!API) {{ showToast('未连接服务器'); return null; }}
+    if (!API || !isOnline) {{ showToast('离线模式·无法操作'); return null; }}
     try {{
         var opts = {{method: method || 'GET', headers: {{'Content-Type': 'application/json'}}}};
         if (body) opts.body = JSON.stringify(body);
         var r = await fetch(API + path, opts);
         return r.json();
-    }} catch(e) {{ showToast('连接失败，请检查WiFi'); return null; }}
+    }} catch(e) {{ showToast('连接失败'); return null; }}
 }}
 
 // Lock with progress bar
@@ -395,9 +409,13 @@ function countdownTick() {{
 
 // Utility
 function switchTab(n, el) {{
-    document.querySelectorAll('.tab-btn').forEach(function(b){{ b.classList.remove('active'); }});
-    document.querySelectorAll('.tab-content').forEach(function(c){{ c.classList.remove('active'); }});
-    el.classList.add('active'); document.getElementById('tab' + n).classList.add('active');
+    var btns = document.querySelectorAll('.tab-btn');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+    var contents = document.querySelectorAll('.tab-content');
+    for (var j = 0; j < contents.length; j++) contents[j].classList.remove('active');
+    el.classList.add('active');
+    var target = document.getElementById('tab' + n);
+    if (target) target.classList.add('active');
 }}
 function showToast(msg) {{
     var t = document.getElementById('toast');
