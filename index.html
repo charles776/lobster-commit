@@ -104,7 +104,7 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
 </style></head>
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
-    <div><div class="date">2026-06-01 · 周一</div><div class="countdown" id="countdown">距离开盘 8时40分</div></div>
+    <div><div class="date">2026-06-01 · 周一</div><div class="countdown" id="countdown">距离开盘 7时42分</div></div>
     <div class="state-badge state-locked" id="stateBadge">LOCKED 🔒</div>
 </div>
 
@@ -123,55 +123,83 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
     <label class="tab-label" for="tr2">📊 状态</label>
 </div>
 
-<div class="tab-panel" id="tp0"><div class="item hold" data-id="212">
-            <div class="item-left"><span class="badge badge-hold">检查</span></div>
+<div class="tab-panel" id="tp0"><div class="item sell critical" data-id="219">
+            <div class="item-left"><span class="badge badge-sell">清仓</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">600406</span> <span class="name">国电南瑞</span> <span class="exec-btn-placeholder" onclick="execItem(212)">执行</span></div>
-                <div class="item-meta">BUY WATCH #1: 检查触发条件是否满足</div>
+                <div class="item-head"><span class="code">000725</span> <span class="name">京东方A</span> <span class="exec-btn-placeholder" onclick="execItem(219)">执行</span></div>
+                <div class="item-meta">触发-30%绝对风控红线,5/29放量跌停,面板周期压力,存货同比增加,OLED亏损</div>
             </div>
-            <span class="override-link" onclick="openOverride(212,'600406','国电南瑞')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="213">
-            <div class="item-left"><span class="badge badge-hold">检查</span></div>
+            <span class="override-link" onclick="openOverride(219,'000725','京东方A')" title="覆盖">✎</span>
+        </div><div class="item sell critical" data-id="220">
+            <div class="item-left"><span class="badge badge-sell">清仓</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">600487</span> <span class="name">亨通光电</span> <span class="exec-btn-placeholder" onclick="execItem(213)">执行</span></div>
-                <div class="item-meta">BUY WATCH #2: 检查触发条件是否满足</div>
+                <div class="item-head"><span class="code">603083</span> <span class="name">剑桥科技</span> <span class="exec-btn-placeholder" onclick="execItem(220)">执行</span></div>
+                <div class="item-meta">四重卖出信号:控股股东减持2.69%+高管减持窗口期+Q1高增为2025Q4低基数幻觉+经营现金流为负+大宗折价-9.55%</div>
             </div>
-            <span class="override-link" onclick="openOverride(213,'600487','亨通光电')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="214">
-            <div class="item-left"><span class="badge badge-hold">检查</span></div>
+            <span class="override-link" onclick="openOverride(220,'603083','剑桥科技')" title="覆盖">✎</span>
+        </div><div class="item reduce critical" data-id="221">
+            <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">603986</span> <span class="name">兆易创新</span> <span class="exec-btn-placeholder" onclick="execItem(214)">执行</span></div>
-                <div class="item-meta">BUY WATCH #3: 检查触发条件是否满足</div>
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(221)">执行</span></div>
+                <div class="item-meta">2600→1733股(减1/3),占比32%→22%,止损145元(前低结构位),终极止损138.92(2×ATR(14)=8.6),减仓线160元</div>
             </div>
-            <span class="override-link" onclick="openOverride(214,'603986','兆易创新')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="215">
-            <div class="item-left"><span class="badge badge-hold">检查</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">600869</span> <span class="name">远东股份</span> <span class="exec-btn-placeholder" onclick="execItem(215)">执行</span></div>
-                <div class="item-meta">BUY WATCH #4: 检查触发条件是否满足</div>
-            </div>
-            <span class="override-link" onclick="openOverride(215,'600869','远东股份')" title="覆盖">✎</span>
-        </div><div class="item hold critical" data-id="216">
-            <div class="item-left"><span class="badge badge-hold">检查</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">002364</span> <span class="name">中恒电气</span> <span class="exec-btn-placeholder" onclick="execItem(216)">执行</span></div>
-                <div class="item-meta">BUY WATCH #5: 特殊锁-10日内RSI未回落至65以下自动移除</div>
-            </div>
-            <span class="override-link" onclick="openOverride(216,'002364','中恒电气')" title="覆盖">✎</span>
-        </div><div class="item hold critical" data-id="217">
-            <div class="item-left"><span class="badge badge-hold">检查</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">300308</span> <span class="name">中际旭创</span> <span class="exec-btn-placeholder" onclick="execItem(217)">执行</span></div>
-                <div class="item-meta">BUY WATCH #6: 特殊锁-华工科技仓位需降至20%以下方可触发买入</div>
-            </div>
-            <span class="override-link" onclick="openOverride(217,'300308','中际旭创')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="218">
+            <span class="override-link" onclick="openOverride(221,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="222">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(218)">执行</span></div>
-                <div class="item-meta">关注仓位占比，若超20%限制中际旭创买入触发</div>
+                <div class="item-head"><span class="code">002475</span> <span class="name">立讯精密</span> <span class="exec-btn-placeholder" onclick="execItem(222)">执行</span></div>
+                <div class="item-meta">唯一盈利+0.59%,消费电子龙头,业绩支撑,继续持有</div>
             </div>
-            <span class="override-link" onclick="openOverride(218,'000988','华工科技')" title="覆盖">✎</span>
+            <span class="override-link" onclick="openOverride(222,'002475','立讯精密')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="223">
+            <div class="item-left"><span class="badge badge-hold">持有</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" onclick="execItem(223)">执行</span></div>
+                <div class="item-meta">-1.73%正常波动,算力基础设施核心资产,持仓观察</div>
+            </div>
+            <span class="override-link" onclick="openOverride(223,'603019','中科曙光')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="224">
+            <div class="item-left"><span class="badge badge-hold">持有</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002230</span> <span class="name">科大讯飞</span> <span class="exec-btn-placeholder" onclick="execItem(224)">执行</span></div>
+                <div class="item-meta">-2.50%正常波动,AI应用龙头,持仓观察</div>
+            </div>
+            <span class="override-link" onclick="openOverride(224,'002230','科大讯飞')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="225">
+            <div class="item-left"><span class="badge badge-hold">持有</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-btn-placeholder" onclick="execItem(225)">执行</span></div>
+                <div class="item-meta">-0.63%正常波动,基本面稳健,持仓观察</div>
+            </div>
+            <span class="override-link" onclick="openOverride(225,'002916','深南电路')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="226">
+            <div class="item-left"><span class="badge badge-hold">持有</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">601138</span> <span class="name">工业富联</span> <span class="exec-btn-placeholder" onclick="execItem(226)">执行</span></div>
+                <div class="item-meta">-2.92%正常波动,AI服务器逻辑仍在,高位波动暂持</div>
+            </div>
+            <span class="override-link" onclick="openOverride(226,'601138','工业富联')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="227">
+            <div class="item-left"><span class="badge badge-hold">持有</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> <span class="exec-btn-placeholder" onclick="execItem(227)">执行</span></div>
+                <div class="item-meta">盈亏平衡,AI+覆铜板逻辑坚实,持仓观察</div>
+            </div>
+            <span class="override-link" onclick="openOverride(227,'600183','生益科技')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="228">
+            <div class="item-left"><span class="badge badge-hold">持有</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002935</span> <span class="name">天奥电子</span> <span class="exec-btn-placeholder" onclick="execItem(228)">执行</span></div>
+                <div class="item-meta">-4.08%正常波动,军工底仓,持仓观察</div>
+            </div>
+            <span class="override-link" onclick="openOverride(228,'002935','天奥电子')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="229">
+            <div class="item-left"><span class="badge badge-hold">持有</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">003031</span> <span class="name">中瓷电子</span> <span class="exec-btn-placeholder" onclick="execItem(229)">执行</span></div>
+                <div class="item-meta">-4.29%,上周单周跌10.58%已释放部分风险,观察为主</div>
+            </div>
+            <span class="override-link" onclick="openOverride(229,'003031','中瓷电子')" title="覆盖">✎</span>
         </div></div>
 <div class="tab-panel" id="tp1"><div class="buy-item">
             <div class="bw-top"><span class="code">600406</span> 国电南瑞<span class="eta">周一</span></div>
