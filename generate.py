@@ -85,7 +85,7 @@ def build(data):
         elif status == 'overridden':
             row_cls += ' overridden'
             action_html = f'<span class="exec-tag override-tag">⚠</span>'
-        elif plan_locked and a in ('清仓','卖出','减仓','买入'):
+        elif plan_locked:
             action_html = f'<span class="exec-btn" onclick="execItem({item_id})">执行</span>'
         else:
             action_html = ''
@@ -234,9 +234,9 @@ body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;col
 {'<div class="lock-banner">🔒 计划已封印 · 盘中只执行计划内操作</div>' if plan_locked else ''}
 
 <div class="tab-bar">
-    <div class="tab-btn active" onclick="switchTab(0,this)">📋 计划</div>
-    <div class="tab-btn" onclick="switchTab(1,this)">🎯 候选</div>
-    <div class="tab-btn" onclick="switchTab(2,this)">📊 状态</div>
+    <div class="tab-btn active" data-tab="0">📋 计划</div>
+    <div class="tab-btn" data-tab="1">🎯 候选</div>
+    <div class="tab-btn" data-tab="2">📊 状态</div>
 </div>
 
 <div class="tab-content active" id="tab0">{items_html}</div>
@@ -408,15 +408,20 @@ function countdownTick() {{
 }}
 
 // Utility
-function switchTab(n, el) {{
+document.addEventListener('DOMContentLoaded', function() {{
     var btns = document.querySelectorAll('.tab-btn');
-    for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
-    var contents = document.querySelectorAll('.tab-content');
-    for (var j = 0; j < contents.length; j++) contents[j].classList.remove('active');
-    el.classList.add('active');
-    var target = document.getElementById('tab' + n);
-    if (target) target.classList.add('active');
-}}
+    for (var i = 0; i < btns.length; i++) {{
+        btns[i].addEventListener('click', function() {{
+            var n = this.getAttribute('data-tab');
+            for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
+            var contents = document.querySelectorAll('.tab-content');
+            for (var k = 0; k < contents.length; k++) contents[k].classList.remove('active');
+            this.classList.add('active');
+            var target = document.getElementById('tab' + n);
+            if (target) target.classList.add('active');
+        }});
+    }}
+}});
 function showToast(msg) {{
     var t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');

@@ -111,9 +111,9 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
 <div class="lock-banner">🔒 计划已封印 · 盘中只执行计划内操作</div>
 
 <div class="tab-bar">
-    <div class="tab-btn active" onclick="switchTab(0,this)">📋 计划</div>
-    <div class="tab-btn" onclick="switchTab(1,this)">🎯 候选</div>
-    <div class="tab-btn" onclick="switchTab(2,this)">📊 状态</div>
+    <div class="tab-btn active" data-tab="0">📋 计划</div>
+    <div class="tab-btn" data-tab="1">🎯 候选</div>
+    <div class="tab-btn" data-tab="2">📊 状态</div>
 </div>
 
 <div class="tab-content active" id="tab0"><div class="item sell executed critical">
@@ -123,73 +123,73 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
                 <div class="item-meta">9:30开盘执行。PE209+减持+H配售=三杀</div>
             </div>
             <span class="override-link" onclick="openOverride(179,'603083','剑桥科技')" title="覆盖">✎</span>
-        </div><div class="item hold critical">
+        </div><div class="item hold executed critical">
             <div class="item-left"><span class="badge badge-hold">减仓1/4</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> </div>
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-tag done-tag">✓</span></div>
                 <div class="item-meta">止损150。等反弹158-160。32%→24%</div>
             </div>
             <span class="override-link" onclick="openOverride(180,'000988','华工科技')" title="覆盖">✎</span>
-        </div><div class="item hold critical">
+        </div><div class="item hold executed critical">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> </div>
+                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> <span class="exec-tag done-tag">✓</span></div>
                 <div class="item-meta">止损137.5。核心底仓</div>
             </div>
             <span class="override-link" onclick="openOverride(181,'600183','生益科技')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold executed">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">601138</span> <span class="name">工业富联</span> </div>
+                <div class="item-head"><span class="code">601138</span> <span class="name">工业富联</span> <span class="exec-tag done-tag">✓</span></div>
                 <div class="item-meta">止损70</div>
             </div>
             <span class="override-link" onclick="openOverride(182,'601138','工业富联')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold executed">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002475</span> <span class="name">立讯精密</span> </div>
+                <div class="item-head"><span class="code">002475</span> <span class="name">立讯精密</span> <span class="exec-tag done-tag">✓</span></div>
                 <div class="item-meta">止损68</div>
             </div>
             <span class="override-link" onclick="openOverride(183,'002475','立讯精密')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold executed">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> </div>
+                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-tag done-tag">✓</span></div>
                 <div class="item-meta">止损380</div>
             </div>
             <span class="override-link" onclick="openOverride(184,'002916','深南电路')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold executed">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> </div>
+                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-tag done-tag">✓</span></div>
                 <div class="item-meta">止损85</div>
             </div>
             <span class="override-link" onclick="openOverride(185,'603019','中科曙光')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold executed">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">003031</span> <span class="name">中瓷电子</span> </div>
+                <div class="item-head"><span class="code">003031</span> <span class="name">中瓷电子</span> <span class="exec-tag done-tag">✓</span></div>
                 <div class="item-meta">止损138</div>
             </div>
             <span class="override-link" onclick="openOverride(186,'003031','中瓷电子')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold executed">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002230</span> <span class="name">科大讯飞</span> </div>
+                <div class="item-head"><span class="code">002230</span> <span class="name">科大讯飞</span> <span class="exec-tag done-tag">✓</span></div>
                 <div class="item-meta">止损42。Q2中报前无改善→清仓</div>
             </div>
             <span class="override-link" onclick="openOverride(187,'002230','科大讯飞')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold executed">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000725</span> <span class="name">京东方A</span> </div>
+                <div class="item-head"><span class="code">000725</span> <span class="name">京东方A</span> <span class="exec-tag done-tag">✓</span></div>
                 <div class="item-meta">止损4.85。反弹6.0减1/4</div>
             </div>
             <span class="override-link" onclick="openOverride(188,'000725','京东方A')" title="覆盖">✎</span>
-        </div><div class="item hold">
+        </div><div class="item hold executed">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002935</span> <span class="name">天奥电子</span> </div>
+                <div class="item-head"><span class="code">002935</span> <span class="name">天奥电子</span> <span class="exec-tag done-tag">✓</span></div>
                 <div class="item-meta">止损18.00</div>
             </div>
             <span class="override-link" onclick="openOverride(189,'002935','天奥电子')" title="覆盖">✎</span>
@@ -380,15 +380,20 @@ function countdownTick() {
 }
 
 // Utility
-function switchTab(n, el) {
+document.addEventListener('DOMContentLoaded', function() {
     var btns = document.querySelectorAll('.tab-btn');
-    for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
-    var contents = document.querySelectorAll('.tab-content');
-    for (var j = 0; j < contents.length; j++) contents[j].classList.remove('active');
-    el.classList.add('active');
-    var target = document.getElementById('tab' + n);
-    if (target) target.classList.add('active');
-}
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener('click', function() {
+            var n = this.getAttribute('data-tab');
+            for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
+            var contents = document.querySelectorAll('.tab-content');
+            for (var k = 0; k < contents.length; k++) contents[k].classList.remove('active');
+            this.classList.add('active');
+            var target = document.getElementById('tab' + n);
+            if (target) target.classList.add('active');
+        });
+    }
+});
 function showToast(msg) {
     var t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
