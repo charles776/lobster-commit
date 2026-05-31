@@ -469,8 +469,8 @@ function installApp() {{
     if (deferredPrompt){{ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(r){{ }}); }}
 }}
 
-if ('serviceWorker' in navigator) {{ navigator.serviceWorker.register('./sw.js?t=9'); }}
-document.getElementById('verTag').textContent = 'v9';
+if ('serviceWorker' in navigator) {{ navigator.serviceWorker.register('./sw.js?t=10'); }}
+document.getElementById('verTag').textContent = 'v10';
 // Load quarantine state
 (function() {{
     if (apiCall) {{
