@@ -102,13 +102,13 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
     <div><div class="date">2026-05-31 · MONDAY</div><div class="countdown" id="countdown">距离开盘 周一 06/01</div></div>
-    <div class="state-badge state-locked" id="stateBadge">LOCKED 🔒</div>
+    <div class="state-badge state-prep" id="stateBadge">PREP</div>
 </div>
 
 <div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'JetBrains Mono',monospace"></div>
 
 
-<div class="lock-banner">🔒 计划已封印 · 盘中只执行计划内操作</div>
+
 
 <div class="tab-bar">
     <div class="tab-btn active" data-tab="0">📋 计划</div>
@@ -116,83 +116,83 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
     <div class="tab-btn" data-tab="2">📊 状态</div>
 </div>
 
-<div class="tab-content active" id="tab0"><div class="item sell executed critical">
+<div class="tab-content active" id="tab0"><div class="item sell critical">
             <div class="item-left"><span class="badge badge-sell">清仓</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">603083</span> <span class="name">剑桥科技</span> <span class="exec-tag done-tag">✓</span></div>
+                <div class="item-head"><span class="code">603083</span> <span class="name">剑桥科技</span> </div>
                 <div class="item-meta">9:30开盘执行。PE209+减持+H配售=三杀</div>
             </div>
-            <span class="override-link" onclick="openOverride(179,'603083','剑桥科技')" title="覆盖">✎</span>
-        </div><div class="item hold executed critical">
+            <span class="override-link" onclick="openOverride(190,'603083','剑桥科技')" title="覆盖">✎</span>
+        </div><div class="item hold critical">
             <div class="item-left"><span class="badge badge-hold">减仓1/4</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-tag done-tag">✓</span></div>
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> </div>
                 <div class="item-meta">止损150。等反弹158-160。32%→24%</div>
             </div>
-            <span class="override-link" onclick="openOverride(180,'000988','华工科技')" title="覆盖">✎</span>
-        </div><div class="item hold executed critical">
+            <span class="override-link" onclick="openOverride(191,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item hold critical">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> <span class="exec-tag done-tag">✓</span></div>
+                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> </div>
                 <div class="item-meta">止损137.5。核心底仓</div>
             </div>
-            <span class="override-link" onclick="openOverride(181,'600183','生益科技')" title="覆盖">✎</span>
-        </div><div class="item hold executed">
+            <span class="override-link" onclick="openOverride(192,'600183','生益科技')" title="覆盖">✎</span>
+        </div><div class="item hold">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">601138</span> <span class="name">工业富联</span> <span class="exec-tag done-tag">✓</span></div>
-                <div class="item-meta">止损70</div>
+                <div class="item-head"><span class="code">601138</span> <span class="name">工业富联</span> </div>
+                <div class="item-meta">止损70。关税已证伪</div>
             </div>
-            <span class="override-link" onclick="openOverride(182,'601138','工业富联')" title="覆盖">✎</span>
-        </div><div class="item hold executed">
+            <span class="override-link" onclick="openOverride(193,'601138','工业富联')" title="覆盖">✎</span>
+        </div><div class="item hold">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002475</span> <span class="name">立讯精密</span> <span class="exec-tag done-tag">✓</span></div>
+                <div class="item-head"><span class="code">002475</span> <span class="name">立讯精密</span> </div>
                 <div class="item-meta">止损68</div>
             </div>
-            <span class="override-link" onclick="openOverride(183,'002475','立讯精密')" title="覆盖">✎</span>
-        </div><div class="item hold executed">
+            <span class="override-link" onclick="openOverride(194,'002475','立讯精密')" title="覆盖">✎</span>
+        </div><div class="item hold">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-tag done-tag">✓</span></div>
+                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> </div>
                 <div class="item-meta">止损380</div>
             </div>
-            <span class="override-link" onclick="openOverride(184,'002916','深南电路')" title="覆盖">✎</span>
-        </div><div class="item hold executed">
+            <span class="override-link" onclick="openOverride(195,'002916','深南电路')" title="覆盖">✎</span>
+        </div><div class="item hold">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-tag done-tag">✓</span></div>
+                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> </div>
                 <div class="item-meta">止损85</div>
             </div>
-            <span class="override-link" onclick="openOverride(185,'603019','中科曙光')" title="覆盖">✎</span>
-        </div><div class="item hold executed">
+            <span class="override-link" onclick="openOverride(196,'603019','中科曙光')" title="覆盖">✎</span>
+        </div><div class="item hold">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">003031</span> <span class="name">中瓷电子</span> <span class="exec-tag done-tag">✓</span></div>
+                <div class="item-head"><span class="code">003031</span> <span class="name">中瓷电子</span> </div>
                 <div class="item-meta">止损138</div>
             </div>
-            <span class="override-link" onclick="openOverride(186,'003031','中瓷电子')" title="覆盖">✎</span>
-        </div><div class="item hold executed">
+            <span class="override-link" onclick="openOverride(197,'003031','中瓷电子')" title="覆盖">✎</span>
+        </div><div class="item hold">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002230</span> <span class="name">科大讯飞</span> <span class="exec-tag done-tag">✓</span></div>
+                <div class="item-head"><span class="code">002230</span> <span class="name">科大讯飞</span> </div>
                 <div class="item-meta">止损42。Q2中报前无改善→清仓</div>
             </div>
-            <span class="override-link" onclick="openOverride(187,'002230','科大讯飞')" title="覆盖">✎</span>
-        </div><div class="item hold executed">
+            <span class="override-link" onclick="openOverride(198,'002230','科大讯飞')" title="覆盖">✎</span>
+        </div><div class="item hold">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000725</span> <span class="name">京东方A</span> <span class="exec-tag done-tag">✓</span></div>
+                <div class="item-head"><span class="code">000725</span> <span class="name">京东方A</span> </div>
                 <div class="item-meta">止损4.85。反弹6.0减1/4</div>
             </div>
-            <span class="override-link" onclick="openOverride(188,'000725','京东方A')" title="覆盖">✎</span>
-        </div><div class="item hold executed">
+            <span class="override-link" onclick="openOverride(199,'000725','京东方A')" title="覆盖">✎</span>
+        </div><div class="item hold">
             <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002935</span> <span class="name">天奥电子</span> <span class="exec-tag done-tag">✓</span></div>
+                <div class="item-head"><span class="code">002935</span> <span class="name">天奥电子</span> </div>
                 <div class="item-meta">止损18.00</div>
             </div>
-            <span class="override-link" onclick="openOverride(189,'002935','天奥电子')" title="覆盖">✎</span>
+            <span class="override-link" onclick="openOverride(200,'002935','天奥电子')" title="覆盖">✎</span>
         </div></div>
 <div class="tab-content" id="tab1"><div class="buy-item">
             <div class="bw-top"><span class="code">600406</span> 国电南瑞<span class="eta">周一</span></div>
@@ -215,7 +215,7 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
         </div></div>
 <div class="tab-content" id="tab2">
     <div class="stats-row">
-        <div class="stat-card"><div class="v" style="color:#30D158">2</div><div class="l">连续遵守</div></div>
+        <div class="stat-card"><div class="v" style="color:#30D158">0</div><div class="l">连续遵守</div></div>
         <div class="stat-card"><div class="v" style="color:#FF3B30">0</div><div class="l">本月覆盖</div></div>
         <div class="stat-card"><div class="v" style="color:#0A84FF">6</div><div class="l">候选</div></div>
     </div>
@@ -224,11 +224,11 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
 </div>
 
 <div class="float-lock">
-    <div class="lock-btn locked" id="lockBtn"
+    <div class="lock-btn " id="lockBtn"
          ontouchstart="startHold()" ontouchend="cancelHold()" ontouchmove="cancelHold()"
          onmousedown="startHold()" onmouseup="cancelHold()" onmouseleave="cancelHold()">
-        <span style="position:relative;z-index:1">🔒 已封印</span>
-        <div class="sub" style="position:relative;z-index:1">盘中照此执行</div>
+        <span style="position:relative;z-index:1">🔓 封印计划</span>
+        <div class="sub" style="position:relative;z-index:1">按住3秒封印</div>
         <div class="progress" id="lockProgress"></div>
     </div>
 </div>
@@ -263,7 +263,7 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
 
 <script>
 var API = 'http://192.168.1.5:8766';
-var locked = true;
+var locked = false;
 var overrideItemId = null, selectedTag = '';
 var qTimer = null, isOnline = false;
 
