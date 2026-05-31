@@ -72,7 +72,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 .toast.show{opacity:1}
 </style></head>
 <body>
-<div class="header"><div class="date">2026-05-31 · MONDAY</div><div class="gen">2026-05-31 16:10</div></div>
+<div class="header"><div class="date">2026-05-31 · MONDAY</div><div class="gen">2026-05-31 16:19</div></div>
 <div class="lock-banner">🔒 计划已封印 · 盘中只执行计划内操作</div>
 
 <div class="tab-bar">
@@ -112,6 +112,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 <div class="toast" id="toast"></div>
 
 <script>
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js')}
 var locked = true;
 
 function switchTab(n, el) {

@@ -176,6 +176,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHe
 <div class="toast" id="toast"></div>
 
 <script>
+if('serviceWorker' in navigator){{navigator.serviceWorker.register('/sw.js')}}
 var locked = {str(plan_locked).lower()};
 
 function switchTab(n, el) {{
