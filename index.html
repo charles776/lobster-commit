@@ -55,7 +55,7 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
 .exec-tag{font-size:8px;font-family:'JetBrains Mono',monospace;margin-left:6px}
 .done-tag{color:#30D158}
 .override-tag{color:#FF3B30}
-.exec-btn-placeholder{font-size:9px;font-weight:700;padding:3px 8px;border:1px solid #30D158;border-radius:3px;color:#30D158;cursor:pointer;font-family:'JetBrains Mono',monospace;background:rgba(48,209,88,.08);transition:all .15s;display:none}
+.exec-btn-placeholder{font-size:9px;font-weight:700;padding:3px 8px;border:1px solid #30D158;border-radius:3px;color:#30D158;cursor:pointer;font-family:'JetBrains Mono',monospace;background:rgba(48,209,88,.08);transition:all .15s}
 .exec-btn-placeholder:active{background:rgba(48,209,88,.2)}
 .conn-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;vertical-align:middle}
 .conn-on{background:#30D158}.conn-off{background:#FF3B30}
@@ -322,9 +322,6 @@ function updateUI() {
         document.getElementById('lockBtn').innerHTML = '<span style="position:relative;z-index:1">🔒 已封印</span><div class="sub" style="position:relative;z-index:1">盘中照此执行</div><div class="progress"></div>';
         document.getElementById('stateBadge').textContent = 'LOCKED 🔒';
         document.getElementById('stateBadge').className = 'state-badge state-locked';
-        // Show execute buttons
-        var btns = document.querySelectorAll('.exec-btn-placeholder');
-        for (var k = 0; k < btns.length; k++) btns[k].style.display = 'inline-block';
     }
 }
 updateUI();
@@ -356,8 +353,6 @@ function triggerLock() {
     document.getElementById('stateBadge').textContent = 'LOCKED 🔒';
     document.getElementById('stateBadge').className = 'state-badge state-locked';
     document.getElementById('lockProgress').style.width = '0%';
-    var btns = document.querySelectorAll('.exec-btn-placeholder');
-    for (var k = 0; k < btns.length; k++) btns[k].style.display = 'inline-block';
     apiCall('/api/plan/lock', 'POST', {content: '', items: []});
 }
 
