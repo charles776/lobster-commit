@@ -1,25 +1,78 @@
 """
 Generate interactive PWA for GitHub Pages.
 Full Commit Device: lock(progress bar), execute, override, quarantine.
-Calls local API (http://192.168.1.5:8766) when on same WiFi.
+Auto-discovers local API (same WiFi or phone hotspot).
 """
-import json, datetime, os, requests, sys
+import json, datetime, os, requests, sys, socket
 
 HERE = os.path.dirname(__file__)
-LOCAL_API = 'http://10.170.89.9:8766'
-FALLBACK_API = 'http://127.0.0.1:8766'
+PORT = 8766
+
+def get_local_ip():
+    """获取本机当前活跃的局域网 IP（无需外网真实连通）"""
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.settimeout(0.5)
+        # 8.8.8.8 不需要可达，仅让内核选择出口网卡
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        if not ip.startswith("127."):
+            return ip
+    except Exception:
+        pass
+    try:
+        ip = socket.gethostbyname(socket.gethostname())
+        if not ip.startswith("127."):
+            return ip
+    except Exception:
+        pass
+    return None
+
+def discover_api(port=PORT):
+    """Auto-discover API: LAN IP first, then hotspot IPs, then loopback."""
+    candidates = []
+    local_ip = get_local_ip()
+    if local_ip:
+        candidates.append(f"http://{local_ip}:{port}")
+        # If on home WiFi (192.168.1.x), also try hotspot subnet
+        if local_ip.startswith("192.168.1."):
+            candidates.append(f"http://192.168.43.100:{port}")
+        # If on hotspot, also try home WiFi
+        if local_ip.startswith("192.168.43."):
+            candidates.append(f"http://192.168.1.5:{port}")
+
+    # Common hotspot IPs
+    for ip in ["192.168.43.100", "192.168.43.101", "172.20.10.2", "172.20.10.3"]:
+        url = f"http://{ip}:{port}"
+        if url not in candidates:
+            candidates.append(url)
+
+    candidates.append(f"http://127.0.0.1:{port}")
+
+    for url in candidates:
+        try:
+            r = requests.get(f"{url}/api/state", timeout=2)
+            if r.status_code == 200:
+                return url
+        except Exception:
+            continue
+    return None
 
 def fetch():
-    # Try local first, then fallback
-    api = LOCAL_API
-    try:
-        r = requests.get(f'{LOCAL_API}/api/state', timeout=3)
-    except:
-        try:
-            r = requests.get(f'{FALLBACK_API}/api/state', timeout=3)
-            api = FALLBACK_API
-        except:
-            api = None
+    api = discover_api(PORT)
+    if api:
+        plan = requests.get(f'{api}/api/plan').json()
+        bw = requests.get(f'{api}/api/buywatch').json()
+        stats = requests.get(f'{api}/api/stats').json()
+        export = requests.get(f'{api}/api/export').json()
+        q = requests.get(f'{api}/api/quarantine').json()
+    else:
+        plan = {'date': datetime.datetime.now().strftime('%Y-%m-%d'), 'items': [], 'locked': False, 'content': ''}
+        bw = {'items': [], 'max': 6}
+        stats = {'streak': 0, 'month_overrides': 0}
+        export = {'action_log': [], 'overrides': []}
+        q = {'active': False}
 
     if api:
         plan = requests.get(f'{api}/api/plan').json()
@@ -34,12 +87,27 @@ def fetch():
         export = {'action_log': [], 'overrides': []}
         q = {'active': False}
 
+    # Generate API candidates for JS discovery
+    api_candidates = []
+    local_ip = get_local_ip()
+    if local_ip:
+        api_candidates.append(f"http://{local_ip}:{PORT}")
+    api_candidates.append("http://192.168.43.100:" + str(PORT))
+    api_candidates.append("http://192.168.43.101:" + str(PORT))
+    api_candidates.append("http://172.20.10.2:" + str(PORT))
+    api_candidates.append("http://172.20.10.3:" + str(PORT))
+    api_candidates.append("http://127.0.0.1:" + str(PORT))
+    # Deduplicate
+    seen = set()
+    api_candidates = [x for x in api_candidates if not (x in seen or seen.add(x))]
+
     return {
         'plan': plan, 'buywatch': bw.get('items', []), 'bw_max': bw.get('max', 6),
         'stats': stats, 'log': export.get('action_log', [])[:50],
         'overrides': export.get('overrides', [])[:20],
         'quarantine': q,
         'api': api,
+        'api_candidates': api_candidates,
         'generated_at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     }
 
@@ -79,7 +147,7 @@ def build(data):
         elif a == '买入': row_cls = 'buy'; badge_cls = 'badge-buy'
         else: row_cls = 'hold'; badge_cls = 'badge-hold'
 
-        if status == 'done' or f'executed.indexOf({item_id})' in locals():
+        if status == 'done':
             row_cls += ' executed'
             action_html = f'<span class="exec-tag done-tag">✓</span>'
         elif status == 'overridden':
@@ -120,6 +188,7 @@ def build(data):
             <div class="q-info">计划外操作已冻结</div>
         </div>'''
 
+    weekday = ['周一','周二','周三','周四','周五','周六','周日'][datetime.datetime.now().weekday()]
     return f'''<!DOCTYPE html>
 <html lang="zh-CN">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
@@ -131,24 +200,23 @@ def build(data):
 <meta name="apple-mobile-web-app-title" content="Commit">
 <meta name="theme-color" content="#080B0F">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
 *{{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}}
-body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden}}
+body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden}}
 .header{{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 16px 10px;background:rgba(5,8,12,.94);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10;border-bottom:1px solid #1C2532}}
-.header .date{{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700}}
-.header .countdown{{font-family:'JetBrains Mono',monospace;font-size:10px;color:#FF9F0A}}
-.state-badge{{padding:3px 10px;font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:1.5px;border-radius:2px}}
+.header .date{{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:15px;font-weight:700}}
+.header .countdown{{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:10px;color:#FF9F0A}}
+.state-badge{{padding:3px 10px;font-size:9px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-weight:700;letter-spacing:1.5px;border-radius:2px}}
 .state-prep{{background:rgba(110,118,136,.12);color:#7A8290;border:1px solid #1C2532}}
 .state-locked{{background:rgba(255,159,10,.1);color:#FF9F0A;border:1px solid rgba(255,159,10,.2)}}
 .quarantine-banner{{margin:8px 16px;padding:14px;background:rgba(255,59,48,.06);border:1px solid rgba(255,59,48,.2);border-radius:4px;text-align:center}}
-.q-title{{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:#FF3B30;letter-spacing:2px;margin-bottom:4px}}
-.q-detail{{font-size:11px;color:rgba(255,59,48,.6);margin-bottom:6px;font-family:'JetBrains Mono',monospace}}
+.q-title{{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:14px;font-weight:700;color:#FF3B30;letter-spacing:2px;margin-bottom:4px}}
+.q-detail{{font-size:11px;color:rgba(255,59,48,.6);margin-bottom:6px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}}
 .q-info{{font-size:10px;color:rgba(255,59,48,.3)}}
-.lock-banner{{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px;margin:8px 16px;background:rgba(255,159,10,.06);border:1px solid rgba(255,159,10,.15);border-radius:4px;font-size:11px;font-family:'JetBrains Mono',monospace;color:#FF9F0A;letter-spacing:1px}}
+.lock-banner{{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px;margin:8px 16px;background:rgba(255,159,10,.06);border:1px solid rgba(255,159,10,.15);border-radius:4px;font-size:11px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;color:#FF9F0A;letter-spacing:1px}}
 .tab-bar{{display:flex;margin:8px 16px;background:#0D1117;border-radius:6px;padding:3px;border:1px solid #1C2532}}
 .tab-radio{{display:none}}
 .tab-radio:checked+.tab-label{{background:#141B24;color:#E8ECF2}}
-.tab-label{{flex:1;text-align:center;padding:8px;font-size:11px;font-weight:600;color:#7A8290;cursor:pointer;border-radius:4px;transition:.15s;font-family:'JetBrains Mono',monospace;letter-spacing:.5px;display:block}}
+.tab-label{{flex:1;text-align:center;padding:8px;font-size:11px;font-weight:600;color:#7A8290;cursor:pointer;border-radius:4px;transition:.15s;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;letter-spacing:.5px;display:block}}
 .tab-panel{{display:none;padding:0 16px}}
 #tr0:checked~#tp0{{display:block}}
 #tr1:checked~#tp1{{display:block}}
@@ -164,42 +232,42 @@ body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;col
 .item.overridden{{opacity:.55;background:rgba(255,59,48,.02)}}
 .item.critical{{border-left:3px solid #FF3B30;padding-left:6px}}
 .item-left{{flex-shrink:0;min-width:40px}}
-.badge{{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:2px;font-family:'JetBrains Mono',monospace;letter-spacing:.5px}}
+.badge{{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:2px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;letter-spacing:.5px}}
 .badge-sell{{background:rgba(255,59,48,.15);color:#FF3B30}}
 .badge-reduce{{background:rgba(255,159,10,.12);color:#FF9F0A}}
 .badge-hold{{background:rgba(48,209,88,.1);color:#30D158}}
 .badge-buy{{background:rgba(10,132,255,.12);color:#0A84FF}}
 .item-main{{flex:1;min-width:0}}
 .item-head{{font-size:12px;font-weight:500;margin-bottom:2px}}
-.item-head .code{{font-family:'JetBrains Mono',monospace;font-size:11px;color:#0A84FF}}
+.item-head .code{{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:11px;color:#0A84FF}}
 .item-head .name{{font-size:12px}}
 .item-meta{{font-size:10px;color:#7A8290;line-height:1.4}}
-.exec-tag{{font-size:8px;font-family:'JetBrains Mono',monospace;margin-left:6px}}
+.exec-tag{{font-size:8px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;margin-left:6px}}
 .done-tag{{color:#30D158}}
 .override-tag{{color:#FF3B30}}
-.exec-btn-placeholder{{font-size:9px;font-weight:700;padding:3px 8px;border:1px solid #30D158;border-radius:3px;color:#30D158;cursor:pointer;font-family:'JetBrains Mono',monospace;background:rgba(48,209,88,.08);transition:all .15s}}
+.exec-btn-placeholder{{font-size:9px;font-weight:700;padding:3px 8px;border:1px solid #30D158;border-radius:3px;color:#30D158;cursor:pointer;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;background:rgba(48,209,88,.08);transition:all .15s}}
 .exec-btn-placeholder:active{{background:rgba(48,209,88,.2)}}
 .conn-dot{{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;vertical-align:middle}}
 .conn-on{{background:#30D158}}.conn-off{{background:#FF3B30}}
-.override-link{{font-size:9px;color:#485268;cursor:pointer;padding:2px 6px;border:1px solid transparent;font-family:'JetBrains Mono',monospace;flex-shrink:0;border-radius:2px}}
+.override-link{{font-size:9px;color:#485268;cursor:pointer;padding:2px 6px;border:1px solid transparent;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;flex-shrink:0;border-radius:2px}}
 .override-link:hover{{color:#FF3B30;border-color:rgba(255,59,48,.3)}}
 
 .buy-item{{padding:10px 8px;border-bottom:1px solid rgba(28,37,50,.3);background:#0D1117;border-radius:4px;margin-bottom:4px}}
 .buy-item .bw-top{{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:4px}}
-.buy-item .code{{font-family:'JetBrains Mono',monospace;font-weight:700;color:#E8ECF2}}
-.buy-item .eta{{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#FF9F0A}}
+.buy-item .code{{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-weight:700;color:#E8ECF2}}
+.buy-item .eta{{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:10px;font-weight:700;color:#FF9F0A}}
 .buy-item .trigger{{font-size:10px;color:#7A8290;line-height:1.5}}
 
 .stats-row{{display:flex;gap:8px;margin-bottom:12px}}
 .stat-card{{flex:1;text-align:center;padding:14px 8px;background:#0D1117;border:1px solid #1C2532;border-radius:4px}}
-.stat-card .v{{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700}}
-.stat-card .l{{font-size:9px;color:#7A8290;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;font-family:'JetBrains Mono',monospace}}
-.section-title{{font-size:10px;font-weight:700;color:#7A8290;text-transform:uppercase;letter-spacing:1px;font-family:'JetBrains Mono',monospace;margin-bottom:8px}}
-.log-line{{font-size:9px;color:#7A8290;padding:2px 0;font-family:'JetBrains Mono',monospace;border-bottom:1px solid rgba(28,37,50,.2)}}
+.stat-card .v{{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:26px;font-weight:700}}
+.stat-card .l{{font-size:9px;color:#7A8290;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}}
+.section-title{{font-size:10px;font-weight:700;color:#7A8290;text-transform:uppercase;letter-spacing:1px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;margin-bottom:8px}}
+.log-line{{font-size:9px;color:#7A8290;padding:2px 0;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;border-bottom:1px solid rgba(28,37,50,.2)}}
 .log-time{{color:#485268;margin-right:4px}}
 
 .float-lock{{position:fixed;bottom:20px;left:16px;right:16px;z-index:100}}
-.lock-btn{{position:relative;display:block;width:100%;padding:16px;font-size:15px;font-weight:700;cursor:pointer;border:2px solid #FF9F0A;background:rgba(5,8,12,.96);color:#FF9F0A;letter-spacing:2px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;border-radius:6px;text-align:center;backdrop-filter:blur(12px);box-shadow:0 0 40px rgba(255,159,10,.08);overflow:hidden}}
+.lock-btn{{position:relative;display:block;width:100%;padding:16px;font-size:15px;font-weight:700;cursor:pointer;border:2px solid #FF9F0A;background:rgba(5,8,12,.96);color:#FF9F0A;letter-spacing:2px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;text-transform:uppercase;border-radius:6px;text-align:center;backdrop-filter:blur(12px);box-shadow:0 0 40px rgba(255,159,10,.08);overflow:hidden}}
 .lock-btn:active{{transform:scale(.96)}}
 .lock-btn .progress{{position:absolute;bottom:0;left:0;height:4px;background:rgba(255,159,10,.8);width:0%}}
 .lock-btn .sub{{font-size:9px;opacity:.5;display:block;margin-top:4px;letter-spacing:1px;font-weight:400;position:relative;z-index:1}}
@@ -207,30 +275,30 @@ body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;col
 @keyframes lock-pulse{{0%,100%{{box-shadow:0 0 24px rgba(255,159,10,.06)}}50%{{box-shadow:0 0 48px rgba(255,159,10,.15)}}}}
 .lock-btn:not(.locked){{animation:lock-pulse 3s ease-in-out infinite}}
 
-.toast{{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#FF9F0A;color:#05080C;padding:10px 24px;border-radius:20px;font-weight:700;font-family:'JetBrains Mono',monospace;font-size:13px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none}}
+.toast{{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#FF9F0A;color:#05080C;padding:10px 24px;border-radius:20px;font-weight:700;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:13px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none}}
 .toast.show{{opacity:1}}
-.install-banner{{display:none;align-items:center;justify-content:space-between;padding:10px 16px;margin:0 16px 8px;background:#0D1117;border:1px solid #FF9F0A;border-radius:6px;font-size:12px;color:#FF9F0A;font-family:'JetBrains Mono',monospace}}
+.install-banner{{display:none;align-items:center;justify-content:space-between;padding:10px 16px;margin:0 16px 8px;background:#0D1117;border:1px solid #FF9F0A;border-radius:6px;font-size:12px;color:#FF9F0A;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}}
 
 /* Override modal */
 .modal-overlay{{position:fixed;inset:0;background:rgba(5,8,12,.95);z-index:150;display:none;align-items:center;justify-content:center}}
 .modal-overlay.active{{display:flex}}
 .modal{{background:#0D1117;border:1px solid #1C2532;padding:20px;margin:16px;border-radius:6px;max-width:340px}}
-.modal h3{{font-size:14px;font-weight:700;color:#FF3B30;font-family:'JetBrains Mono',monospace;margin-bottom:8px}}
+.modal h3{{font-size:14px;font-weight:700;color:#FF3B30;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;margin-bottom:8px}}
 .modal .tags{{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}}
-.modal .tag{{padding:6px 14px;border-radius:14px;font-size:11px;cursor:pointer;border:1px solid #1C2532;background:#05080C;color:#7A8290;font-family:'JetBrains Mono',monospace;transition:.15s}}
+.modal .tag{{padding:6px 14px;border-radius:14px;font-size:11px;cursor:pointer;border:1px solid #1C2532;background:#05080C;color:#7A8290;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;transition:.15s}}
 .modal .tag.selected{{border-color:#FF3B30;background:rgba(255,59,48,.1);color:#FF3B30}}
 .modal .btn-row{{display:flex;gap:8px;margin-top:12px}}
-.modal .btn-confirm{{flex:1;padding:12px;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;border:none;background:#FF3B30;color:#fff;opacity:.3;pointer-events:none;font-family:'JetBrains Mono',monospace}}
+.modal .btn-confirm{{flex:1;padding:12px;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;border:none;background:#FF3B30;color:#fff;opacity:.3;pointer-events:none;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}}
 .modal .btn-confirm.ready{{opacity:1;pointer-events:auto}}
-.modal .btn-cancel{{flex:1;padding:12px;border-radius:4px;font-size:12px;cursor:pointer;border:1px solid #1C2532;background:transparent;color:#7A8290;font-family:'JetBrains Mono',monospace}}
+.modal .btn-cancel{{flex:1;padding:12px;border-radius:4px;font-size:12px;cursor:pointer;border:1px solid #1C2532;background:transparent;color:#7A8290;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}}
 </style></head>
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
-    <div><div class="date">{plan["date"]} · MONDAY</div><div class="countdown" id="countdown">距离开盘 {countdown_text}</div></div>
+    <div><div class="date">{plan["date"]} · {weekday}</div><div class="countdown" id="countdown">距离开盘 {countdown_text}</div></div>
     <div class="state-badge {state_cls}" id="stateBadge">{state_label}</div>
 </div>
 
-<div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'JetBrains Mono',monospace"></div>
+<div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace"></div>
 <div style="text-align:center;padding:4px;font-size:8px;font-family:monospace"><span id=\"verTag\" style=\"color:#485268\">v?</span> · <a href=\"javascript:navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));caches.keys().then(k=>k.forEach(x=>caches.delete(x)));location.reload();\" style=\"color:#FF3B30;text-decoration:none\">硬核重置</a></div>
 {offline_note}
 {q_html}
@@ -288,15 +356,16 @@ body{{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;col
     </div>
 </div>
 
-<div class="toast" id="quarantineToast" style="position:fixed;inset:0;background:rgba(5,8,12,.98);z-index:250;display:none;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace">
+<div class="toast" id="quarantineToast" style="position:fixed;inset:0;background:rgba(5,8,12,.98);z-index:250;display:none;flex-direction:column;align-items:center;justify-content:center;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace">
     <div style="font-size:18px;color:#FF3B30;font-weight:700;letter-spacing:3px;margin-bottom:8px">QUARANTINE</div>
     <div style="font-size:48px;font-weight:700;color:#FF3B30" id="qCountdown">02:00:00</div>
     <div style="font-size:10px;color:rgba(255,59,48,.3);margin:8px 0 24px;letter-spacing:2px">计划外操作已冻结</div>
-    <button onclick="closeQuarantine()" style="background:none;border:1px solid #485268;color:#7A8290;padding:8px 24px;border-radius:4px;font-size:12px;font-family:'JetBrains Mono',monospace">关闭</button>
+    <button onclick="closeQuarantine()" style="background:none;border:1px solid #485268;color:#7A8290;padding:8px 24px;border-radius:4px;font-size:12px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace">关闭</button>
 </div>
 
 <script>
 var API = '{api or ""}';
+var API_CANDIDATES = {json.dumps(data.get('api_candidates', []))};
 var locked = {str(plan_locked).lower()};
 var overrideItemId = null, selectedTag = '';
 var qTimer = null, isOnline = false;
@@ -308,10 +377,41 @@ function saveState() {{ localStorage.setItem('commit_state', JSON.stringify(loca
 function isExecuted(id) {{ return localState.executed.indexOf(id) !== -1; }}
 function isOverridden(id) {{ return localState.overridden.indexOf(id) !== -1; }}
 
+async function tryApi(url) {{
+    try {{ var r = await fetch(url + '/api/state'); if (r.ok) return url; }} catch(e) {{}}
+    return null;
+}}
+async function discoverApi() {{
+    // Try current API first if set
+    if (API) {{ var ok = await tryApi(API); if (ok) return true; }}
+    // Try last known good API
+    var lastApi = localStorage.getItem('last_api');
+    if (lastApi) {{ var ok = await tryApi(lastApi); if (ok) {{ API = ok; return true; }} }}
+    // Try all candidates
+    for (var i = 0; i < API_CANDIDATES.length; i++) {{
+        var ok = await tryApi(API_CANDIDATES[i]);
+        if (ok) {{ API = ok; localStorage.setItem('last_api', API); return true; }}
+    }}
+    return false;
+}}
 async function checkConn() {{
-    if (!API) {{ isOnline = false; return; }}
-    try {{ var r = await fetch(API + '/api/state', {{method:'GET'}}); isOnline = r.ok; }} catch(e) {{ isOnline = false; }}
     var el = document.getElementById('connStatus');
+    if (!API) {{
+        var found = await discoverApi();
+        if (found) {{
+            if (el) el.innerHTML = '<span class="conn-dot conn-on"></span>已连接';
+            syncToServer();
+        }} else {{
+            isOnline = false;
+            if (el) el.innerHTML = '<span class="conn-dot conn-off"></span>离线 · 缓存数据';
+        }}
+        return;
+    }}
+    try {{ var r = await fetch(API + '/api/state', {{method:'GET'}}); isOnline = r.ok; }} catch(e) {{ isOnline = false; }}
+    if (!isOnline) {{
+        var found = await discoverApi();
+        if (found) isOnline = true;
+    }}
     if (el) el.innerHTML = isOnline ? '<span class="conn-dot conn-on"></span>已连接' : '<span class="conn-dot conn-off"></span>离线模式';
     if (isOnline) syncToServer();
 }}
@@ -462,18 +562,18 @@ var deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', function(e){{
     e.preventDefault(); deferredPrompt = e;
     var b = document.createElement('div');
-    b.className = 'install-banner'; b.style.display = 'flex'; b.innerHTML = '<span>📱 安装到桌面</span><button onclick=\"installApp()\" style=\"background:#FF9F0A;color:#05080C;border:none;padding:6px 14px;border-radius:4px;font-weight:700;font-family:JetBrains Mono,monospace;cursor:pointer\">安装</button>';
+    b.className = 'install-banner'; b.style.display = 'flex'; b.innerHTML = '<span>📱 安装到桌面</span><button onclick=\"installApp()\" style=\"background:#FF9F0A;color:#05080C;border:none;padding:6px 14px;border-radius:4px;font-weight:700;font-family:Consolas,monospace;cursor:pointer\">安装</button>';
     document.body.insertBefore(b, document.body.firstChild);
 }});
 function installApp() {{
     if (deferredPrompt){{ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(r){{ }}); }}
 }}
 
-if ('serviceWorker' in navigator) {{ navigator.serviceWorker.register('./sw.js?t=10'); }}
-document.getElementById('verTag').textContent = 'v10';
+if ('serviceWorker' in navigator) {{ navigator.serviceWorker.register('./sw.js?t=11'); }}
+document.getElementById('verTag').textContent = 'v11';
 // Load quarantine state
 (function() {{
-    if (apiCall) {{
+    if (API) {{
         apiCall('/api/quarantine', 'GET').then(function(q) {{
             if (q && q.active) startQCountdown(q.expires_at);
         }});

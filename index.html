@@ -9,24 +9,23 @@
 <meta name="apple-mobile-web-app-title" content="Commit">
 <meta name="theme-color" content="#080B0F">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden}
 .header{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 16px 10px;background:rgba(5,8,12,.94);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10;border-bottom:1px solid #1C2532}
-.header .date{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700}
-.header .countdown{font-family:'JetBrains Mono',monospace;font-size:10px;color:#FF9F0A}
-.state-badge{padding:3px 10px;font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:1.5px;border-radius:2px}
+.header .date{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:15px;font-weight:700}
+.header .countdown{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:10px;color:#FF9F0A}
+.state-badge{padding:3px 10px;font-size:9px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-weight:700;letter-spacing:1.5px;border-radius:2px}
 .state-prep{background:rgba(110,118,136,.12);color:#7A8290;border:1px solid #1C2532}
 .state-locked{background:rgba(255,159,10,.1);color:#FF9F0A;border:1px solid rgba(255,159,10,.2)}
 .quarantine-banner{margin:8px 16px;padding:14px;background:rgba(255,59,48,.06);border:1px solid rgba(255,59,48,.2);border-radius:4px;text-align:center}
-.q-title{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:#FF3B30;letter-spacing:2px;margin-bottom:4px}
-.q-detail{font-size:11px;color:rgba(255,59,48,.6);margin-bottom:6px;font-family:'JetBrains Mono',monospace}
+.q-title{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:14px;font-weight:700;color:#FF3B30;letter-spacing:2px;margin-bottom:4px}
+.q-detail{font-size:11px;color:rgba(255,59,48,.6);margin-bottom:6px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}
 .q-info{font-size:10px;color:rgba(255,59,48,.3)}
-.lock-banner{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px;margin:8px 16px;background:rgba(255,159,10,.06);border:1px solid rgba(255,159,10,.15);border-radius:4px;font-size:11px;font-family:'JetBrains Mono',monospace;color:#FF9F0A;letter-spacing:1px}
+.lock-banner{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px;margin:8px 16px;background:rgba(255,159,10,.06);border:1px solid rgba(255,159,10,.15);border-radius:4px;font-size:11px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;color:#FF9F0A;letter-spacing:1px}
 .tab-bar{display:flex;margin:8px 16px;background:#0D1117;border-radius:6px;padding:3px;border:1px solid #1C2532}
 .tab-radio{display:none}
 .tab-radio:checked+.tab-label{background:#141B24;color:#E8ECF2}
-.tab-label{flex:1;text-align:center;padding:8px;font-size:11px;font-weight:600;color:#7A8290;cursor:pointer;border-radius:4px;transition:.15s;font-family:'JetBrains Mono',monospace;letter-spacing:.5px;display:block}
+.tab-label{flex:1;text-align:center;padding:8px;font-size:11px;font-weight:600;color:#7A8290;cursor:pointer;border-radius:4px;transition:.15s;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;letter-spacing:.5px;display:block}
 .tab-panel{display:none;padding:0 16px}
 #tr0:checked~#tp0{display:block}
 #tr1:checked~#tp1{display:block}
@@ -42,42 +41,42 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
 .item.overridden{opacity:.55;background:rgba(255,59,48,.02)}
 .item.critical{border-left:3px solid #FF3B30;padding-left:6px}
 .item-left{flex-shrink:0;min-width:40px}
-.badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:2px;font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+.badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:2px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;letter-spacing:.5px}
 .badge-sell{background:rgba(255,59,48,.15);color:#FF3B30}
 .badge-reduce{background:rgba(255,159,10,.12);color:#FF9F0A}
 .badge-hold{background:rgba(48,209,88,.1);color:#30D158}
 .badge-buy{background:rgba(10,132,255,.12);color:#0A84FF}
 .item-main{flex:1;min-width:0}
 .item-head{font-size:12px;font-weight:500;margin-bottom:2px}
-.item-head .code{font-family:'JetBrains Mono',monospace;font-size:11px;color:#0A84FF}
+.item-head .code{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:11px;color:#0A84FF}
 .item-head .name{font-size:12px}
 .item-meta{font-size:10px;color:#7A8290;line-height:1.4}
-.exec-tag{font-size:8px;font-family:'JetBrains Mono',monospace;margin-left:6px}
+.exec-tag{font-size:8px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;margin-left:6px}
 .done-tag{color:#30D158}
 .override-tag{color:#FF3B30}
-.exec-btn-placeholder{font-size:9px;font-weight:700;padding:3px 8px;border:1px solid #30D158;border-radius:3px;color:#30D158;cursor:pointer;font-family:'JetBrains Mono',monospace;background:rgba(48,209,88,.08);transition:all .15s}
+.exec-btn-placeholder{font-size:9px;font-weight:700;padding:3px 8px;border:1px solid #30D158;border-radius:3px;color:#30D158;cursor:pointer;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;background:rgba(48,209,88,.08);transition:all .15s}
 .exec-btn-placeholder:active{background:rgba(48,209,88,.2)}
 .conn-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;vertical-align:middle}
 .conn-on{background:#30D158}.conn-off{background:#FF3B30}
-.override-link{font-size:9px;color:#485268;cursor:pointer;padding:2px 6px;border:1px solid transparent;font-family:'JetBrains Mono',monospace;flex-shrink:0;border-radius:2px}
+.override-link{font-size:9px;color:#485268;cursor:pointer;padding:2px 6px;border:1px solid transparent;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;flex-shrink:0;border-radius:2px}
 .override-link:hover{color:#FF3B30;border-color:rgba(255,59,48,.3)}
 
 .buy-item{padding:10px 8px;border-bottom:1px solid rgba(28,37,50,.3);background:#0D1117;border-radius:4px;margin-bottom:4px}
 .buy-item .bw-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:4px}
-.buy-item .code{font-family:'JetBrains Mono',monospace;font-weight:700;color:#E8ECF2}
-.buy-item .eta{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#FF9F0A}
+.buy-item .code{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-weight:700;color:#E8ECF2}
+.buy-item .eta{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:10px;font-weight:700;color:#FF9F0A}
 .buy-item .trigger{font-size:10px;color:#7A8290;line-height:1.5}
 
 .stats-row{display:flex;gap:8px;margin-bottom:12px}
 .stat-card{flex:1;text-align:center;padding:14px 8px;background:#0D1117;border:1px solid #1C2532;border-radius:4px}
-.stat-card .v{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700}
-.stat-card .l{font-size:9px;color:#7A8290;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;font-family:'JetBrains Mono',monospace}
-.section-title{font-size:10px;font-weight:700;color:#7A8290;text-transform:uppercase;letter-spacing:1px;font-family:'JetBrains Mono',monospace;margin-bottom:8px}
-.log-line{font-size:9px;color:#7A8290;padding:2px 0;font-family:'JetBrains Mono',monospace;border-bottom:1px solid rgba(28,37,50,.2)}
+.stat-card .v{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:26px;font-weight:700}
+.stat-card .l{font-size:9px;color:#7A8290;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}
+.section-title{font-size:10px;font-weight:700;color:#7A8290;text-transform:uppercase;letter-spacing:1px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;margin-bottom:8px}
+.log-line{font-size:9px;color:#7A8290;padding:2px 0;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;border-bottom:1px solid rgba(28,37,50,.2)}
 .log-time{color:#485268;margin-right:4px}
 
 .float-lock{position:fixed;bottom:20px;left:16px;right:16px;z-index:100}
-.lock-btn{position:relative;display:block;width:100%;padding:16px;font-size:15px;font-weight:700;cursor:pointer;border:2px solid #FF9F0A;background:rgba(5,8,12,.96);color:#FF9F0A;letter-spacing:2px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;border-radius:6px;text-align:center;backdrop-filter:blur(12px);box-shadow:0 0 40px rgba(255,159,10,.08);overflow:hidden}
+.lock-btn{position:relative;display:block;width:100%;padding:16px;font-size:15px;font-weight:700;cursor:pointer;border:2px solid #FF9F0A;background:rgba(5,8,12,.96);color:#FF9F0A;letter-spacing:2px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;text-transform:uppercase;border-radius:6px;text-align:center;backdrop-filter:blur(12px);box-shadow:0 0 40px rgba(255,159,10,.08);overflow:hidden}
 .lock-btn:active{transform:scale(.96)}
 .lock-btn .progress{position:absolute;bottom:0;left:0;height:4px;background:rgba(255,159,10,.8);width:0%}
 .lock-btn .sub{font-size:9px;opacity:.5;display:block;margin-top:4px;letter-spacing:1px;font-weight:400;position:relative;z-index:1}
@@ -85,22 +84,22 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
 @keyframes lock-pulse{0%,100%{box-shadow:0 0 24px rgba(255,159,10,.06)}50%{box-shadow:0 0 48px rgba(255,159,10,.15)}}
 .lock-btn:not(.locked){animation:lock-pulse 3s ease-in-out infinite}
 
-.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#FF9F0A;color:#05080C;padding:10px 24px;border-radius:20px;font-weight:700;font-family:'JetBrains Mono',monospace;font-size:13px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#FF9F0A;color:#05080C;padding:10px 24px;border-radius:20px;font-weight:700;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:13px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none}
 .toast.show{opacity:1}
-.install-banner{display:none;align-items:center;justify-content:space-between;padding:10px 16px;margin:0 16px 8px;background:#0D1117;border:1px solid #FF9F0A;border-radius:6px;font-size:12px;color:#FF9F0A;font-family:'JetBrains Mono',monospace}
+.install-banner{display:none;align-items:center;justify-content:space-between;padding:10px 16px;margin:0 16px 8px;background:#0D1117;border:1px solid #FF9F0A;border-radius:6px;font-size:12px;color:#FF9F0A;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}
 
 /* Override modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(5,8,12,.95);z-index:150;display:none;align-items:center;justify-content:center}
 .modal-overlay.active{display:flex}
 .modal{background:#0D1117;border:1px solid #1C2532;padding:20px;margin:16px;border-radius:6px;max-width:340px}
-.modal h3{font-size:14px;font-weight:700;color:#FF3B30;font-family:'JetBrains Mono',monospace;margin-bottom:8px}
+.modal h3{font-size:14px;font-weight:700;color:#FF3B30;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;margin-bottom:8px}
 .modal .tags{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
-.modal .tag{padding:6px 14px;border-radius:14px;font-size:11px;cursor:pointer;border:1px solid #1C2532;background:#05080C;color:#7A8290;font-family:'JetBrains Mono',monospace;transition:.15s}
+.modal .tag{padding:6px 14px;border-radius:14px;font-size:11px;cursor:pointer;border:1px solid #1C2532;background:#05080C;color:#7A8290;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;transition:.15s}
 .modal .tag.selected{border-color:#FF3B30;background:rgba(255,59,48,.1);color:#FF3B30}
 .modal .btn-row{display:flex;gap:8px;margin-top:12px}
-.modal .btn-confirm{flex:1;padding:12px;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;border:none;background:#FF3B30;color:#fff;opacity:.3;pointer-events:none;font-family:'JetBrains Mono',monospace}
+.modal .btn-confirm{flex:1;padding:12px;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;border:none;background:#FF3B30;color:#fff;opacity:.3;pointer-events:none;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}
 .modal .btn-confirm.ready{opacity:1;pointer-events:auto}
-.modal .btn-cancel{flex:1;padding:12px;border-radius:4px;font-size:12px;cursor:pointer;border:1px solid #1C2532;background:transparent;color:#7A8290;font-family:'JetBrains Mono',monospace}
+.modal .btn-cancel{flex:1;padding:12px;border-radius:4px;font-size:12px;cursor:pointer;border:1px solid #1C2532;background:transparent;color:#7A8290;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}
 </style></head>
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
@@ -108,7 +107,7 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
     <div class="state-badge state-locked" id="stateBadge">LOCKED 🔒</div>
 </div>
 
-<div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'JetBrains Mono',monospace"></div>
+<div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace"></div>
 <div style="text-align:center;padding:4px;font-size:8px;font-family:monospace"><span id="verTag" style="color:#485268">v?</span> · <a href="javascript:navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));caches.keys().then(k=>k.forEach(x=>caches.delete(x)));location.reload();" style="color:#FF3B30;text-decoration:none">硬核重置</a></div>
 
 <div class="quarantine-banner">
@@ -265,11 +264,11 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#05080C;colo
     </div>
 </div>
 
-<div class="toast" id="quarantineToast" style="position:fixed;inset:0;background:rgba(5,8,12,.98);z-index:250;display:none;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace">
+<div class="toast" id="quarantineToast" style="position:fixed;inset:0;background:rgba(5,8,12,.98);z-index:250;display:none;flex-direction:column;align-items:center;justify-content:center;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace">
     <div style="font-size:18px;color:#FF3B30;font-weight:700;letter-spacing:3px;margin-bottom:8px">QUARANTINE</div>
     <div style="font-size:48px;font-weight:700;color:#FF3B30" id="qCountdown">02:00:00</div>
     <div style="font-size:10px;color:rgba(255,59,48,.3);margin:8px 0 24px;letter-spacing:2px">计划外操作已冻结</div>
-    <button onclick="closeQuarantine()" style="background:none;border:1px solid #485268;color:#7A8290;padding:8px 24px;border-radius:4px;font-size:12px;font-family:'JetBrains Mono',monospace">关闭</button>
+    <button onclick="closeQuarantine()" style="background:none;border:1px solid #485268;color:#7A8290;padding:8px 24px;border-radius:4px;font-size:12px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace">关闭</button>
 </div>
 
 <script>
@@ -471,7 +470,7 @@ var deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', function(e){
     e.preventDefault(); deferredPrompt = e;
     var b = document.createElement('div');
-    b.className = 'install-banner'; b.style.display = 'flex'; b.innerHTML = '<span>📱 安装到桌面</span><button onclick="installApp()" style="background:#FF9F0A;color:#05080C;border:none;padding:6px 14px;border-radius:4px;font-weight:700;font-family:JetBrains Mono,monospace;cursor:pointer">安装</button>';
+    b.className = 'install-banner'; b.style.display = 'flex'; b.innerHTML = '<span>📱 安装到桌面</span><button onclick="installApp()" style="background:#FF9F0A;color:#05080C;border:none;padding:6px 14px;border-radius:4px;font-weight:700;font-family:Consolas,monospace;cursor:pointer">安装</button>';
     document.body.insertBefore(b, document.body.firstChild);
 });
 function installApp() {
