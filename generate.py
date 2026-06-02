@@ -202,7 +202,7 @@ def build(data):
 <meta name="theme-color" content="#080B0F">
 <style>
 *{{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}}
-body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden}}
+body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden;background-image:url('./assets/bg.png');background-size:cover;background-attachment:fixed;background-position:center}}
 .header{{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 16px 10px;background:rgba(5,8,12,.94);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10;border-bottom:1px solid #1C2532}}
 .header .header-brand{{display:flex;align-items:center;gap:8px}}
 .header .header-logo{{width:28px;height:28px;border-radius:6px;object-fit:contain}}
@@ -305,7 +305,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHe
 <div style="text-align:center;padding:4px;font-size:8px;font-family:monospace"><span id=\"verTag\" style=\"color:#485268\">v?</span> · <a href=\"javascript:navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));caches.keys().then(k=>k.forEach(x=>caches.delete(x)));location.reload();\" style=\"color:#FF3B30;text-decoration:none\">硬核重置</a></div>
 {offline_note}
 {q_html}
-{'<div class="lock-banner">🔒 计划已封印 · 盘中只执行计划内操作</div>' if plan_locked else ''}
+{'<img src="./assets/banner.png" style="display:block;width:calc(100% - 32px);margin:8px 16px;border-radius:6px;opacity:.8">' if plan_locked else ''}
 
 <input type="radio" class="tab-radio" name="tab" id="tr0" checked>
 <input type="radio" class="tab-radio" name="tab" id="tr1">
@@ -316,8 +316,12 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHe
     <label class="tab-label" for="tr2">📊 状态</label>
 </div>
 
-<div class="tab-panel" id="tp0">{items_html}</div>
-<div class="tab-panel" id="tp1">{bw_html if bw else '<div style="color:#7A8290;font-size:12px;text-align:center;padding:30px;font-family:monospace">等待选股</div>'}</div>
+<div class="tab-panel" id="tp0">
+    {items_html if items_html else '<div style="text-align:center;padding:40px 20px"><img src="./assets/empty.png" style="width:120px;height:auto;opacity:.4;margin-bottom:12px"><div style="color:#7A8290;font-size:12px;font-family:monospace">暂无计划项</div></div>'}
+</div>
+<div class="tab-panel" id="tp1">
+    {bw_html if bw else '<div style="text-align:center;padding:40px 20px"><img src="./assets/empty.png" style="width:120px;height:auto;opacity:.4;margin-bottom:12px"><div style="color:#7A8290;font-size:12px;font-family:monospace">等待选股</div></div>'}
+</div>
 <div class="tab-panel" id="tp2">
     <div class="stats-row">
         <div class="stat-card"><div class="v" style="color:#30D158">{stats.get("streak",0)}</div><div class="l">连续遵守</div></div>

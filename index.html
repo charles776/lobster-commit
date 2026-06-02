@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#080B0F">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden;background-image:url('./assets/bg.png');background-size:cover;background-attachment:fixed;background-position:center}
 .header{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 16px 10px;background:rgba(5,8,12,.94);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10;border-bottom:1px solid #1C2532}
 .header .header-brand{display:flex;align-items:center;gap:8px}
 .header .header-logo{width:28px;height:28px;border-radius:6px;object-fit:contain}
@@ -106,7 +106,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </style></head>
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
-    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-03 · 周三</div><div class="countdown" id="countdown">距离开盘 6时12分</div></div></div></div>
+    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-03 · 周三</div><div class="countdown" id="countdown">距离开盘 6时4分</div></div></div></div>
     <div class="state-badge state-prep" id="stateBadge">PREP</div>
 </div>
 
@@ -125,8 +125,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
     <label class="tab-label" for="tr2">📊 状态</label>
 </div>
 
-<div class="tab-panel" id="tp0"></div>
-<div class="tab-panel" id="tp1"><div class="buy-item">
+<div class="tab-panel" id="tp0">
+    <div style="text-align:center;padding:40px 20px"><img src="./assets/empty.png" style="width:120px;height:auto;opacity:.4;margin-bottom:12px"><div style="color:#7A8290;font-size:12px;font-family:monospace">暂无计划项</div></div>
+</div>
+<div class="tab-panel" id="tp1">
+    <div class="buy-item">
             <div class="bw-top"><span class="code">600406</span> 国电南瑞<span class="eta">周一</span></div>
             <div class="trigger">RSI 55.9+520亿订单，现价可买</div>
         </div><div class="buy-item">
@@ -144,7 +147,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
         </div><div class="buy-item">
             <div class="bw-top"><span class="code">300308</span> 中际旭创<span class="eta">周三-周五</span></div>
             <div class="trigger">华工减仓后置换</div>
-        </div></div>
+        </div>
+</div>
 <div class="tab-panel" id="tp2">
     <div class="stats-row">
         <div class="stat-card"><div class="v" style="color:#30D158">0</div><div class="l">连续遵守</div></div>
