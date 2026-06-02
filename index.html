@@ -106,13 +106,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </style></head>
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
-    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-02 · 周二</div><div class="countdown" id="countdown">距离开盘 14时32分</div></div></div></div>
+    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-03 · 周三</div><div class="countdown" id="countdown">距离开盘 6时12分</div></div></div></div>
     <div class="state-badge state-prep" id="stateBadge">PREP</div>
 </div>
 
 <div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace"></div>
 <div style="text-align:center;padding:4px;font-size:8px;font-family:monospace"><span id="verTag" style="color:#485268">v?</span> · <a href="javascript:navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));caches.keys().then(k=>k.forEach(x=>caches.delete(x)));location.reload();" style="color:#FF3B30;text-decoration:none">硬核重置</a></div>
-<div style="background:rgba(255,59,48,.08);border:1px solid rgba(255,59,48,.2);color:#FF3B30;padding:8px 14px;margin:8px 16px;font-size:10px;font-family:monospace;text-align:center;border-radius:4px">⚠ 未连接到本地服务器 · 仅查看模式<br>请确保手机与电脑在同一WiFi</div>
+
 
 
 
@@ -126,12 +126,30 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 
 <div class="tab-panel" id="tp0"></div>
-<div class="tab-panel" id="tp1"><div style="color:#7A8290;font-size:12px;text-align:center;padding:30px;font-family:monospace">等待选股</div></div>
+<div class="tab-panel" id="tp1"><div class="buy-item">
+            <div class="bw-top"><span class="code">600406</span> 国电南瑞<span class="eta">周一</span></div>
+            <div class="trigger">RSI 55.9+520亿订单，现价可买</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">600487</span> 亨通光电<span class="eta">周一-周二</span></div>
+            <div class="trigger">回踩10日线≈72元</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">603986</span> 兆易创新<span class="eta">周二-周四</span></div>
+            <div class="trigger">KD金叉+站上5日线≈490元</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">600869</span> 远东股份<span class="eta">周二-周四</span></div>
+            <div class="trigger">回调10-15%，AI订单+2395%</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">002364</span> 中恒电气<span class="eta">周二-周五</span></div>
+            <div class="trigger">RSI回落至70以下或回调5%</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">300308</span> 中际旭创<span class="eta">周三-周五</span></div>
+            <div class="trigger">华工减仓后置换</div>
+        </div></div>
 <div class="tab-panel" id="tp2">
     <div class="stats-row">
         <div class="stat-card"><div class="v" style="color:#30D158">0</div><div class="l">连续遵守</div></div>
-        <div class="stat-card"><div class="v" style="color:#FF3B30">0</div><div class="l">本月覆盖</div></div>
-        <div class="stat-card"><div class="v" style="color:#0A84FF">0</div><div class="l">候选</div></div>
+        <div class="stat-card"><div class="v" style="color:#FF3B30">2</div><div class="l">本月覆盖</div></div>
+        <div class="stat-card"><div class="v" style="color:#0A84FF">6</div><div class="l">候选</div></div>
     </div>
     <div class="section-title">操作日志</div>
     
@@ -176,7 +194,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 
 <script>
-var API = '';
+var API = 'http://192.168.1.4:8766';
 var API_CANDIDATES = ["http://192.168.1.4:8766", "http://192.168.43.100:8766", "http://192.168.43.101:8766", "http://172.20.10.2:8766", "http://172.20.10.3:8766", "http://127.0.0.1:8766"];
 var locked = false;
 var overrideItemId = null, selectedTag = '';
