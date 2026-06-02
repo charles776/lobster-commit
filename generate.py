@@ -193,7 +193,8 @@ def build(data):
 <html lang="zh-CN">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
 <title>Lobster Commit</title>
-<link rel="apple-touch-icon" href="icons/icon-192x192.png">
+<link rel="icon" type="image/png" href="./assets/logo.png">
+<link rel="apple-touch-icon" href="./assets/logo.png">
 <link rel="manifest" href="./manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -203,6 +204,8 @@ def build(data):
 *{{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}}
 body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden}}
 .header{{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 16px 10px;background:rgba(5,8,12,.94);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10;border-bottom:1px solid #1C2532}}
+.header .header-brand{{display:flex;align-items:center;gap:8px}}
+.header .header-logo{{width:28px;height:28px;border-radius:6px;object-fit:contain}}
 .header .date{{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:15px;font-weight:700}}
 .header .countdown{{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:10px;color:#FF9F0A}}
 .state-badge{{padding:3px 10px;font-size:9px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-weight:700;letter-spacing:1.5px;border-radius:2px}}
@@ -294,7 +297,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHe
 </style></head>
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
-    <div><div class="date">{plan["date"]} · {weekday}</div><div class="countdown" id="countdown">距离开盘 {countdown_text}</div></div>
+    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">{plan["date"]} · {weekday}</div><div class="countdown" id="countdown">距离开盘 {countdown_text}</div></div></div></div>
     <div class="state-badge {state_cls}" id="stateBadge">{state_label}</div>
 </div>
 
