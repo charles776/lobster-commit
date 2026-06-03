@@ -106,19 +106,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </style></head>
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
-    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-03 · 周三</div><div class="countdown" id="countdown">距离开盘 9时29分</div></div></div></div>
-    <div class="state-badge state-prep" id="stateBadge">PREP</div>
+    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-04 · 周四</div><div class="countdown" id="countdown">距离开盘 8时52分</div></div></div></div>
+    <div class="state-badge state-locked" id="stateBadge">LOCKED 🔒</div>
 </div>
 
 <div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace"></div>
 <div style="text-align:center;padding:4px;font-size:8px;font-family:monospace"><span id="verTag" style="color:#485268">v?</span> · <a href="javascript:navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));caches.keys().then(k=>k.forEach(x=>caches.delete(x)));location.reload();" style="color:#FF3B30;text-decoration:none">硬核重置</a></div>
 
-<div class="quarantine-banner">
-            <div class="q-title">⚠ QUARANTINE ACTIVE</div>
-            <div class="q-detail">恐慌 · 至 2026-06-03 05:04:08</div>
-            <div class="q-info">计划外操作已冻结</div>
-        </div>
 
+<img src="./assets/banner.png" style="display:block;width:calc(100% - 32px);margin:8px 16px;border-radius:6px;opacity:.8">
 
 <input type="radio" class="tab-radio" name="tab" id="tr0" checked>
 <input type="radio" class="tab-radio" name="tab" id="tr1">
@@ -130,48 +126,55 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 
 <div class="tab-panel" id="tp0">
-    <div class="item reduce critical" data-id="334">
-            <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
+    <div class="item hold critical" data-id="346">
+            <div class="item-left"><span class="badge badge-hold">减2000-3000股（集合竞价1000+盘中1000-2000）</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(334)">执行</span></div>
-                <div class="item-meta">四方会谈共识</div>
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(346)">执行</span></div>
+                <div class="item-meta">67.51%集中度+ATR止损亏损42,460元突破组合2%限额+三方共识P0</div>
             </div>
-            <span class="override-link" onclick="openOverride(334,'000988','华工科技')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="335">
-            <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
+            <span class="override-link" onclick="openOverride(346,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="347">
+            <div class="item-left"><span class="badge badge-hold">清仓2000股@≈19.00</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" onclick="execItem(335)">执行</span></div>
-                <div class="item-meta">四方会谈共识</div>
+                <div class="item-head"><span class="code">002935</span> <span class="name">天奥电子</span> <span class="exec-btn-placeholder" onclick="execItem(347)">执行</span></div>
+                <div class="item-meta">RSI=12弱势钝化+量比0.6流动性枯竭+趋势0+三方全票清仓(3:0)</div>
             </div>
-            <span class="override-link" onclick="openOverride(335,'603019','中科曙光')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="336">
-            <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
+            <span class="override-link" onclick="openOverride(347,'002935','天奥电子')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="348">
+            <div class="item-left"><span class="badge badge-hold">减1000股@86-87</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">003031</span> <span class="name">中瓷电子</span> <span class="exec-btn-placeholder" onclick="execItem(336)">执行</span></div>
-                <div class="item-meta">四方会谈共识</div>
+                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" onclick="execItem(348)">执行</span></div>
+                <div class="item-meta">RSI=14极度超卖+趋势0+Kimi+DeepSeek共识减仓(2:1)</div>
             </div>
-            <span class="override-link" onclick="openOverride(336,'003031','中瓷电子')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="337">
-            <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
+            <span class="override-link" onclick="openOverride(348,'603019','中科曙光')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="349">
+            <div class="item-left"><span class="badge badge-hold">若反弹155+再减1000股</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002935</span> <span class="name">天奥电子</span> <span class="exec-btn-placeholder" onclick="execItem(337)">执行</span></div>
-                <div class="item-meta">四方会谈共识</div>
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技(后续)</span> <span class="exec-btn-placeholder" onclick="execItem(349)">执行</span></div>
+                <div class="item-meta">若盘中反弹，加码减仓，目标集中度降至30%以下</div>
             </div>
-            <span class="override-link" onclick="openOverride(337,'002935','天奥电子')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="338">
-            <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
+            <span class="override-link" onclick="openOverride(349,'000988','华工科技(后续)')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="350">
+            <div class="item-left"><span class="badge badge-hold">持有/止损138</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> <span class="exec-btn-placeholder" onclick="execItem(338)">执行</span></div>
-                <div class="item-meta">四方会谈共识</div>
+                <div class="item-head"><span class="code">003031</span> <span class="name">中瓷电子</span> <span class="exec-btn-placeholder" onclick="execItem(350)">执行</span></div>
+                <div class="item-meta">趋势1 RSI40中性，三方共识持有(Kimi+DeepSeek+Qwen 3:0)</div>
             </div>
-            <span class="override-link" onclick="openOverride(338,'600183','生益科技')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="339">
-            <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
+            <span class="override-link" onclick="openOverride(350,'003031','中瓷电子')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="351">
+            <div class="item-left"><span class="badge badge-hold">持有/止盈230+</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002281</span> <span class="name">光迅科技</span> <span class="exec-btn-placeholder" onclick="execItem(339)">执行</span></div>
-                <div class="item-meta">四方会谈共识</div>
+                <div class="item-head"><span class="code">002281</span> <span class="name">光迅科技</span> <span class="exec-btn-placeholder" onclick="execItem(351)">执行</span></div>
+                <div class="item-meta">趋势3唯一上升趋势股+RSI68+盈利10.35%，顺势持仓</div>
             </div>
-            <span class="override-link" onclick="openOverride(339,'002281','光迅科技')" title="覆盖">✎</span>
+            <span class="override-link" onclick="openOverride(351,'002281','光迅科技')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="352">
+            <div class="item-left"><span class="badge badge-hold">持有/止损130</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> <span class="exec-btn-placeholder" onclick="execItem(352)">执行</span></div>
+                <div class="item-meta">仅100股(1.12%)+盈利12.58%+三方共识持有</div>
+            </div>
+            <span class="override-link" onclick="openOverride(352,'600183','生益科技')" title="覆盖">✎</span>
         </div>
 </div>
 <div class="tab-panel" id="tp1">
@@ -197,7 +200,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 <div class="tab-panel" id="tp2">
     <div class="stats-row">
-        <div class="stat-card"><div class="v" style="color:#30D158">0</div><div class="l">连续遵守</div></div>
+        <div class="stat-card"><div class="v" style="color:#30D158">1</div><div class="l">连续遵守</div></div>
         <div class="stat-card"><div class="v" style="color:#FF3B30">3</div><div class="l">本月覆盖</div></div>
         <div class="stat-card"><div class="v" style="color:#0A84FF">6</div><div class="l">候选</div></div>
     </div>
@@ -206,11 +209,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 
 <div class="float-lock">
-    <div class="lock-btn " id="lockBtn"
+    <div class="lock-btn locked" id="lockBtn"
          ontouchstart="startHold()" ontouchend="cancelHold()" ontouchmove="cancelHold()"
          onmousedown="startHold()" onmouseup="cancelHold()" onmouseleave="cancelHold()">
-        <span style="position:relative;z-index:1">🔓 封印计划</span>
-        <div class="sub" style="position:relative;z-index:1">按住3秒封印</div>
+        <span style="position:relative;z-index:1">🔒 已封印</span>
+        <div class="sub" style="position:relative;z-index:1">盘中照此执行</div>
         <div class="progress" id="lockProgress"></div>
     </div>
 </div>
@@ -246,7 +249,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 <script>
 var API = 'http://192.168.1.4:8766';
 var API_CANDIDATES = ["http://192.168.1.4:8766", "http://192.168.43.100:8766", "http://192.168.43.101:8766", "http://172.20.10.2:8766", "http://172.20.10.3:8766", "http://127.0.0.1:8766"];
-var locked = false;
+var locked = true;
 var overrideItemId = null, selectedTag = '';
 var qTimer = null, isOnline = false;
 var localState = {};
