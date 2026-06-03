@@ -106,7 +106,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </style></head>
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
-    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-03 · 周三</div><div class="countdown" id="countdown">距离开盘 5时35分</div></div></div></div>
+    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-03 · 周三</div><div class="countdown" id="countdown">距离开盘 9时33分</div></div></div></div>
     <div class="state-badge state-prep" id="stateBadge">PREP</div>
 </div>
 
@@ -130,62 +130,41 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 
 <div class="tab-panel" id="tp0">
-    <div class="item reduce critical" data-id="296">
+    <div class="item sell critical" data-id="322">
+            <div class="item-left"><span class="badge badge-sell">清仓</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(322)">执行</span></div>
+                <div class="item-meta">P0: 占比67%集中度风险+TREND_DOWN破位, 市价清仓5500股</div>
+            </div>
+            <span class="override-link" onclick="openOverride(322,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item sell critical" data-id="323">
+            <div class="item-left"><span class="badge badge-sell">清仓</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002475</span> <span class="name">立讯精密</span> <span class="exec-btn-placeholder" onclick="execItem(323)">执行</span></div>
+                <div class="item-meta">P0: 逆势新建仓违反铁律, 市价清仓1200股</div>
+            </div>
+            <span class="override-link" onclick="openOverride(323,'002475','立讯精密')" title="覆盖">✎</span>
+        </div><div class="item sell critical" data-id="324">
+            <div class="item-left"><span class="badge badge-sell">清仓</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002935</span> <span class="name">天奥电子</span> <span class="exec-btn-placeholder" onclick="execItem(324)">执行</span></div>
+                <div class="item-meta">P0: 跌幅最大-3.3%且加速下跌, 市价清仓2000股</div>
+            </div>
+            <span class="override-link" onclick="openOverride(324,'002935','天奥电子')" title="覆盖">✎</span>
+        </div><div class="item reduce" data-id="325">
             <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(296)">执行</span></div>
-                <div class="item-meta">四方会谈共识</div>
+                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" onclick="execItem(325)">执行</span></div>
+                <div class="item-meta">P1: 缩量阴跌承接不足, 卖出1000股减半, 剩余1000股设成本价86.30止损</div>
             </div>
-            <span class="override-link" onclick="openOverride(296,'000988','华工科技')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="297">
+            <span class="override-link" onclick="openOverride(325,'603019','中科曙光')" title="覆盖">✎</span>
+        </div><div class="item reduce" data-id="326">
             <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" onclick="execItem(297)">执行</span></div>
-                <div class="item-meta">四方会谈共识</div>
+                <div class="item-head"><span class="code">003031</span> <span class="name">中瓷电子</span> <span class="exec-btn-placeholder" onclick="execItem(326)">执行</span></div>
+                <div class="item-meta">P1: 高位震荡补跌风险, 卖出200股减半, 剩余200股设138止损</div>
             </div>
-            <span class="override-link" onclick="openOverride(297,'603019','中科曙光')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="298">
-            <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">002475</span> <span class="name">立讯精密</span> <span class="exec-btn-placeholder" onclick="execItem(298)">执行</span></div>
-                <div class="item-meta">四方会谈共识</div>
-            </div>
-            <span class="override-link" onclick="openOverride(298,'002475','立讯精密')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="299">
-            <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> <span class="exec-btn-placeholder" onclick="execItem(299)">执行</span></div>
-                <div class="item-meta">四方会谈共识</div>
-            </div>
-            <span class="override-link" onclick="openOverride(299,'600183','生益科技')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="300">
-            <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">003031</span> <span class="name">中瓷电子</span> <span class="exec-btn-placeholder" onclick="execItem(300)">执行</span></div>
-                <div class="item-meta">四方会谈共识</div>
-            </div>
-            <span class="override-link" onclick="openOverride(300,'003031','中瓷电子')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="301">
-            <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">603986</span> <span class="name">兆易创新</span> <span class="exec-btn-placeholder" onclick="execItem(301)">执行</span></div>
-                <div class="item-meta">四方会谈共识</div>
-            </div>
-            <span class="override-link" onclick="openOverride(301,'603986','兆易创新')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="302">
-            <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">002935</span> <span class="name">天奥电子</span> <span class="exec-btn-placeholder" onclick="execItem(302)">执行</span></div>
-                <div class="item-meta">四方会谈共识</div>
-            </div>
-            <span class="override-link" onclick="openOverride(302,'002935','天奥电子')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="303">
-            <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">002281</span> <span class="name">光迅科技</span> <span class="exec-btn-placeholder" onclick="execItem(303)">执行</span></div>
-                <div class="item-meta">四方会谈共识</div>
-            </div>
-            <span class="override-link" onclick="openOverride(303,'002281','光迅科技')" title="覆盖">✎</span>
+            <span class="override-link" onclick="openOverride(326,'003031','中瓷电子')" title="覆盖">✎</span>
         </div>
 </div>
 <div class="tab-panel" id="tp1">
