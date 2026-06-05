@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#080B0F">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden;background-image:url('./assets/bg.png');background-size:cover;background-attachment:fixed;background-position:center}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden}
 .header{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 16px 10px;background:rgba(5,8,12,.94);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10;border-bottom:1px solid #1C2532}
 .header .header-brand{display:flex;align-items:center;gap:8px}
 .header .header-logo{width:28px;height:28px;border-radius:6px;object-fit:contain}
@@ -106,7 +106,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </style></head>
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
-    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-05 · 周五</div><div class="countdown" id="countdown">距离开盘 9时30分</div></div></div></div>
+    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-06 · 周六</div><div class="countdown" id="countdown">距离开盘 周一 06/08</div></div></div></div>
     <div class="state-badge state-prep" id="stateBadge">PREP</div>
 </div>
 
@@ -126,49 +126,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 
 <div class="tab-panel" id="tp0">
-    <div class="item hold critical" data-id="359">
-            <div class="item-left"><span class="badge badge-hold">P0 市价清仓</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" onclick="execItem(359)">执行</span></div>
-                <div class="item-meta">剩余尾仓清理(今日已大幅减仓，浮亏为会计效应)</div>
-            </div>
-            <span class="override-link" onclick="openOverride(359,'603019','中科曙光')" title="覆盖">✎</span>
-        </div><div class="item hold critical" data-id="360">
-            <div class="item-left"><span class="badge badge-hold">P0 市价减仓2500股</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(360)">执行</span></div>
-                <div class="item-meta">集中度68%→45%，条件单142止损</div>
-            </div>
-            <span class="override-link" onclick="openOverride(360,'000988','华工科技')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="361">
-            <div class="item-left"><span class="badge badge-hold">P1 条件减仓200股</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-btn-placeholder" onclick="execItem(361)">执行</span></div>
-                <div class="item-meta">不等反弹，340附近/市价</div>
-            </div>
-            <span class="override-link" onclick="openOverride(361,'002916','深南电路')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="362">
-            <div class="item-left"><span class="badge badge-hold">P1 市价减仓500-700股</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">002179</span> <span class="name">中航光电</span> <span class="exec-btn-placeholder" onclick="execItem(362)">执行</span></div>
-                <div class="item-meta">保留300-500底仓</div>
-            </div>
-            <span class="override-link" onclick="openOverride(362,'002179','中航光电')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="363">
-            <div class="item-left"><span class="badge badge-hold">P2 持有+止损</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">002364</span> <span class="name">中远海科</span> <span class="exec-btn-placeholder" onclick="execItem(363)">执行</span></div>
-                <div class="item-meta">跌破50条件单止损</div>
-            </div>
-            <span class="override-link" onclick="openOverride(363,'002364','中远海科')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="364">
-            <div class="item-left"><span class="badge badge-hold">P2 持有+止损</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> <span class="exec-btn-placeholder" onclick="execItem(364)">执行</span></div>
-                <div class="item-meta">130不破保留</div>
-            </div>
-            <span class="override-link" onclick="openOverride(364,'600183','生益科技')" title="覆盖">✎</span>
-        </div>
+    <div style="text-align:center;padding:40px 20px"><img src="./assets/empty.png" style="width:120px;height:auto;opacity:.4;margin-bottom:12px"><div style="color:#7A8290;font-size:12px;font-family:monospace">暂无计划项</div></div>
 </div>
 <div class="tab-panel" id="tp1">
     <div class="buy-item">
