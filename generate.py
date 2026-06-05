@@ -202,7 +202,7 @@ def build(data):
 <meta name="theme-color" content="#080B0F">
 <style>
 *{{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}}
-body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden;background-image:url('./assets/bg.png');background-size:cover;background-attachment:fixed;background-position:center}}
+body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden}}
 .header{{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 16px 10px;background:rgba(5,8,12,.94);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10;border-bottom:1px solid #1C2532}}
 .header .header-brand{{display:flex;align-items:center;gap:8px}}
 .header .header-logo{{width:28px;height:28px;border-radius:6px;object-fit:contain}}
