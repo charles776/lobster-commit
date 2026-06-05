@@ -11,74 +11,75 @@
 <meta name="theme-color" content="#080B0F">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:#05080C;color:#E8ECF2;min-height:100vh;padding-bottom:140px;overflow-x:hidden;background-image:url('./assets/bg.png');background-size:cover;background-attachment:fixed;background-position:center}
 .header{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 16px 10px;background:rgba(5,8,12,.94);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10;border-bottom:1px solid #1C2532}
 .header .header-brand{display:flex;align-items:center;gap:8px}
 .header .header-logo{width:28px;height:28px;border-radius:6px;object-fit:contain}
-.header .date{font-family:'Cascadia Code','Consolas','SF Mono',monospace;font-size:15px;font-weight:700}
-.header .countdown{font-family:'Cascadia Code','Consolas','SF Mono',monospace;font-size:10px;color:#FF9F0A}
-.state-badge{padding:3px 10px;font-size:9px;font-family:'Cascadia Code','Consolas','SF Mono',monospace;font-weight:700;letter-spacing:1.5px;border-radius:2px}
+.header .date{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:15px;font-weight:700}
+.header .countdown{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:10px;color:#FF9F0A}
+.state-badge{padding:3px 10px;font-size:9px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-weight:700;letter-spacing:1.5px;border-radius:2px}
+.state-prep{background:rgba(110,118,136,.12);color:#7A8290;border:1px solid #1C2532}
 .state-locked{background:rgba(255,159,10,.1);color:#FF9F0A;border:1px solid rgba(255,159,10,.2)}
-.state-unlocked{background:rgba(48,209,88,.1);color:#30D158;border:1px solid rgba(48,209,88,.2)}
-.lock-banner{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px;margin:8px 16px;background:rgba(255,159,10,.06);border:1px solid rgba(255,159,10,.15);border-radius:4px;font-size:11px;font-family:'Cascadia Code','Consolas','SF Mono',monospace;color:#FF9F0A;letter-spacing:1px}
+.quarantine-banner{margin:8px 16px;padding:14px;background:rgba(255,59,48,.06);border:1px solid rgba(255,59,48,.2);border-radius:4px;text-align:center}
+.q-title{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:14px;font-weight:700;color:#FF3B30;letter-spacing:2px;margin-bottom:4px}
+.q-detail{font-size:11px;color:rgba(255,59,48,.6);margin-bottom:6px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}
+.q-info{font-size:10px;color:rgba(255,59,48,.3)}
+.lock-banner{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px;margin:8px 16px;background:rgba(255,159,10,.06);border:1px solid rgba(255,159,10,.15);border-radius:4px;font-size:11px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;color:#FF9F0A;letter-spacing:1px}
 .tab-bar{display:flex;margin:8px 16px;background:#0D1117;border-radius:6px;padding:3px;border:1px solid #1C2532}
 .tab-radio{display:none}
 .tab-radio:checked+.tab-label{background:#141B24;color:#E8ECF2}
-.tab-label{flex:1;text-align:center;padding:8px;font-size:11px;font-weight:600;color:#7A8290;cursor:pointer;border-radius:4px;transition:.15s;font-family:'Cascadia Code','Consolas','SF Mono',monospace;letter-spacing:.5px;display:block}
+.tab-label{flex:1;text-align:center;padding:8px;font-size:11px;font-weight:600;color:#7A8290;cursor:pointer;border-radius:4px;transition:.15s;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;letter-spacing:.5px;display:block}
 .tab-panel{display:none;padding:0 16px}
 #tr0:checked~#tp0{display:block}
 #tr1:checked~#tp1{display:block}
 #tr2:checked~#tp2{display:block}
 
 .item{display:flex;gap:10px;align-items:flex-start;padding:10px 8px;border-bottom:1px solid rgba(28,37,50,.35);font-size:12px;transition:all .15s;border-radius:2px;margin-bottom:1px}
-.item.critical{border-left:3px solid #FF3B30;padding-left:6px}
+.item.sell{background:rgba(255,59,48,.04)}
+.item.reduce{background:rgba(255,159,10,.03)}
+.item.hold{background:rgba(48,209,88,.02)}
+.item.buy{background:rgba(10,132,255,.04)}
 .item.executed{opacity:.45}
 .item.executed .item-head{text-decoration:line-through}
 .item.overridden{opacity:.55;background:rgba(255,59,48,.02)}
+.item.critical{border-left:3px solid #FF3B30;padding-left:6px}
 .item-left{flex-shrink:0;min-width:40px}
-.badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:2px;font-family:'Cascadia Code','Consolas','SF Mono',monospace;letter-spacing:.5px}
+.badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:2px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;letter-spacing:.5px}
 .badge-sell{background:rgba(255,59,48,.15);color:#FF3B30}
 .badge-reduce{background:rgba(255,159,10,.12);color:#FF9F0A}
 .badge-hold{background:rgba(48,209,88,.1);color:#30D158}
 .badge-buy{background:rgba(10,132,255,.12);color:#0A84FF}
 .item-main{flex:1;min-width:0}
 .item-head{font-size:12px;font-weight:500;margin-bottom:2px}
-.item-head .code{font-family:'Cascadia Code','Consolas','SF Mono',monospace;font-size:11px;color:#0A84FF}
+.item-head .code{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:11px;color:#0A84FF}
 .item-head .name{font-size:12px}
 .item-meta{font-size:10px;color:#7A8290;line-height:1.4}
-.exec-btn-placeholder{font-size:9px;font-weight:700;padding:3px 8px;border:1px solid #30D158;border-radius:3px;color:#30D158;cursor:pointer;font-family:'Cascadia Code','Consolas','SF Mono',monospace;background:rgba(48,209,88,.08);transition:all .15s}
+.exec-tag{font-size:8px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;margin-left:6px}
+.done-tag{color:#30D158}
+.override-tag{color:#FF3B30}
+.exec-btn-placeholder{font-size:9px;font-weight:700;padding:3px 8px;border:1px solid #30D158;border-radius:3px;color:#30D158;cursor:pointer;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;background:rgba(48,209,88,.08);transition:all .15s}
 .exec-btn-placeholder:active{background:rgba(48,209,88,.2)}
 .conn-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;vertical-align:middle}
 .conn-on{background:#30D158}.conn-off{background:#FF3B30}
-.override-link{font-size:9px;color:#485268;cursor:pointer;padding:2px 6px;border:1px solid transparent;font-family:'Cascadia Code','Consolas','SF Mono',monospace;flex-shrink:0;border-radius:2px}
+.override-link{font-size:9px;color:#485268;cursor:pointer;padding:2px 6px;border:1px solid transparent;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;flex-shrink:0;border-radius:2px}
 .override-link:hover{color:#FF3B30;border-color:rgba(255,59,48,.3)}
 
-.buy-item{padding:12px 10px;border-bottom:1px solid rgba(28,37,50,.3);background:#0D1117;border-radius:4px;margin-bottom:4px}
+.buy-item{padding:10px 8px;border-bottom:1px solid rgba(28,37,50,.3);background:#0D1117;border-radius:4px;margin-bottom:4px}
 .buy-item .bw-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:4px}
-.buy-item .code{font-family:'Cascadia Code','Consolas','SF Mono',monospace;font-weight:700;color:#E8ECF2}
-.buy-item .eta{font-family:'Cascadia Code','Consolas','SF Mono',monospace;font-size:10px;font-weight:700;color:#FF9F0A}
+.buy-item .code{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-weight:700;color:#E8ECF2}
+.buy-item .eta{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:10px;font-weight:700;color:#FF9F0A}
 .buy-item .trigger{font-size:10px;color:#7A8290;line-height:1.5}
-.buy-item .bw-notes{font-size:9px;color:#485268;line-height:1.4;margin-top:3px}
-.buy-item .bw-priority{display:inline-block;font-size:8px;padding:1px 6px;border-radius:2px;font-family:'Cascadia Code','Consolas','SF Mono',monospace}
-.p0-tag{background:rgba(255,59,48,.1);color:#FF3B30}
-.p1-tag{background:rgba(255,159,10,.1);color:#FF9F0A}
-.p2-tag{background:rgba(10,132,255,.1);color:#0A84FF}
 
 .stats-row{display:flex;gap:8px;margin-bottom:12px}
 .stat-card{flex:1;text-align:center;padding:14px 8px;background:#0D1117;border:1px solid #1C2532;border-radius:4px}
-.stat-card .v{font-family:'Cascadia Code','Consolas','SF Mono',monospace;font-size:26px;font-weight:700}
-.stat-card .l{font-size:9px;color:#7A8290;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;font-family:'Cascadia Code','Consolas','SF Mono',monospace}
-.section-title{font-size:10px;font-weight:700;color:#7A8290;text-transform:uppercase;letter-spacing:1px;font-family:'Cascadia Code','Consolas','SF Mono',monospace;margin-bottom:8px;padding:8px 0 0 0}
-.log-line{font-size:9px;color:#7A8290;padding:2px 0;font-family:'Cascadia Code','Consolas','SF Mono',monospace;border-bottom:1px solid rgba(28,37,50,.2)}
+.stat-card .v{font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:26px;font-weight:700}
+.stat-card .l{font-size:9px;color:#7A8290;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}
+.section-title{font-size:10px;font-weight:700;color:#7A8290;text-transform:uppercase;letter-spacing:1px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;margin-bottom:8px}
+.log-line{font-size:9px;color:#7A8290;padding:2px 0;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;border-bottom:1px solid rgba(28,37,50,.2)}
 .log-time{color:#485268;margin-right:4px}
 
-.empty-state{text-align:center;padding:24px;color:#485268;font-size:11px;font-family:'Cascadia Code','Consolas','SF Mono',monospace}
-.loading{text-align:center;padding:12px;color:#485268;font-size:10px}
-
-.meta-line{display:flex;justify-content:space-between;font-size:9px;color:#485268;font-family:'Cascadia Code','Consolas','SF Mono',monospace;padding:4px 16px}
-
 .float-lock{position:fixed;bottom:20px;left:16px;right:16px;z-index:100}
-.lock-btn{position:relative;display:block;width:100%;padding:16px;font-size:15px;font-weight:700;cursor:pointer;border:2px solid #FF9F0A;background:rgba(5,8,12,.96);color:#FF9F0A;letter-spacing:2px;font-family:'Cascadia Code','Consolas','SF Mono',monospace;text-transform:uppercase;border-radius:6px;text-align:center;backdrop-filter:blur(12px);box-shadow:0 0 40px rgba(255,159,10,.08);overflow:hidden}
+.lock-btn{position:relative;display:block;width:100%;padding:16px;font-size:15px;font-weight:700;cursor:pointer;border:2px solid #FF9F0A;background:rgba(5,8,12,.96);color:#FF9F0A;letter-spacing:2px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;text-transform:uppercase;border-radius:6px;text-align:center;backdrop-filter:blur(12px);box-shadow:0 0 40px rgba(255,159,10,.08);overflow:hidden}
 .lock-btn:active{transform:scale(.96)}
 .lock-btn .progress{position:absolute;bottom:0;left:0;height:4px;background:rgba(255,159,10,.8);width:0%}
 .lock-btn .sub{font-size:9px;opacity:.5;display:block;margin-top:4px;letter-spacing:1px;font-weight:400;position:relative;z-index:1}
@@ -86,62 +87,164 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 @keyframes lock-pulse{0%,100%{box-shadow:0 0 24px rgba(255,159,10,.06)}50%{box-shadow:0 0 48px rgba(255,159,10,.15)}}
 .lock-btn:not(.locked){animation:lock-pulse 3s ease-in-out infinite}
 
-.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#FF9F0A;color:#05080C;padding:10px 24px;border-radius:20px;font-weight:700;font-family:'Cascadia Code','Consolas','SF Mono',monospace;font-size:13px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#FF9F0A;color:#05080C;padding:10px 24px;border-radius:20px;font-weight:700;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;font-size:13px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none}
 .toast.show{opacity:1}
+.install-banner{display:none;align-items:center;justify-content:space-between;padding:10px 16px;margin:0 16px 8px;background:#0D1117;border:1px solid #FF9F0A;border-radius:6px;font-size:12px;color:#FF9F0A;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}
+
+/* Override modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(5,8,12,.95);z-index:150;display:none;align-items:center;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal{background:#0D1117;border:1px solid #1C2532;padding:20px;margin:16px;border-radius:6px;max-width:340px}
+.modal h3{font-size:14px;font-weight:700;color:#FF3B30;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;margin-bottom:8px}
+.modal .tags{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.modal .tag{padding:6px 14px;border-radius:14px;font-size:11px;cursor:pointer;border:1px solid #1C2532;background:#05080C;color:#7A8290;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace;transition:.15s}
+.modal .tag.selected{border-color:#FF3B30;background:rgba(255,59,48,.1);color:#FF3B30}
+.modal .btn-row{display:flex;gap:8px;margin-top:12px}
+.modal .btn-confirm{flex:1;padding:12px;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;border:none;background:#FF3B30;color:#fff;opacity:.3;pointer-events:none;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}
+.modal .btn-confirm.ready{opacity:1;pointer-events:auto}
+.modal .btn-cancel{flex:1;padding:12px;border-radius:4px;font-size:12px;cursor:pointer;border:1px solid #1C2532;background:transparent;color:#7A8290;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace}
 </style></head>
-<body onload="init()">
+<body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
-    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date" id="dateLine">---</div><div class="countdown" id="countdown">加载中...</div></div></div>
-    <div class="state-badge state-locked" id="stateBadge">---</div>
+    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-05 · 周五</div><div class="countdown" id="countdown">距离开盘 9时30分</div></div></div></div>
+    <div class="state-badge state-prep" id="stateBadge">PREP</div>
 </div>
 
-<div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'Cascadia Code','Consolas','SF Mono',monospace"></div>
-<div class="meta-line"><span id="fundLine">---</span><span id="botLine">---</span></div>
-
+<div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace"></div>
 <div style="text-align:center;padding:4px;font-size:8px;font-family:monospace"><span id="verTag" style="color:#485268">v?</span> · <a href="javascript:navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));caches.keys().then(k=>k.forEach(x=>caches.delete(x)));location.reload();" style="color:#FF3B30;text-decoration:none">硬核重置</a></div>
+
+
+
 
 <input type="radio" class="tab-radio" name="tab" id="tr0" checked>
 <input type="radio" class="tab-radio" name="tab" id="tr1">
 <input type="radio" class="tab-radio" name="tab" id="tr2">
 <div class="tab-bar">
     <label class="tab-label" for="tr0">📋 计划</label>
-    <label class="tab-label" for="tr1"><span id="bwCount">🎯 候选</span></label>
+    <label class="tab-label" for="tr1">🎯 候选</label>
     <label class="tab-label" for="tr2">📊 状态</label>
 </div>
 
 <div class="tab-panel" id="tp0">
-    <div id="planList"><div class="loading">加载中...</div></div>
+    <div class="item hold critical" data-id="359">
+            <div class="item-left"><span class="badge badge-hold">P0 市价清仓</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" onclick="execItem(359)">执行</span></div>
+                <div class="item-meta">剩余尾仓清理(今日已大幅减仓，浮亏为会计效应)</div>
+            </div>
+            <span class="override-link" onclick="openOverride(359,'603019','中科曙光')" title="覆盖">✎</span>
+        </div><div class="item hold critical" data-id="360">
+            <div class="item-left"><span class="badge badge-hold">P0 市价减仓2500股</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(360)">执行</span></div>
+                <div class="item-meta">集中度68%→45%，条件单142止损</div>
+            </div>
+            <span class="override-link" onclick="openOverride(360,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="361">
+            <div class="item-left"><span class="badge badge-hold">P1 条件减仓200股</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-btn-placeholder" onclick="execItem(361)">执行</span></div>
+                <div class="item-meta">不等反弹，340附近/市价</div>
+            </div>
+            <span class="override-link" onclick="openOverride(361,'002916','深南电路')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="362">
+            <div class="item-left"><span class="badge badge-hold">P1 市价减仓500-700股</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002179</span> <span class="name">中航光电</span> <span class="exec-btn-placeholder" onclick="execItem(362)">执行</span></div>
+                <div class="item-meta">保留300-500底仓</div>
+            </div>
+            <span class="override-link" onclick="openOverride(362,'002179','中航光电')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="363">
+            <div class="item-left"><span class="badge badge-hold">P2 持有+止损</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002364</span> <span class="name">中远海科</span> <span class="exec-btn-placeholder" onclick="execItem(363)">执行</span></div>
+                <div class="item-meta">跌破50条件单止损</div>
+            </div>
+            <span class="override-link" onclick="openOverride(363,'002364','中远海科')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="364">
+            <div class="item-left"><span class="badge badge-hold">P2 持有+止损</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> <span class="exec-btn-placeholder" onclick="execItem(364)">执行</span></div>
+                <div class="item-meta">130不破保留</div>
+            </div>
+            <span class="override-link" onclick="openOverride(364,'600183','生益科技')" title="覆盖">✎</span>
+        </div>
 </div>
 <div class="tab-panel" id="tp1">
-    <div class="section-title" style="padding-left:0">BUY WATCH · 舒服买点候选</div>
-    <div id="buyWatchList"><div class="loading">加载中...</div></div>
+    <div class="buy-item">
+            <div class="bw-top"><span class="code">300726</span> 宏达电子<span class="eta">等TREND_UP确认</span></div>
+            <div class="trigger">回调至60-62区间(距60日高点-15%)，RSI=52中性</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">002916</span> 深南电路<span class="eta">等TREND_UP确认</span></div>
+            <div class="trigger">回踩380-390区间(前低支撑)，RSI=50.5中性</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">002106</span> 莱宝高科<span class="eta">等TREND_UP确认</span></div>
+            <div class="trigger">回踩11.50-11.80(MA60附近)，RSI=56.6</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">603005</span> 晶丰明源<span class="eta">等TREND_UP+右侧确认</span></div>
+            <div class="trigger">站上MA60(≈42)+RSI>50确认，当前RSI=35.7深跌</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">300085</span> 银之杰<span class="eta">等TREND_UP确认</span></div>
+            <div class="trigger">回调至38-40区间，RSI回落至55以下</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">002138</span> 顺络电子<span class="eta">等TREND_UP确认</span></div>
+            <div class="trigger">回踩MA60≈46元，RSI=61需回落至55以下</div>
+        </div>
 </div>
 <div class="tab-panel" id="tp2">
-    <div class="stats-row" id="statsRow">
-        <div class="stat-card"><div class="v" id="statStreak" style="color:#30D158">-</div><div class="l">连续遵守</div></div>
-        <div class="stat-card"><div class="v" id="statOverride" style="color:#FF3B30">-</div><div class="l">本月覆盖</div></div>
-        <div class="stat-card"><div class="v" id="statCandidates" style="color:#0A84FF">-</div><div class="l">候选</div></div>
+    <div class="stats-row">
+        <div class="stat-card"><div class="v" style="color:#30D158">0</div><div class="l">连续遵守</div></div>
+        <div class="stat-card"><div class="v" style="color:#FF3B30">4</div><div class="l">本月覆盖</div></div>
+        <div class="stat-card"><div class="v" style="color:#0A84FF">6</div><div class="l">候选</div></div>
     </div>
     <div class="section-title">操作日志</div>
-    <div id="logList"><div class="loading">加载中...</div></div>
+    
 </div>
 
 <div class="float-lock">
-    <div class="lock-btn locked" id="lockBtn"
+    <div class="lock-btn " id="lockBtn"
          ontouchstart="startHold()" ontouchend="cancelHold()" ontouchmove="cancelHold()"
          onmousedown="startHold()" onmouseup="cancelHold()" onmouseleave="cancelHold()">
-        <span style="position:relative;z-index:1">🔒 已封印</span>
-        <div class="sub" style="position:relative;z-index:1">盘中照此执行</div>
+        <span style="position:relative;z-index:1">🔓 封印计划</span>
+        <div class="sub" style="position:relative;z-index:1">按住3秒封印</div>
         <div class="progress" id="lockProgress"></div>
     </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<div class="modal-overlay" id="overrideModal">
+    <div class="modal">
+        <h3>覆盖计划项</h3>
+        <div id="overrideInfo" style="font-size:12px;color:#E8ECF2;margin-bottom:4px"></div>
+        <div style="font-size:10px;color:#7A8290;margin-bottom:12px">选择原因后确认，将触发2小时隔离</div>
+        <div class="tags" id="overrideTags">
+            <div class="tag" onclick="selectTag(this)" data-tag="恐慌">恐慌</div>
+            <div class="tag" onclick="selectTag(this)" data-tag="贪婪">贪婪</div>
+            <div class="tag" onclick="selectTag(this)" data-tag="FOMO">FOMO</div>
+            <div class="tag" onclick="selectTag(this)" data-tag="新信息">新信息</div>
+            <div class="tag" onclick="selectTag(this)" data-tag="其他">其他</div>
+        </div>
+        <div class="btn-row">
+            <button class="btn-confirm" id="overrideConfirm" onclick="submitOverride()">确认覆盖</button>
+            <button class="btn-cancel" onclick="closeOverride()">取消</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="quarantineToast" style="position:fixed;inset:0;background:rgba(5,8,12,.98);z-index:250;display:none;flex-direction:column;align-items:center;justify-content:center;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace">
+    <div style="font-size:18px;color:#FF3B30;font-weight:700;letter-spacing:3px;margin-bottom:8px">QUARANTINE</div>
+    <div style="font-size:48px;font-weight:700;color:#FF3B30" id="qCountdown">02:00:00</div>
+    <div style="font-size:10px;color:rgba(255,59,48,.3);margin:8px 0 24px;letter-spacing:2px">计划外操作已冻结</div>
+    <button onclick="closeQuarantine()" style="background:none;border:1px solid #485268;color:#7A8290;padding:8px 24px;border-radius:4px;font-size:12px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace">关闭</button>
+</div>
+
 <script>
-var API = '';
-var API_CANDIDATES = ['http://192.168.1.4:8766','http://192.168.43.100:8766','http://192.168.43.101:8766','http://172.20.10.2:8766','http://172.20.10.3:8766','http://127.0.0.1:8766'];
-var locked = true;
+var API = 'http://192.168.1.3:8766';
+var API_CANDIDATES = ["http://192.168.1.3:8766", "http://192.168.43.100:8766", "http://192.168.43.101:8766", "http://172.20.10.2:8766", "http://172.20.10.3:8766", "http://127.0.0.1:8766"];
+var locked = false;
+var overrideItemId = null, selectedTag = '';
+var qTimer = null, isOnline = false;
 var localState = {};
 try { localState = JSON.parse(localStorage.getItem('commit_state') || '{"locked":false,"executed":[],"overridden":[]}'); } catch(e) {};
 if (localState.locked) locked = true;
@@ -150,106 +253,114 @@ function saveState() { localStorage.setItem('commit_state', JSON.stringify(local
 function isExecuted(id) { return localState.executed.indexOf(id) !== -1; }
 function isOverridden(id) { return localState.overridden.indexOf(id) !== -1; }
 
-// API discovery
 async function tryApi(url) {
     try { var r = await fetch(url + '/api/state'); if (r.ok) return url; } catch(e) {}
     return null;
 }
 async function discoverApi() {
-    if (API) { var ok = await tryApi(API); if (ok) return; }
+    // Try current API first if set
+    if (API) { var ok = await tryApi(API); if (ok) return true; }
+    // Try last known good API
     var lastApi = localStorage.getItem('last_api');
-    if (lastApi) { var ok = await tryApi(lastApi); if (ok) { API = ok; return; } }
+    if (lastApi) { var ok = await tryApi(lastApi); if (ok) { API = ok; return true; } }
+    // Try all candidates
     for (var i = 0; i < API_CANDIDATES.length; i++) {
         var ok = await tryApi(API_CANDIDATES[i]);
-        if (ok) { API = ok; localStorage.setItem('last_api', API); return; }
+        if (ok) { API = ok; localStorage.setItem('last_api', API); return true; }
     }
+    return false;
 }
+async function checkConn() {
+    var el = document.getElementById('connStatus');
+    if (!API) {
+        var found = await discoverApi();
+        if (found) {
+            if (el) el.innerHTML = '<span class="conn-dot conn-on"></span>已连接';
+            syncToServer();
+        } else {
+            isOnline = false;
+            if (el) el.innerHTML = '<span class="conn-dot conn-off"></span>离线 · 缓存数据';
+        }
+        return;
+    }
+    try { var r = await fetch(API + '/api/state', {method:'GET'}); isOnline = r.ok; } catch(e) { isOnline = false; }
+    if (!isOnline) {
+        var found = await discoverApi();
+        if (found) isOnline = true;
+    }
+    if (el) el.innerHTML = isOnline ? '<span class="conn-dot conn-on"></span>已连接' : '<span class="conn-dot conn-off"></span>离线模式';
+    if (isOnline) syncToServer();
+}
+checkConn(); setInterval(checkConn, 30000);
 
-async function apiGet(path) {
+async function apiCall(path, method, body) {
     if (!API) return null;
-    try { var r = await fetch(API + path); return r.json(); } catch(e) { return null; }
-}
-async function apiPost(path, body) {
-    if (!API) return null;
-    try { var r = await fetch(API + path, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)}); return r.json(); } catch(e) { return null; }
+    try {
+        var opts = {method: method || 'GET', headers: {'Content-Type': 'application/json'}};
+        if (body) opts.body = JSON.stringify(body);
+        var r = await fetch(API + path, opts);
+        return r.json();
+    } catch(e) { return null; }
 }
 
-// Load plan items
-async function loadPlan() {
-    var data = await apiGet('/api/plan');
-    if (!data || !data.items) { document.getElementById('planList').innerHTML = '<div class="empty-state">离线 · 无法加载计划</div>'; return; }
-    locked = data.locked || false;
-    var html = '';
-    for (var i = 0; i < data.items.length; i++) {
-        var item = data.items[i];
-        var cls = 'item';
-        if (item.critical) cls += ' critical';
-        if (isExecuted(item.id)) cls += ' executed';
-        if (isOverridden(item.id)) cls += ' overridden';
-        var badgeCls = 'badge-hold';
-        var act = item.action || '';
-        if (act.indexOf('卖')>=0 || act.indexOf('清')>=0) badgeCls = 'badge-sell';
-        else if (act.indexOf('减')>=0) badgeCls = 'badge-reduce';
-        else if (act.indexOf('买')>=0) badgeCls = 'badge-buy';
-        html += '<div class="'+cls+'" data-id="'+item.id+'">';
-        html += '<div class="item-left"><span class="badge '+badgeCls+'">'+(act||'持有')+'</span></div>';
-        html += '<div class="item-main"><div class="item-head"><span class="code">'+(item.code||'')+'</span> <span class="name">'+(item.name||'')+'</span>';
-        if (!isExecuted(item.id)) html += ' <span class="exec-btn-placeholder" onclick="execItem('+item.id+')">执行</span>';
-        html += '</div><div class="item-meta">'+(item.reason||'')+'</div></div>';
-        html += '</div>';
+async function syncToServer() {
+    if (!isOnline) return;
+    if (localState.locked) await apiCall('/api/plan/lock', 'POST', {content:'',items:[]});
+    for (var i = 0; i < localState.executed.length; i++) await apiCall('/api/plan/execute', 'POST', {id: localState.executed[i]});
+    for (var j = 0; j < localState.overridden.length; j++) {
+        var ov = localState.overridden[j];
+        await apiCall('/api/override', 'POST', {item_id: ov.id, code: ov.code, name: ov.name, reason: ov.tag, tag: ov.tag});
     }
-    document.getElementById('planList').innerHTML = html || '<div class="empty-state">暂无计划项</div>';
-    updateLockUI();
 }
 
-// Load BUY WATCH
-async function loadBuyWatch() {
-    var data = await apiGet('/api/buywatch');
-    if (!data || !data.items) { document.getElementById('buyWatchList').innerHTML = '<div class="empty-state">离线 · 无法加载候选</div>'; return; }
-    var html = '';
-    for (var i = 0; i < data.items.length; i++) {
-        var bw = data.items[i];
-        var pTag = bw.priority === 0 ? 'p0-tag' : (bw.priority === 1 ? 'p1-tag' : 'p2-tag');
-        html += '<div class="buy-item">';
-        html += '<div class="bw-top"><span><span class="code">'+bw.code+'</span> '+bw.name+' <span class="bw-priority '+pTag+'">P'+bw.priority+'</span></span><span class="eta">'+bw.eta+'</span></div>';
-        html += '<div class="trigger">'+bw.trigger_cond+'</div>';
-        if (bw.notes) html += '<div class="bw-notes">'+bw.notes+'</div>';
-        html += '</div>';
+function updateUI() {
+    var items = document.querySelectorAll('.item');
+    for (var i = 0; i < items.length; i++) {
+        var id = parseInt(items[i].getAttribute('data-id') || '0');
+        if (isExecuted(id)) { items[i].classList.add('executed'); }
+        if (isOverridden(id)) { items[i].classList.add('overridden'); }
     }
-    document.getElementById('buyWatchList').innerHTML = html || '<div class="empty-state">暂无候选</div>';
-    document.getElementById('bwCount').textContent = '🎯 候选('+data.items.length+')';
-    document.getElementById('statCandidates').textContent = data.items.length;
-}
-
-// Load logs
-async function loadLogs() {
-    var data = await apiGet('/api/logs');
-    if (!data || !data.logs) { document.getElementById('logList').innerHTML = '<div class="empty-state">无日志</div>'; return; }
-    var html = '';
-    for (var i = Math.max(0, data.logs.length - 20); i < data.logs.length; i++) {
-        var log = data.logs[i];
-        html += '<div class="log-line"><span class="log-time">'+log.time+'</span>'+log.text+'</div>';
-    }
-    document.getElementById('logList').innerHTML = html || '<div class="empty-state">无日志</div>';
-}
-
-// Lock UI
-function updateLockUI() {
-    var badge = document.getElementById('stateBadge');
-    var btn = document.getElementById('lockBtn');
     if (locked) {
-        badge.textContent = 'LOCKED 🔒'; badge.className = 'state-badge state-locked';
-        btn.className = 'lock-btn locked';
-        btn.innerHTML = '<span style="position:relative;z-index:1">🔒 已封印</span><div class="sub" style="position:relative;z-index:1">盘中照此执行</div><div class="progress"></div>';
-    } else {
-        badge.textContent = 'UNLOCKED'; badge.className = 'state-badge state-unlocked';
-        btn.className = 'lock-btn';
-        btn.innerHTML = '<span style="position:relative;z-index:1">长按封印</span><div class="sub" style="position:relative;z-index:1">3秒确认</div><div class="progress" id="lockProgress"></div>';
+        document.getElementById('lockBtn').className = 'lock-btn locked';
+        document.getElementById('lockBtn').innerHTML = '<span style="position:relative;z-index:1">🔒 已封印</span><div class="sub" style="position:relative;z-index:1">盘中照此执行</div><div class="progress"></div>';
+        document.getElementById('stateBadge').textContent = 'LOCKED 🔒';
+        document.getElementById('stateBadge').className = 'state-badge state-locked';
     }
+}
+updateUI();
+
+// Lock with progress bar
+var holdTimer = null, holdStart = 0;
+function startHold() {
+    if (locked) return;
+    holdStart = Date.now();
+    var bar = document.getElementById('lockProgress');
+    holdTimer = setInterval(function() {
+        var pct = Math.min(100, (Date.now() - holdStart) / 30);
+        bar.style.width = pct + '%';
+        if (pct >= 100) { cancelHold(); triggerLock(); }
+    }, 50);
+}
+function cancelHold() {
+    clearInterval(holdTimer); holdTimer = null;
+    document.getElementById('lockProgress').style.width = '0%';
+}
+function triggerLock() {
+    cancelHold();
+    if (navigator.vibrate) navigator.vibrate([30,50,30,50,100]);
+    showToast('🔒 计划已封印');
+    locked = true;
+    localState.locked = true; saveState();
+    document.getElementById('lockBtn').className = 'lock-btn locked';
+    document.getElementById('lockBtn').innerHTML = '<span style="position:relative;z-index:1">🔒 已封印</span><div class="sub" style="position:relative;z-index:1">盘中照此执行</div><div class="progress"></div>';
+    document.getElementById('stateBadge').textContent = 'LOCKED 🔒';
+    document.getElementById('stateBadge').className = 'state-badge state-locked';
+    document.getElementById('lockProgress').style.width = '0%';
+    apiCall('/api/plan/lock', 'POST', {content: '', items: []});
 }
 
 // Execute item
-async function execItem(id) {
+function execItem(id) {
     if (!locked) { showToast('请先封印计划'); return; }
     if (isExecuted(id)) return;
     if (navigator.vibrate) navigator.vibrate(50);
@@ -257,97 +368,92 @@ async function execItem(id) {
     var item = document.querySelector('.item[data-id="' + id + '"]');
     if (item) { item.classList.add('executed'); var b = item.querySelector('.exec-btn-placeholder'); if (b) b.style.display = 'none'; }
     showToast('✓ 已执行');
-    apiPost('/api/plan/execute', {id: id});
-    // Reload plan to sync
-    setTimeout(loadPlan, 1000);
+    apiCall('/api/plan/execute', 'POST', {id: id});
 }
 
-// Lock
-var holdTimer = null;
-function startHold() {
-    if (locked) return;
-    var start = Date.now();
-    var bar = document.getElementById('lockProgress');
-    holdTimer = setInterval(function() {
-        var pct = Math.min(100, (Date.now() - start) / 30);
-        bar.style.width = pct + '%';
-        if (pct >= 100) { cancelHold(); triggerLock(); }
-    }, 50);
+// Override
+function openOverride(id, code, name) {
+    overrideItemId = id; selectedTag = '';
+    document.getElementById('overrideInfo').textContent = code + ' ' + name;
+    document.querySelectorAll('#overrideTags .tag').forEach(function(t){ t.classList.remove('selected'); });
+    document.getElementById('overrideConfirm').classList.remove('ready');
+    document.getElementById('overrideModal').classList.add('active');
 }
-function cancelHold() { clearInterval(holdTimer); holdTimer = null; var bar = document.getElementById('lockProgress'); if (bar) bar.style.width = '0%'; }
-async function triggerLock() {
-    cancelHold();
-    if (navigator.vibrate) navigator.vibrate([30,50,30,50,100]);
-    showToast('🔒 计划已封印');
-    locked = true; localState.locked = true; saveState();
-    updateLockUI();
-    apiPost('/api/plan/lock', {});
+function closeOverride() { document.getElementById('overrideModal').classList.remove('active'); }
+function selectTag(el) {
+    document.querySelectorAll('#overrideTags .tag').forEach(function(t){ t.classList.remove('selected'); });
+    el.classList.add('selected'); selectedTag = el.dataset.tag;
+    document.getElementById('overrideConfirm').classList.add('ready');
 }
+async function submitOverride() {
+    if (!selectedTag) return;
+    var info = document.getElementById('overrideInfo').textContent.split(' ');
+    var r = await apiCall('/api/override', 'POST', {item_id: overrideItemId, code: info[0], name: info[1], reason: selectedTag, tag: selectedTag});
+    closeOverride();
+    if (r && r.quarantine_triggered) {
+        document.getElementById('quarantineToast').style.display = 'flex';
+        startQCountdown(r.quarantine_expires);
+    }
+    if (r && r.ok) { showToast('已覆盖 · 隔离触发'); setTimeout(function(){ location.reload(); }, 1000); }
+}
+
+// Quarantine countdown
+function startQCountdown(exp) {
+    if (qTimer) clearInterval(qTimer);
+    function tick() {
+        var d = Math.max(0, (new Date(exp) - new Date()) / 1000);
+        if (d <= 0) { document.getElementById('quarantineToast').style.display = 'none'; clearInterval(qTimer); return; }
+        var h = Math.floor(d/3600), m = Math.floor((d%3600)/60), s = Math.floor(d%60);
+        document.getElementById('qCountdown').textContent = String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    }
+    tick(); qTimer = setInterval(tick, 1000);
+}
+function closeQuarantine() { document.getElementById('quarantineToast').style.display = 'none'; }
 
 // Countdown
-function updateCountdown() {
+function countdownTick() {
     var now = new Date();
-    var d = now.getDay();
-    document.getElementById('dateLine').textContent = now.toISOString().slice(0,10) + ' · 周' + ['日','一','二','三','四','五','六'][d];
-    if (d === 0 || d === 6) {
-        document.getElementById('countdown').textContent = '周末休市';
+    var mo = new Date(now); mo.setHours(9,0,0,0);
+    var next = mo > now ? mo : new Date(mo.getTime() + 86400000);
+    var secs = Math.max(0, Math.floor((next - now) / 1000));
+    var h = Math.floor(secs / 3600), m = Math.floor((secs % 3600) / 60);
+    if (now.getDay() >= 5) {
+        var d = (8 - now.getDay()) % 7 || 7;
+        document.getElementById('countdown').textContent = '距离开盘 ' + d + '天';
     } else {
-        var mo = new Date(now); mo.setHours(9,30,0,0);
-        if (now > new Date(now).setHours(15,0,0,0)) {
-            document.getElementById('countdown').textContent = '已收盘';
-        } else if (now > mo) {
-            document.getElementById('countdown').textContent = '交易中';
-        } else {
-            var secs = Math.max(0, Math.floor((mo - now) / 1000));
-            var h = Math.floor(secs / 3600), m = Math.floor((secs % 3600) / 60);
-            document.getElementById('countdown').textContent = '距开盘 ' + h + '时' + m + '分';
-        }
+        document.getElementById('countdown').textContent = '距离开盘 ' + h + '时' + m + '分';
     }
 }
 
 // Utility
+// Tabs use pure CSS radio buttons - no JS needed
 function showToast(msg) {
     var t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
     setTimeout(function(){ t.classList.remove('show'); }, 2000);
 }
 
-// Init
-async function init() {
-    await discoverApi();
-    updateCountdown(); setInterval(updateCountdown, 60000);
-
-    // Load all data
-    await Promise.all([loadPlan(), loadBuyWatch(), loadLogs()]);
-
-    // Connection status
-    var el = document.getElementById('connStatus');
-    if (API) {
-        el.innerHTML = '<span class="conn-dot conn-on"></span>已连接 · ' + API.replace('http://','').replace(':8766','');
-        // Load fund/bot meta
-        var plan = await apiGet('/api/plan');
-        if (plan) {
-            var lines = (plan.content||'').split('\n');
-            var fundLine = '', botLine = '';
-            for (var i = 0; i < lines.length; i++) {
-                if (lines[i].indexOf('总资产')>=0 || lines[i].indexOf('资金')>=0) fundLine = lines[i].replace(/\*/g,'').trim().slice(0,50);
-                if (lines[i].indexOf('V12')>=0) botLine = lines[i].replace(/\*/g,'').trim().slice(0,50);
-            }
-            document.getElementById('fundLine').textContent = fundLine || '---';
-            document.getElementById('botLine').textContent = botLine || '---';
-        }
-    } else {
-        el.innerHTML = '<span class="conn-dot conn-off"></span>离线 · 使用缓存';
-    }
-    setInterval(async function() {
-        if (!API) { await discoverApi(); if (API) init(); }
-    }, 30000);
-
-    // Refresh data every 2 minutes
-    setInterval(function() { loadPlan(); loadBuyWatch(); loadLogs(); }, 120000);
+// Install PWA
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault(); deferredPrompt = e;
+    var b = document.createElement('div');
+    b.className = 'install-banner'; b.style.display = 'flex'; b.innerHTML = '<span>📱 安装到桌面</span><button onclick="installApp()" style="background:#FF9F0A;color:#05080C;border:none;padding:6px 14px;border-radius:4px;font-weight:700;font-family:Consolas,monospace;cursor:pointer">安装</button>';
+    document.body.insertBefore(b, document.body.firstChild);
+});
+function installApp() {
+    if (deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(r){ }); }
 }
 
-document.getElementById('verTag').textContent = 'v12';
-if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js?t=12'); }
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js?t=11'); }
+document.getElementById('verTag').textContent = 'v11';
+// Load quarantine state
+(function() {
+    if (API) {
+        apiCall('/api/quarantine', 'GET').then(function(q) {
+            if (q && q.active) startQCountdown(q.expires_at);
+        });
+    }
+})();
 </script>
 </body></html>
