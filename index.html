@@ -126,48 +126,55 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 
 <div class="tab-panel" id="tp0">
-    <div class="item hold executed critical" data-id="365">
-            <div class="item-left"><span class="badge badge-hold">P0 市价清仓</span></div>
+    <div class="item reduce" data-id="378">
+            <div class="item-left"><span class="badge badge-reduce">减仓</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-tag done-tag">✓</span></div>
-                <div class="item-meta">剩余尾仓清理(今日已大幅减仓，浮亏为会计效应)</div>
+                <div class="item-head"><span class="code">000988</span> <span class="name"></span> <span class="exec-btn-placeholder" onclick="execItem(378)">执行</span></div>
+                <div class="item-meta">三方一致:单票70%在TREND_DOWN中不可接受</div>
             </div>
-            <span class="override-link" onclick="openOverride(365,'603019','中科曙光')" title="覆盖">✎</span>
-        </div><div class="item hold executed critical" data-id="366">
-            <div class="item-left"><span class="badge badge-hold">P0 市价减仓2500股</span></div>
+            <span class="override-link" onclick="openOverride(378,'000988','')" title="覆盖">✎</span>
+        </div><div class="item sell" data-id="379">
+            <div class="item-left"><span class="badge badge-sell">清仓</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-tag done-tag">✓</span></div>
-                <div class="item-meta">集中度68%→45%，条件单142止损</div>
+                <div class="item-head"><span class="code">002916</span> <span class="name"></span> <span class="exec-btn-placeholder" onclick="execItem(379)">执行</span></div>
+                <div class="item-meta">买入逻辑失败+现金枯竭</div>
             </div>
-            <span class="override-link" onclick="openOverride(366,'000988','华工科技')" title="覆盖">✎</span>
-        </div><div class="item hold executed" data-id="367">
-            <div class="item-left"><span class="badge badge-hold">P1 条件减仓200股</span></div>
+            <span class="override-link" onclick="openOverride(379,'002916','')" title="覆盖">✎</span>
+        </div><div class="item sell" data-id="380">
+            <div class="item-left"><span class="badge badge-sell">清仓</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-tag done-tag">✓</span></div>
-                <div class="item-meta">不等反弹，340附近/市价</div>
+                <div class="item-head"><span class="code">002179</span> <span class="name"></span> <span class="exec-btn-placeholder" onclick="execItem(380)">执行</span></div>
+                <div class="item-meta">买入逻辑失败</div>
             </div>
-            <span class="override-link" onclick="openOverride(367,'002916','深南电路')" title="覆盖">✎</span>
-        </div><div class="item hold executed" data-id="368">
-            <div class="item-left"><span class="badge badge-hold">P1 市价减仓500-700股</span></div>
+            <span class="override-link" onclick="openOverride(380,'002179','')" title="覆盖">✎</span>
+        </div><div class="item sell" data-id="381">
+            <div class="item-left"><span class="badge badge-sell">清仓</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002179</span> <span class="name">中航光电</span> <span class="exec-tag done-tag">✓</span></div>
-                <div class="item-meta">保留300-500底仓</div>
+                <div class="item-head"><span class="code">603019</span> <span class="name"></span> <span class="exec-btn-placeholder" onclick="execItem(381)">执行</span></div>
+                <div class="item-meta">深套30%止损清仓</div>
             </div>
-            <span class="override-link" onclick="openOverride(368,'002179','中航光电')" title="覆盖">✎</span>
-        </div><div class="item hold executed" data-id="369">
-            <div class="item-left"><span class="badge badge-hold">P2 持有+止损</span></div>
+            <span class="override-link" onclick="openOverride(381,'603019','')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="382">
+            <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002364</span> <span class="name">中远海科</span> <span class="exec-tag done-tag">✓</span></div>
-                <div class="item-meta">跌破50条件单止损</div>
+                <div class="item-head"><span class="code">600183</span> <span class="name"></span> <span class="exec-btn-placeholder" onclick="execItem(382)">执行</span></div>
+                <div class="item-meta">仓位适中微亏,持有观察</div>
             </div>
-            <span class="override-link" onclick="openOverride(369,'002364','中远海科')" title="覆盖">✎</span>
-        </div><div class="item hold executed" data-id="370">
-            <div class="item-left"><span class="badge badge-hold">P2 持有+止损</span></div>
+            <span class="override-link" onclick="openOverride(382,'600183','')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="383">
+            <div class="item-left"><span class="badge badge-hold">持有</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> <span class="exec-tag done-tag">✓</span></div>
-                <div class="item-meta">130不破保留</div>
+                <div class="item-head"><span class="code">002364</span> <span class="name"></span> <span class="exec-btn-placeholder" onclick="execItem(383)">执行</span></div>
+                <div class="item-meta">小仓位观察</div>
             </div>
-            <span class="override-link" onclick="openOverride(370,'600183','生益科技')" title="覆盖">✎</span>
+            <span class="override-link" onclick="openOverride(383,'002364','')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="384">
+            <div class="item-left"><span class="badge badge-hold">观察</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">600584</span> <span class="name"></span> <span class="exec-btn-placeholder" onclick="execItem(384)">执行</span></div>
+                <div class="item-meta"></div>
+            </div>
+            <span class="override-link" onclick="openOverride(384,'600584','')" title="覆盖">✎</span>
         </div>
 </div>
 <div class="tab-panel" id="tp1">
