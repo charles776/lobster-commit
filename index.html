@@ -106,15 +106,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </style></head>
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
-    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-06 · 周六</div><div class="countdown" id="countdown">距离开盘 周一 06/08</div></div></div></div>
-    <div class="state-badge state-prep" id="stateBadge">PREP</div>
+    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-07 · 周日</div><div class="countdown" id="countdown">距离开盘 周一 06/08</div></div></div></div>
+    <div class="state-badge state-locked" id="stateBadge">LOCKED 🔒</div>
 </div>
 
 <div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace"></div>
 <div style="text-align:center;padding:4px;font-size:8px;font-family:monospace"><span id="verTag" style="color:#485268">v?</span> · <a href="javascript:navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));caches.keys().then(k=>k.forEach(x=>caches.delete(x)));location.reload();" style="color:#FF3B30;text-decoration:none">硬核重置</a></div>
 
 
-
+<img src="./assets/banner.png" style="display:block;width:calc(100% - 32px);margin:8px 16px;border-radius:6px;opacity:.8">
 
 <input type="radio" class="tab-radio" name="tab" id="tr0" checked>
 <input type="radio" class="tab-radio" name="tab" id="tr1">
@@ -126,74 +126,32 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 
 <div class="tab-panel" id="tp0">
-    <div class="item hold critical" data-id="365">
-            <div class="item-left"><span class="badge badge-hold">P0 市价清仓</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" onclick="execItem(365)">执行</span></div>
-                <div class="item-meta">剩余尾仓清理(今日已大幅减仓，浮亏为会计效应)</div>
-            </div>
-            <span class="override-link" onclick="openOverride(365,'603019','中科曙光')" title="覆盖">✎</span>
-        </div><div class="item hold critical" data-id="366">
-            <div class="item-left"><span class="badge badge-hold">P0 市价减仓2500股</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(366)">执行</span></div>
-                <div class="item-meta">集中度68%→45%，条件单142止损</div>
-            </div>
-            <span class="override-link" onclick="openOverride(366,'000988','华工科技')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="367">
-            <div class="item-left"><span class="badge badge-hold">P1 条件减仓200股</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-btn-placeholder" onclick="execItem(367)">执行</span></div>
-                <div class="item-meta">不等反弹，340附近/市价</div>
-            </div>
-            <span class="override-link" onclick="openOverride(367,'002916','深南电路')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="368">
-            <div class="item-left"><span class="badge badge-hold">P1 市价减仓500-700股</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">002179</span> <span class="name">中航光电</span> <span class="exec-btn-placeholder" onclick="execItem(368)">执行</span></div>
-                <div class="item-meta">保留300-500底仓</div>
-            </div>
-            <span class="override-link" onclick="openOverride(368,'002179','中航光电')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="369">
-            <div class="item-left"><span class="badge badge-hold">P2 持有+止损</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">002364</span> <span class="name">中远海科</span> <span class="exec-btn-placeholder" onclick="execItem(369)">执行</span></div>
-                <div class="item-meta">跌破50条件单止损</div>
-            </div>
-            <span class="override-link" onclick="openOverride(369,'002364','中远海科')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="370">
-            <div class="item-left"><span class="badge badge-hold">P2 持有+止损</span></div>
-            <div class="item-main">
-                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> <span class="exec-btn-placeholder" onclick="execItem(370)">执行</span></div>
-                <div class="item-meta">130不破保留</div>
-            </div>
-            <span class="override-link" onclick="openOverride(370,'600183','生益科技')" title="覆盖">✎</span>
-        </div>
+    <div style="text-align:center;padding:40px 20px"><img src="./assets/empty.png" style="width:120px;height:auto;opacity:.4;margin-bottom:12px"><div style="color:#7A8290;font-size:12px;font-family:monospace">暂无计划项</div></div>
 </div>
 <div class="tab-panel" id="tp1">
     <div class="buy-item">
-            <div class="bw-top"><span class="code">603893</span> 瑞芯微<span class="eta">等TREND_UP或个股trend>=3</span></div>
-            <div class="trigger">B类舒服买点 | 回踩185-190(当前MA60附近) + RSI回落至45以下</div>
+            <div class="bw-top"><span class="code">600905</span> 三峡能源<span class="eta">周一-周三</span></div>
+            <div class="trigger">C类,bonus=10,trend=3,score=74.2,引擎"舒服买点C类",TREND_DOWN时0.5x建仓</div>
         </div><div class="buy-item">
-            <div class="bw-top"><span class="code">002230</span> 科大讯飞<span class="eta">等TREND_UP确认</span></div>
-            <div class="trigger">B类舒服买点 | 回踩46-48(支撑区间) + RSI<55</div>
+            <div class="bw-top"><span class="code">600118</span> 中国卫星<span class="eta">等TREND_UP确认或回踩确认</span></div>
+            <div class="trigger">回踩80-82(MA5附近)确认支撑，距60日高点-29%+跌破MA60+RSI=35</div>
         </div><div class="buy-item">
-            <div class="bw-top"><span class="code">002957</span> 科瑞技术<span class="eta">TREND_DOWN中0.5x左侧试仓</span></div>
-            <div class="trigger">C类舒服买点 | RSI=12极端超卖左侧 | 止损:前低-3%或RSI<15持续3日</div>
+            <div class="bw-top"><span class="code">002436</span> 兴森科技<span class="eta">等待TREND_UP</span></div>
+            <div class="trigger">B类,bonus=9,trend=3,score=78.3(全场最高),等TREND_UP确认</div>
         </div><div class="buy-item">
-            <div class="bw-top"><span class="code">603986</span> 兆易创新<span class="eta">等TREND_UP确认</span></div>
-            <div class="trigger">B类舒服买点 | 回踩460-480(支撑区间) + RSI回落至55以下</div>
+            <div class="bw-top"><span class="code">002384</span> 东山精密<span class="eta">等待TREND_UP</span></div>
+            <div class="trigger">B类,bonus=9,trend=3,score=78.0,R3争议2胜,等TREND_UP确认</div>
         </div><div class="buy-item">
-            <div class="bw-top"><span class="code">300496</span> 中科创达<span class="eta">等大盘TREND_UP确认后1x建仓</span></div>
-            <div class="trigger">B类舒服买点 | 等TREND_UP后回踩 | 止损:建仓价-5%</div>
+            <div class="bw-top"><span class="code">600885</span> 宏发股份<span class="eta">等待TREND_UP</span></div>
+            <div class="trigger">B类,bonus=9,trend=3,score=69.6,引擎"舒服买点B类",等TREND_UP确认</div>
         </div><div class="buy-item">
-            <div class="bw-top"><span class="code">002138</span> 顺络电子<span class="eta">等大盘TREND_UP确认后1x建仓</span></div>
-            <div class="trigger">B类舒服买点 | 等TREND_UP后回踩 | 止损:建仓价-5%</div>
+            <div class="bw-top"><span class="code">600110</span> 诺德股份<span class="eta">等待TREND_UP</span></div>
+            <div class="trigger">B类,bonus=9,trend=3,score=73.2,R3争议3胜,等TREND_UP确认</div>
         </div>
 </div>
 <div class="tab-panel" id="tp2">
     <div class="stats-row">
-        <div class="stat-card"><div class="v" style="color:#30D158">0</div><div class="l">连续遵守</div></div>
+        <div class="stat-card"><div class="v" style="color:#30D158">2</div><div class="l">连续遵守</div></div>
         <div class="stat-card"><div class="v" style="color:#FF3B30">4</div><div class="l">本月覆盖</div></div>
         <div class="stat-card"><div class="v" style="color:#0A84FF">6</div><div class="l">候选</div></div>
     </div>
@@ -202,11 +160,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 
 <div class="float-lock">
-    <div class="lock-btn " id="lockBtn"
+    <div class="lock-btn locked" id="lockBtn"
          ontouchstart="startHold()" ontouchend="cancelHold()" ontouchmove="cancelHold()"
          onmousedown="startHold()" onmouseup="cancelHold()" onmouseleave="cancelHold()">
-        <span style="position:relative;z-index:1">🔓 封印计划</span>
-        <div class="sub" style="position:relative;z-index:1">按住3秒封印</div>
+        <span style="position:relative;z-index:1">🔒 已封印</span>
+        <div class="sub" style="position:relative;z-index:1">盘中照此执行</div>
         <div class="progress" id="lockProgress"></div>
     </div>
 </div>
@@ -242,7 +200,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 <script>
 var API = 'http://192.168.1.3:8766';
 var API_CANDIDATES = ["http://192.168.1.3:8766", "http://192.168.43.100:8766", "http://192.168.43.101:8766", "http://172.20.10.2:8766", "http://172.20.10.3:8766", "http://127.0.0.1:8766"];
-var locked = false;
+var locked = true;
 var overrideItemId = null, selectedTag = '';
 var qTimer = null, isOnline = false;
 var localState = {};
