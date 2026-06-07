@@ -305,7 +305,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHe
 <div style="text-align:center;padding:4px;font-size:8px;font-family:monospace"><span id=\"verTag\" style=\"color:#485268\">v?</span> · <a href=\"javascript:navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));caches.keys().then(k=>k.forEach(x=>caches.delete(x)));location.reload();\" style=\"color:#FF3B30;text-decoration:none\">硬核重置</a></div>
 {offline_note}
 {q_html}
-{'<img src="./assets/banner.png" style="display:block;width:calc(100% - 32px);margin:8px 16px;border-radius:6px;opacity:.8">' if plan_locked else ''}
+<!-- banner removed per UI spec §十三 -->
 
 <input type="radio" class="tab-radio" name="tab" id="tr0" checked>
 <input type="radio" class="tab-radio" name="tab" id="tr1">
