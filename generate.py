@@ -436,7 +436,8 @@ async function apiCall(path, method, body) {{
 
 async function syncToServer() {{
     if (!isOnline) return;
-    if (localState.locked) await apiCall('/api/plan/lock', 'POST', {{content:'',items:[]}});
+    // 锁不由客户端同步 — 只有用户长按封印按钮才能锁
+	    // (localState.locked) sync removed per user request
     for (var i = 0; i < localState.executed.length; i++) await apiCall('/api/plan/execute', 'POST', {{id: localState.executed[i]}});
     for (var j = 0; j < localState.overridden.length; j++) {{
         var ov = localState.overridden[j];
