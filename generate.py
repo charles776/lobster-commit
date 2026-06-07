@@ -378,7 +378,7 @@ var overrideItemId = null, selectedTag = '';
 var qTimer = null, isOnline = false;
 var localState = {{}};
 try {{ localState = JSON.parse(localStorage.getItem('commit_state') || '{{"locked":false,"executed":[],"overridden":[]}}'); }} catch(e) {{}};
-if (localState.locked) locked = true;
+// 锁以服务器为准，不用 localStorage 覆盖
 
 function saveState() {{ localStorage.setItem('commit_state', JSON.stringify(localState)); }}
 function isExecuted(id) {{ return localState.executed.indexOf(id) !== -1; }}
