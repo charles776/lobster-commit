@@ -142,10 +142,15 @@ def build(data):
         status = it.get('status','pending'); item_id = it.get('id', 0)
         is_critical = it.get('critical', False)
 
-        if a in ('清仓','卖出'): row_cls = 'sell'; badge_cls = 'badge-sell'
-        elif a == '减仓': row_cls = 'reduce'; badge_cls = 'badge-reduce'
-        elif a == '买入': row_cls = 'buy'; badge_cls = 'badge-buy'
-        else: row_cls = 'hold'; badge_cls = 'badge-hold'
+        # Short badge label from action text
+        al = str(a)
+        if '清' in al or al == '卖出': badge_text, row_cls, badge_cls = '清', 'sell', 'badge-sell'
+        elif '减' in al: badge_text, row_cls, badge_cls = '减', 'reduce', 'badge-reduce'
+        elif '买' in al: badge_text, row_cls, badge_cls = '买', 'buy', 'badge-buy'
+        else: badge_text, row_cls, badge_cls = '持', 'hold', 'badge-hold'
+
+        # Short badge + action on its own line for mobile readability
+        action_line = f'<div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">{a[:80]}</div>' if len(al) > 4 else ''
 
         if status == 'done':
             row_cls += ' executed'
@@ -154,16 +159,15 @@ def build(data):
             row_cls += ' overridden'
             action_html = f'<span class="exec-tag override-tag">⚠</span>'
         else:
-            # Always render execute button, hidden by default, shown when locked
             action_html = f'<span class="exec-btn-placeholder" onclick="execItem({item_id})">执行</span>'
 
         crit_border = ' critical' if is_critical else ''
 
         items_html += f'''<div class="item {row_cls}{crit_border}" data-id="{item_id}">
-            <div class="item-left"><span class="badge {badge_cls}">{a}</span></div>
+            <div class="item-left"><span class="badge {badge_cls}">{badge_text}</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">{code}</span> <span class="name">{name}</span> {action_html}</div>
-                <div class="item-meta">{reason}</div>
+                <div class="item-head"><span class="code">{code}</span> <span class="name">{name}</span> {action_html}</div>{action_line}
+                <div class="item-meta">{reason[:100]}</div>
             </div>
             <span class="override-link" onclick="openOverride({item_id},'{code}','{name}')" title="覆盖">✎</span>
         </div>'''
