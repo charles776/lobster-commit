@@ -106,7 +106,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </style></head>
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
-    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-09 · 周二</div><div class="countdown" id="countdown">距离开盘 10时22分</div></div></div></div>
+    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-09 · 周二</div><div class="countdown" id="countdown">距离开盘 10时9分</div></div></div></div>
     <div class="state-badge state-locked" id="stateBadge">LOCKED 🔒</div>
 </div>
 
@@ -120,131 +120,294 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 <input type="radio" class="tab-radio" name="tab" id="tr1">
 <input type="radio" class="tab-radio" name="tab" id="tr2">
 <div class="tab-bar">
-    <label class="tab-label" for="tr0">📋 计划</label>
+    <label class="tab-label" for="tr0">📊 双轨</label>
     <label class="tab-label" for="tr1">🎯 候选</label>
     <label class="tab-label" for="tr2">📊 状态</label>
 </div>
 
 <div class="tab-panel" id="tp0">
-    <div class="item reduce critical" data-id="469">
+    <style>
+.dt-card{margin:8px 0;background:#0D1117;border:1px solid #1C2532;border-radius:4px;overflow:hidden}
+.dt-head{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid #1C2532}
+.dt-name{font-size:13px;font-weight:700}
+.dt-code{font-family:'Cascadia Code','Consolas',monospace;font-size:10px;color:#0A84FF;margin-right:6px}
+.dt-meta{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;color:#7A8290;text-align:right}
+.dt-tracks{display:flex;gap:0}
+.dt-track{flex:1;padding:8px 10px;font-size:10px;line-height:1.6;border-top:1px solid rgba(28,37,50,.3)}
+.dt-track-profit{background:rgba(48,209,88,.03);border-left:3px solid #30D158}
+.dt-track-risk{background:rgba(255,59,48,.03);border-left:3px solid #FF3B30}
+.dt-track-title{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.dt-track-profit .dt-track-title{color:#30D158}
+.dt-track-risk .dt-track-title{color:#FF3B30}
+.dt-row{color:#E8ECF2;margin-bottom:2px}
+.dt-row .dt-label{color:#7A8290;font-size:9px;margin-right:4px}
+.dt-row .dt-val{font-family:'Cascadia Code','Consolas',monospace;font-size:10px}
+.dt-row .dt-val-up{color:#30D158}
+.dt-row .dt-val-dn{color:#FF3B30}
+.dt-row .dt-val-amber{color:#FF9F0A}
+.dt-ladder{display:flex;flex-wrap:wrap;gap:3px;margin:3px 0}
+.dt-ladder span{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;padding:1px 5px;border-radius:2px;background:rgba(48,209,88,.08);color:#30D158;border:1px solid rgba(48,209,88,.15)}
+.dt-time-section{margin:10px 0;background:#0D1117;border:1px solid #1C2532;border-radius:4px;overflow:hidden}
+.dt-time-head{padding:8px 12px;background:rgba(255,159,10,.05);border-bottom:1px solid #1C2532;font-family:'Cascadia Code','Consolas',monospace;font-size:10px;font-weight:700;color:#FF9F0A;letter-spacing:1px}
+.dt-time-row{display:flex;align-items:flex-start;padding:6px 12px;border-bottom:1px solid rgba(28,37,50,.2);font-size:10px;gap:8px}
+.dt-time-row:last-child{border-bottom:none}
+.dt-time-row.warn{background:rgba(255,59,48,.04)}
+.dt-time-row.highlight{background:rgba(10,132,255,.04)}
+.dt-time-win{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;color:#0A84FF;min-width:65px;flex-shrink:0}
+.dt-time-lbl{font-size:9px;color:#7A8290;min-width:50px;flex-shrink:0}
+.dt-time-act{color:#E8ECF2;flex:1;line-height:1.4}
+.dt-scenario{margin:6px 0;background:#0D1117;border:1px solid #1C2532;border-radius:4px;overflow:hidden}
+.dt-sc-head{padding:7px 12px;background:rgba(10,132,255,.04);border-bottom:1px solid #1C2532;font-size:11px;font-weight:600;color:#0A84FF}
+.dt-sc-body{display:flex}
+.dt-sc-col{flex:1;padding:6px 10px;font-size:10px;line-height:1.5}
+.dt-sc-col-profit{border-left:2px solid #30D158;color:#E8ECF2}
+.dt-sc-col-risk{border-left:2px solid #FF3B30;color:#E8ECF2}
+.dt-sc-label{font-family:'Cascadia Code','Consolas',monospace;font-size:8px;color:#7A8290;margin-bottom:2px;letter-spacing:.5px}
+.dt-iron{margin:8px 0;padding:8px 12px;background:rgba(255,159,10,.04);border:1px solid rgba(255,159,10,.12);border-radius:4px}
+.dt-iron-title{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;font-weight:700;color:#FF9F0A;letter-spacing:1px;margin-bottom:4px}
+.dt-iron-item{font-size:10px;color:#E8ECF2;line-height:1.6;padding-left:10px;position:relative}
+.dt-iron-item:before{content:"2";color:#FF9F0A;position:absolute;left:0}
+.dt-section-title{font-size:9px;font-weight:700;color:#7A8290;letter-spacing:1px;font-family:'Cascadia Code','Consolas',monospace;margin:12px 0 6px;padding:0 2px}
+.bw-prereq{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;color:#FF9F0A;margin-top:3px}
+</style><div class="dt-card">
+  <div class="dt-head">
+    <div><span class="dt-code">000988</span><span class="dt-name">华工科技</span></div>
+    <div class="dt-meta">3600股 | 72.7% | <span style="color:#FF3B30">-4.4%</span></div>
+  </div>
+  <div class="dt-tracks">
+    <div class="dt-track dt-track-profit">
+      <div class="dt-track-title">▲ 盈利轨</div>
+      <div class="dt-row"><span class="dt-label">三梯次</span><div class="dt-ladder"><span>158卖800股</span><span>162卖800股</span><span>166卖800股</span></div></div>
+      <div class="dt-row"><span class="dt-label">剩余</span><span class="dt-val">留1200股(≤15%)</span></div>
+      <div class="dt-row"><span class="dt-label">倒T</span><span class="dt-val dt-val-amber">高开158.5卖500股→回踩154.5买回</span></div>
+      <div class="dt-row"><span class="dt-label">恐慌低点</span><span class="dt-val dt-val-up">148-150不卖，等15分钟反弹</span></div>
+    </div>
+    <div class="dt-track dt-track-risk">
+      <div class="dt-track-title">▼ 风控轨</div>
+      <div class="dt-row"><span class="dt-label">硬止损</span><span class="dt-val dt-val-dn">146.36(条件单)</span></div>
+      <div class="dt-row"><span class="dt-label">趋势破位</span><span class="dt-val dt-val-dn">跌破148且15分钟未收回→清仓</span></div>
+      <div class="dt-row"><span class="dt-label">集中度</span><span class="dt-val">今日减≥1600股(≤40%)→6/11前≤15%</span></div>
+    </div>
+  </div>
+</div><div class="dt-card">
+  <div class="dt-head">
+    <div><span class="dt-code">002916</span><span class="dt-name">深南电路</span></div>
+    <div class="dt-meta">200股 | 10.3% | <span style="color:#30D158">+10.3%</span></div>
+  </div>
+  <div class="dt-tracks">
+    <div class="dt-track dt-track-profit">
+      <div class="dt-track-title">▲ 盈利轨</div>
+      <div class="dt-row"><span class="dt-label">三梯次</span><div class="dt-ladder"><span>400卖50股</span><span>410卖50股</span><span>420卖50股</span></div></div>
+      <div class="dt-row"><span class="dt-label">剩余</span><span class="dt-val">剩50股底仓</span></div>
+      <div class="dt-row"><span class="dt-label">倒T</span><span class="dt-val dt-val-amber">冲高405以上卖100股→回踩395买回</span></div>
+      <div class="dt-row"><span class="dt-label">恐慌低点</span><span class="dt-val dt-val-up">380以下不卖</span></div>
+    </div>
+    <div class="dt-track dt-track-risk">
+      <div class="dt-track-title">▼ 风控轨</div>
+      <div class="dt-row"><span class="dt-label">硬止损</span><span class="dt-val dt-val-dn">323(参考370)</span></div>
+      <div class="dt-row"><span class="dt-label">趋势破位</span><span class="dt-val dt-val-dn">跌破370且无承接→清仓</span></div>
+      <div class="dt-row"><span class="dt-label">集中度</span><span class="dt-val">健康</span></div>
+    </div>
+  </div>
+</div><div class="dt-card">
+  <div class="dt-head">
+    <div><span class="dt-code">002281</span><span class="dt-name">光迅科技</span></div>
+    <div class="dt-meta">300股 | 8.2% | <span style="color:#30D158">+0.6%</span></div>
+  </div>
+  <div class="dt-tracks">
+    <div class="dt-track dt-track-profit">
+      <div class="dt-track-title">▲ 盈利轨</div>
+      <div class="dt-row"><span class="dt-label">三梯次</span><div class="dt-ladder"><span>215卖100股</span><span>220卖100股</span><span>225卖100股</span></div></div>
+      <div class="dt-row"><span class="dt-label">剩余</span><span class="dt-val">清仓</span></div>
+      <div class="dt-row"><span class="dt-label">倒T</span><span class="dt-val dt-val-amber">高开213卖100股→回踩208买回</span></div>
+      <div class="dt-row"><span class="dt-label">恐慌低点</span><span class="dt-val dt-val-up">200-202不卖</span></div>
+    </div>
+    <div class="dt-track dt-track-risk">
+      <div class="dt-track-title">▼ 风控轨</div>
+      <div class="dt-row"><span class="dt-label">硬止损</span><span class="dt-val dt-val-dn">188.06</span></div>
+      <div class="dt-row"><span class="dt-label">趋势破位</span><span class="dt-val dt-val-dn">跌破200且半小时未收复→清仓</span></div>
+      <div class="dt-row"><span class="dt-label">集中度</span><span class="dt-val">正常</span></div>
+    </div>
+  </div>
+</div><div class="dt-card">
+  <div class="dt-head">
+    <div><span class="dt-code">603019</span><span class="dt-name">中科曙光</span></div>
+    <div class="dt-meta">500股 | 5.2% | <span style="color:#30D158">+0.5%</span></div>
+  </div>
+  <div class="dt-tracks">
+    <div class="dt-track dt-track-profit">
+      <div class="dt-track-title">▲ 盈利轨</div>
+      <div class="dt-row"><span class="dt-label">三梯次</span><div class="dt-ladder"><span>82卖200股</span><span>84卖150股</span><span>86卖150股</span></div></div>
+      <div class="dt-row"><span class="dt-label">剩余</span><span class="dt-val">清仓</span></div>
+      <div class="dt-row"><span class="dt-label">倒T</span><span class="dt-val dt-val-amber">冲高81.5卖200股→回踩79.5买回</span></div>
+      <div class="dt-row"><span class="dt-label">恐慌低点</span><span class="dt-val dt-val-up">78以下不卖</span></div>
+    </div>
+    <div class="dt-track dt-track-risk">
+      <div class="dt-track-title">▼ 风控轨</div>
+      <div class="dt-row"><span class="dt-label">硬止损</span><span class="dt-val dt-val-dn">72.01</span></div>
+      <div class="dt-row"><span class="dt-label">趋势破位</span><span class="dt-val dt-val-dn">跌破77且放量→清仓</span></div>
+      <div class="dt-row"><span class="dt-label">集中度</span><span class="dt-val">正常</span></div>
+    </div>
+  </div>
+</div><div class="dt-card">
+  <div class="dt-head">
+    <div><span class="dt-code">002364</span><span class="dt-name">中恒电气</span></div>
+    <div class="dt-meta">500股 | 3.6% | <span style="color:#FF3B30">-1.5%</span></div>
+  </div>
+  <div class="dt-tracks">
+    <div class="dt-track dt-track-profit">
+      <div class="dt-track-title">▲ 盈利轨</div>
+      <div class="dt-row"><span class="dt-label">三梯次</span><div class="dt-ladder"><span>57卖200股</span><span>59卖150股</span><span>61卖150股</span></div></div>
+      <div class="dt-row"><span class="dt-label">剩余</span><span class="dt-val">清仓</span></div>
+      <div class="dt-row"><span class="dt-label">倒T</span><span class="dt-val dt-val-amber">高开56卖200股→回踩54.5买回</span></div>
+      <div class="dt-row"><span class="dt-label">恐慌低点</span><span class="dt-val dt-val-up">53以下不卖</span></div>
+    </div>
+    <div class="dt-track dt-track-risk">
+      <div class="dt-track-title">▼ 风控轨</div>
+      <div class="dt-row"><span class="dt-label">硬止损</span><span class="dt-val dt-val-dn">50.39</span></div>
+      <div class="dt-row"><span class="dt-label">趋势破位</span><span class="dt-val dt-val-dn">跌破53且无抵抗→清仓</span></div>
+      <div class="dt-row"><span class="dt-label">集中度</span><span class="dt-val">正常</span></div>
+    </div>
+  </div>
+</div><div class="dt-time-section"><div class="dt-time-head">⏱ 时间窗口执行计划</div><div class="dt-time-row"><span class="dt-time-win">9:15-9:25</span><span class="dt-time-lbl">集合竞价</span><span class="dt-time-act">观察华工竞价量比，>158挂800股卖出(限价158.5)</span></div><div class="dt-time-row warn"><span class="dt-time-win">9:30-9:45</span><span class="dt-time-lbl">恐慌窗口</span><span class="dt-time-act">⚠ 不卖。华工低开148-150坚定持有，等反弹</span></div><div class="dt-time-row highlight"><span class="dt-time-win">9:45-10:30</span><span class="dt-time-lbl">反弹窗口</span><span class="dt-time-act">华工158卖800→深南400卖50→光迅215卖100→中科82卖200→中恒57卖200</span></div><div class="dt-time-row"><span class="dt-time-win">10:30-11:30</span><span class="dt-time-lbl">上午中段</span><span class="dt-time-act">观察量能，创业板放量→等第二梯次；冲高回落→暂停</span></div><div class="dt-time-row"><span class="dt-time-win">13:00-14:30</span><span class="dt-time-lbl">下午</span><span class="dt-time-act">华工162卖800→深南410卖50→光迅220卖100→中科84卖150→中恒59卖150</span></div><div class="dt-time-row warn"><span class="dt-time-win">14:30-14:50</span><span class="dt-time-lbl">尾盘决策</span><span class="dt-time-act">华工减仓未达1600股→强制卖800。触发趋势破位→清仓。大盘跳水→暂停</span></div></div><div class="dt-section-title">三情景双轨变体</div><div class="dt-scenario">
+  <div class="dt-sc-head">大幅低开(>-3%)</div>
+  <div class="dt-sc-body">
+    <div class="dt-sc-col dt-sc-col-profit"><div class="dt-sc-label">盈利轨</div>华工开149以下→不卖，9:45后拉起至154做倒T(卖500@155→买回150)</div>
+    <div class="dt-sc-col dt-sc-col-risk"><div class="dt-sc-label">风控轨</div>华工跌破148且15分钟不收回→市价减仓2000股</div>
+  </div>
+</div><div class="dt-scenario">
+  <div class="dt-sc-head">小幅低开震荡</div>
+  <div class="dt-sc-body">
+    <div class="dt-sc-col dt-sc-col-profit"><div class="dt-sc-label">盈利轨</div>华工开152-154→开盘卖300(153.5)→盘中下探150.5买回(倒T赚3元)</div>
+    <div class="dt-sc-col dt-sc-col-risk"><div class="dt-sc-label">风控轨</div>华工跌破150视为弱反弹→14:00前未站回152则减1200股</div>
+  </div>
+</div><div class="dt-scenario">
+  <div class="dt-sc-head">平开或高开</div>
+  <div class="dt-sc-body">
+    <div class="dt-sc-col dt-sc-col-profit"><div class="dt-sc-label">盈利轨</div>华工高开158以上→直接卖800(158.5)。冲高162→第二梯次。倒T: 162卖300→158买回</div>
+    <div class="dt-sc-col dt-sc-col-risk"><div class="dt-sc-label">风控轨</div>高开低走30分钟内回落>1.5%→暂停等二次冲高。止损上移至152</div>
+  </div>
+</div><div class="dt-iron"><div class="dt-iron-title">铁律</div><div class="dt-iron-item">恐慌低点不卖，15分钟不收复则转风控</div><div class="dt-iron-item">现金到位前不做任何买入（现金仅337元）</div><div class="dt-iron-item">只能做倒T（先卖后买），不能做正T</div></div><div class="dt-iron" style="border-color:rgba(48,209,88,.12);background:rgba(48,209,88,.03)"><div class="dt-iron-title" style="color:#30D158">收益目标</div><div class="dt-iron-item" style="color:#E8ECF2">最大振幅: 华工±7%(148-166)</div><div class="dt-iron-item" style="color:#E8ECF2">倒T收益: 倒T 2笔×1500元=3000元</div><div class="dt-iron-item" style="color:#E8ECF2">vs机械止损: 反弹减仓比机械止损多赚1.86-2.5万</div></div>
+    <div class="dt-section-title">执行项</div>
+    <div class="item reduce critical" data-id="497">
             <div class="item-left"><span class="badge badge-reduce">减</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(469)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">反弹减仓①</div>
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(497)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">反弹减仓①</div>
                 <div class="item-meta">158卖800股(第一梯次)</div>
             </div>
-            <span class="override-link" onclick="openOverride(469,'000988','华工科技')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="470">
+            <span class="override-link" onclick="openOverride(497,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item reduce" data-id="498">
             <div class="item-left"><span class="badge badge-reduce">减</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(470)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">反弹减仓②</div>
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(498)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">反弹减仓②</div>
                 <div class="item-meta">162卖800股(第二梯次)</div>
             </div>
-            <span class="override-link" onclick="openOverride(470,'000988','华工科技')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="471">
+            <span class="override-link" onclick="openOverride(498,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item reduce" data-id="499">
             <div class="item-left"><span class="badge badge-reduce">减</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(471)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">反弹减仓③</div>
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(499)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">反弹减仓③</div>
                 <div class="item-meta">166卖800股(第三梯次)，留1200股底仓</div>
             </div>
-            <span class="override-link" onclick="openOverride(471,'000988','华工科技')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="472">
+            <span class="override-link" onclick="openOverride(499,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="500">
             <div class="item-left"><span class="badge badge-hold">持</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(472)">执行</span></div>
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(500)">执行</span></div>
                 <div class="item-meta">高开158.5卖500股→回踩154.5-155.5买回</div>
             </div>
-            <span class="override-link" onclick="openOverride(472,'000988','华工科技')" title="覆盖">✎</span>
-        </div><div class="item hold critical" data-id="473">
+            <span class="override-link" onclick="openOverride(500,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item hold critical" data-id="501">
             <div class="item-left"><span class="badge badge-hold">持</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(473)">执行</span></div>
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(501)">执行</span></div>
                 <div class="item-meta">146.36条件单</div>
             </div>
-            <span class="override-link" onclick="openOverride(473,'000988','华工科技')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="474">
+            <span class="override-link" onclick="openOverride(501,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item reduce" data-id="502">
             <div class="item-left"><span class="badge badge-reduce">减</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-btn-placeholder" onclick="execItem(474)">执行</span></div>
+                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-btn-placeholder" onclick="execItem(502)">执行</span></div>
                 <div class="item-meta">400卖50→410卖50→420卖50</div>
             </div>
-            <span class="override-link" onclick="openOverride(474,'002916','深南电路')" title="覆盖">✎</span>
-        </div><div class="item hold critical" data-id="475">
+            <span class="override-link" onclick="openOverride(502,'002916','深南电路')" title="覆盖">✎</span>
+        </div><div class="item hold critical" data-id="503">
             <div class="item-left"><span class="badge badge-hold">持</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-btn-placeholder" onclick="execItem(475)">执行</span></div>
+                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-btn-placeholder" onclick="execItem(503)">执行</span></div>
                 <div class="item-meta">323(实战参考370)</div>
             </div>
-            <span class="override-link" onclick="openOverride(475,'002916','深南电路')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="476">
+            <span class="override-link" onclick="openOverride(503,'002916','深南电路')" title="覆盖">✎</span>
+        </div><div class="item reduce" data-id="504">
             <div class="item-left"><span class="badge badge-reduce">减</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002281</span> <span class="name">光迅科技</span> <span class="exec-btn-placeholder" onclick="execItem(476)">执行</span></div>
+                <div class="item-head"><span class="code">002281</span> <span class="name">光迅科技</span> <span class="exec-btn-placeholder" onclick="execItem(504)">执行</span></div>
                 <div class="item-meta">215卖100→220卖100→225卖100</div>
             </div>
-            <span class="override-link" onclick="openOverride(476,'002281','光迅科技')" title="覆盖">✎</span>
-        </div><div class="item hold critical" data-id="477">
+            <span class="override-link" onclick="openOverride(504,'002281','光迅科技')" title="覆盖">✎</span>
+        </div><div class="item hold critical" data-id="505">
             <div class="item-left"><span class="badge badge-hold">持</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002281</span> <span class="name">光迅科技</span> <span class="exec-btn-placeholder" onclick="execItem(477)">执行</span></div>
+                <div class="item-head"><span class="code">002281</span> <span class="name">光迅科技</span> <span class="exec-btn-placeholder" onclick="execItem(505)">执行</span></div>
                 <div class="item-meta">188.06</div>
             </div>
-            <span class="override-link" onclick="openOverride(477,'002281','光迅科技')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="478">
+            <span class="override-link" onclick="openOverride(505,'002281','光迅科技')" title="覆盖">✎</span>
+        </div><div class="item reduce" data-id="506">
             <div class="item-left"><span class="badge badge-reduce">减</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" onclick="execItem(478)">执行</span></div>
+                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" onclick="execItem(506)">执行</span></div>
                 <div class="item-meta">82卖200→84卖150→86卖150</div>
             </div>
-            <span class="override-link" onclick="openOverride(478,'603019','中科曙光')" title="覆盖">✎</span>
-        </div><div class="item hold critical" data-id="479">
+            <span class="override-link" onclick="openOverride(506,'603019','中科曙光')" title="覆盖">✎</span>
+        </div><div class="item hold critical" data-id="507">
             <div class="item-left"><span class="badge badge-hold">持</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" onclick="execItem(479)">执行</span></div>
+                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" onclick="execItem(507)">执行</span></div>
                 <div class="item-meta">72.01</div>
             </div>
-            <span class="override-link" onclick="openOverride(479,'603019','中科曙光')" title="覆盖">✎</span>
-        </div><div class="item reduce" data-id="480">
+            <span class="override-link" onclick="openOverride(507,'603019','中科曙光')" title="覆盖">✎</span>
+        </div><div class="item reduce" data-id="508">
             <div class="item-left"><span class="badge badge-reduce">减</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002364</span> <span class="name">中恒电气</span> <span class="exec-btn-placeholder" onclick="execItem(480)">执行</span></div>
+                <div class="item-head"><span class="code">002364</span> <span class="name">中恒电气</span> <span class="exec-btn-placeholder" onclick="execItem(508)">执行</span></div>
                 <div class="item-meta">57卖200→59卖150→61卖150</div>
             </div>
-            <span class="override-link" onclick="openOverride(480,'002364','中恒电气')" title="覆盖">✎</span>
-        </div><div class="item hold critical" data-id="481">
+            <span class="override-link" onclick="openOverride(508,'002364','中恒电气')" title="覆盖">✎</span>
+        </div><div class="item hold critical" data-id="509">
             <div class="item-left"><span class="badge badge-hold">持</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002364</span> <span class="name">中恒电气</span> <span class="exec-btn-placeholder" onclick="execItem(481)">执行</span></div>
+                <div class="item-head"><span class="code">002364</span> <span class="name">中恒电气</span> <span class="exec-btn-placeholder" onclick="execItem(509)">执行</span></div>
                 <div class="item-meta">50.39</div>
             </div>
-            <span class="override-link" onclick="openOverride(481,'002364','中恒电气')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="482">
+            <span class="override-link" onclick="openOverride(509,'002364','中恒电气')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="510">
             <div class="item-left"><span class="badge badge-hold">持</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">601869</span> <span class="name">长飞光纤</span> <span class="exec-btn-placeholder" onclick="execItem(482)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">BuyWatch</div>
+                <div class="item-head"><span class="code">601869</span> <span class="name">长飞光纤</span> <span class="exec-btn-placeholder" onclick="execItem(510)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">BuyWatch</div>
                 <div class="item-meta">回踩400-420，华工减800股后可建仓300股</div>
             </div>
-            <span class="override-link" onclick="openOverride(482,'601869','长飞光纤')" title="覆盖">✎</span>
+            <span class="override-link" onclick="openOverride(510,'601869','长飞光纤')" title="覆盖">✎</span>
         </div>
 </div>
 <div class="tab-panel" id="tp1">
     <div class="buy-item">
-            <div class="bw-top"><span class="code">601869</span> 长飞光纤<span class="eta">等TREND_UP确认</span></div>
-            <div class="trigger">回踩400-420区间，trend=4强趋势+score=107最高</div>
+            <div class="bw-top"><span class="code">601869</span> 长飞光纤<span class="eta">0</span></div>
+            <div class="trigger">回踩400-420区间，trend=4强趋势+score=107最高</div><div class="bw-prereq">建仓前提: 华工减800股后资金</div>
         </div><div class="buy-item">
-            <div class="bw-top"><span class="code">000733</span> 振华科技<span class="eta">等TREND_UP确认</span></div>
-            <div class="trigger">回踩45-48区间(MA60附近)，trend=3+RSI=47.2</div>
+            <div class="bw-top"><span class="code">000733</span> 振华科技<span class="eta">0</span></div>
+            <div class="trigger">回踩45-48区间(MA60附近)，trend=3+RSI=47.2</div><div class="bw-prereq">建仓前提: 华工减1600股后</div>
         </div><div class="buy-item">
-            <div class="bw-top"><span class="code">002138</span> 顺络电子<span class="eta">等TREND_UP确认</span></div>
-            <div class="trigger">回踩MA60≈50元，trend=4+RSI=67.6需回落</div>
+            <div class="bw-top"><span class="code">002138</span> 顺络电子<span class="eta">1</span></div>
+            <div class="trigger">回踩MA60≈50元，trend=4+RSI=67.6需回落</div><div class="bw-prereq">建仓前提: 华工减1600股后</div>
         </div><div class="buy-item">
-            <div class="bw-top"><span class="code">002436</span> 兴森科技<span class="eta">等TREND_UP确认</span></div>
-            <div class="trigger">回踩33-35区间，trend=3+RSI=42.3</div>
+            <div class="bw-top"><span class="code">002436</span> 兴森科技<span class="eta">1</span></div>
+            <div class="trigger">回踩33-35区间，trend=3+RSI=42.3</div><div class="bw-prereq">建仓前提: 华工减2400股后</div>
         </div><div class="buy-item">
-            <div class="bw-top"><span class="code">600703</span> 三安光电<span class="eta">等TREND_UP确认</span></div>
-            <div class="trigger">回踩14-15区间(前低),trend=3+RSI=63.5</div>
+            <div class="bw-top"><span class="code">600703</span> 三安光电<span class="eta">2</span></div>
+            <div class="trigger">回踩14-15区间(前低),trend=3+RSI=63.5</div><div class="bw-prereq">建仓前提: 备选</div>
         </div><div class="buy-item">
-            <div class="bw-top"><span class="code">601138</span> 工业富联<span class="eta">等TREND_UP确认</span></div>
-            <div class="trigger">回踩65-68区间(MA60),C类trend=2+RSI=42</div>
+            <div class="bw-top"><span class="code">601138</span> 工业富联<span class="eta">2</span></div>
+            <div class="trigger">回踩65-68区间(MA60),C类trend=2+RSI=42</div><div class="bw-prereq">建仓前提: 暂观察</div>
         </div>
 </div>
 <div class="tab-panel" id="tp2">
