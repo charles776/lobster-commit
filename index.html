@@ -106,8 +106,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </style></head>
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
-    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-08 · 周一</div><div class="countdown" id="countdown">距离开盘 15时50分</div></div></div></div>
-    <div class="state-badge state-prep" id="stateBadge">PREP</div>
+    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-09 · 周二</div><div class="countdown" id="countdown">距离开盘 10时22分</div></div></div></div>
+    <div class="state-badge state-locked" id="stateBadge">LOCKED 🔒</div>
 </div>
 
 <div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace"></div>
@@ -126,41 +126,104 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 
 <div class="tab-panel" id="tp0">
-    <div class="item hold critical" data-id="464">
+    <div class="item reduce critical" data-id="469">
+            <div class="item-left"><span class="badge badge-reduce">减</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(469)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">反弹减仓①</div>
+                <div class="item-meta">158卖800股(第一梯次)</div>
+            </div>
+            <span class="override-link" onclick="openOverride(469,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item reduce" data-id="470">
+            <div class="item-left"><span class="badge badge-reduce">减</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(470)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">反弹减仓②</div>
+                <div class="item-meta">162卖800股(第二梯次)</div>
+            </div>
+            <span class="override-link" onclick="openOverride(470,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item reduce" data-id="471">
+            <div class="item-left"><span class="badge badge-reduce">减</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(471)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">反弹减仓③</div>
+                <div class="item-meta">166卖800股(第三梯次)，留1200股底仓</div>
+            </div>
+            <span class="override-link" onclick="openOverride(471,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="472">
             <div class="item-left"><span class="badge badge-hold">持</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(464)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">09:30-10:00反弹153+卖1500股, 未触发则14:30前卖1100股</div>
-                <div class="item-meta">主力净流出9.29亿+散户接盘5.61亿。早盘反弹153+立即减1500, 未触发则14:30前减1100(不拖到14:50尾盘流动性陷阱)</div>
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(472)">执行</span></div>
+                <div class="item-meta">高开158.5卖500股→回踩154.5-155.5买回</div>
             </div>
-            <span class="override-link" onclick="openOverride(464,'000988','华工科技')" title="覆盖">✎</span>
-        </div><div class="item hold critical" data-id="465">
+            <span class="override-link" onclick="openOverride(472,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item hold critical" data-id="473">
             <div class="item-left"><span class="badge badge-hold">持</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-btn-placeholder" onclick="execItem(465)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">反弹385+卖400股(平掉加仓), 未触发则14:30前卖300股</div>
-                <div class="item-meta">6/8加仓400股@379成本382.30。反弹385平掉加仓部分, 未触发则减300股(800→500)CPI前避险</div>
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(473)">执行</span></div>
+                <div class="item-meta">146.36条件单</div>
             </div>
-            <span class="override-link" onclick="openOverride(465,'002916','深南电路')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="466">
+            <span class="override-link" onclick="openOverride(473,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item reduce" data-id="474">
+            <div class="item-left"><span class="badge badge-reduce">减</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-btn-placeholder" onclick="execItem(474)">执行</span></div>
+                <div class="item-meta">400卖50→410卖50→420卖50</div>
+            </div>
+            <span class="override-link" onclick="openOverride(474,'002916','深南电路')" title="覆盖">✎</span>
+        </div><div class="item hold critical" data-id="475">
             <div class="item-left"><span class="badge badge-hold">持</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002179</span> <span class="name">中航光电</span> <span class="exec-btn-placeholder" onclick="execItem(466)">执行</span></div>
-                <div class="item-meta">9机构买入/1增持, 目标均价44.65, 长期逻辑有背书</div>
+                <div class="item-head"><span class="code">002916</span> <span class="name">深南电路</span> <span class="exec-btn-placeholder" onclick="execItem(475)">执行</span></div>
+                <div class="item-meta">323(实战参考370)</div>
             </div>
-            <span class="override-link" onclick="openOverride(466,'002179','中航光电')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="467">
+            <span class="override-link" onclick="openOverride(475,'002916','深南电路')" title="覆盖">✎</span>
+        </div><div class="item reduce" data-id="476">
+            <div class="item-left"><span class="badge badge-reduce">减</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002281</span> <span class="name">光迅科技</span> <span class="exec-btn-placeholder" onclick="execItem(476)">执行</span></div>
+                <div class="item-meta">215卖100→220卖100→225卖100</div>
+            </div>
+            <span class="override-link" onclick="openOverride(476,'002281','光迅科技')" title="覆盖">✎</span>
+        </div><div class="item hold critical" data-id="477">
             <div class="item-left"><span class="badge badge-hold">持</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">002364</span> <span class="name">中恒电气</span> <span class="exec-btn-placeholder" onclick="execItem(467)">执行</span></div>
-                <div class="item-meta">主力净流入4158万, 资金走强, 波动小不依赖北美AI capex</div>
+                <div class="item-head"><span class="code">002281</span> <span class="name">光迅科技</span> <span class="exec-btn-placeholder" onclick="execItem(477)">执行</span></div>
+                <div class="item-meta">188.06</div>
             </div>
-            <span class="override-link" onclick="openOverride(467,'002364','中恒电气')" title="覆盖">✎</span>
-        </div><div class="item hold" data-id="468">
+            <span class="override-link" onclick="openOverride(477,'002281','光迅科技')" title="覆盖">✎</span>
+        </div><div class="item reduce" data-id="478">
+            <div class="item-left"><span class="badge badge-reduce">减</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" onclick="execItem(478)">执行</span></div>
+                <div class="item-meta">82卖200→84卖150→86卖150</div>
+            </div>
+            <span class="override-link" onclick="openOverride(478,'603019','中科曙光')" title="覆盖">✎</span>
+        </div><div class="item hold critical" data-id="479">
             <div class="item-left"><span class="badge badge-hold">持</span></div>
             <div class="item-main">
-                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> <span class="exec-btn-placeholder" onclick="execItem(468)">执行</span></div>
-                <div class="item-meta">主力净流出6110万, 散户接盘, 底部不确定</div>
+                <div class="item-head"><span class="code">603019</span> <span class="name">中科曙光</span> <span class="exec-btn-placeholder" onclick="execItem(479)">执行</span></div>
+                <div class="item-meta">72.01</div>
             </div>
-            <span class="override-link" onclick="openOverride(468,'600183','生益科技')" title="覆盖">✎</span>
+            <span class="override-link" onclick="openOverride(479,'603019','中科曙光')" title="覆盖">✎</span>
+        </div><div class="item reduce" data-id="480">
+            <div class="item-left"><span class="badge badge-reduce">减</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002364</span> <span class="name">中恒电气</span> <span class="exec-btn-placeholder" onclick="execItem(480)">执行</span></div>
+                <div class="item-meta">57卖200→59卖150→61卖150</div>
+            </div>
+            <span class="override-link" onclick="openOverride(480,'002364','中恒电气')" title="覆盖">✎</span>
+        </div><div class="item hold critical" data-id="481">
+            <div class="item-left"><span class="badge badge-hold">持</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002364</span> <span class="name">中恒电气</span> <span class="exec-btn-placeholder" onclick="execItem(481)">执行</span></div>
+                <div class="item-meta">50.39</div>
+            </div>
+            <span class="override-link" onclick="openOverride(481,'002364','中恒电气')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="482">
+            <div class="item-left"><span class="badge badge-hold">持</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">601869</span> <span class="name">长飞光纤</span> <span class="exec-btn-placeholder" onclick="execItem(482)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">BuyWatch</div>
+                <div class="item-meta">回踩400-420，华工减800股后可建仓300股</div>
+            </div>
+            <span class="override-link" onclick="openOverride(482,'601869','长飞光纤')" title="覆盖">✎</span>
         </div>
 </div>
 <div class="tab-panel" id="tp1">
@@ -195,11 +258,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 
 <div class="float-lock">
-    <div class="lock-btn " id="lockBtn"
+    <div class="lock-btn locked" id="lockBtn"
          ontouchstart="startHold()" ontouchend="cancelHold()" ontouchmove="cancelHold()"
          onmousedown="startHold()" onmouseup="cancelHold()" onmouseleave="cancelHold()">
-        <span style="position:relative;z-index:1">🔓 封印计划</span>
-        <div class="sub" style="position:relative;z-index:1">按住3秒封印</div>
+        <span style="position:relative;z-index:1">🔒 已封印</span>
+        <div class="sub" style="position:relative;z-index:1">盘中照此执行</div>
         <div class="progress" id="lockProgress"></div>
     </div>
 </div>
@@ -233,9 +296,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 
 <script>
-var API = 'http://10.224.154.9:8766';
-var API_CANDIDATES = ["http://10.224.154.9:8766", "http://192.168.43.100:8766", "http://192.168.43.101:8766", "http://172.20.10.2:8766", "http://172.20.10.3:8766", "http://127.0.0.1:8766"];
-var locked = false;
+var API = 'http://192.168.1.3:8766';
+var API_CANDIDATES = ["http://192.168.1.3:8766", "http://192.168.43.100:8766", "http://192.168.43.101:8766", "http://172.20.10.2:8766", "http://172.20.10.3:8766", "http://127.0.0.1:8766"];
+var locked = true;
 var overrideItemId = null, selectedTag = '';
 var qTimer = null, isOnline = false;
 var localState = {};
