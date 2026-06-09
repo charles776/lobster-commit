@@ -3,10 +3,17 @@ Generate interactive PWA for GitHub Pages.
 Full Commit Device: lock(progress bar), execute, override, quarantine.
 Auto-discovers local API (same WiFi or phone hotspot).
 """
-import json, datetime, os, requests, sys, socket
+import json, datetime, os, urllib.request, sys, socket
 
 HERE = os.path.dirname(__file__)
 PORT = 8766
+
+def _http_get(url, timeout=2):
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as r:
+            return json.loads(r.read().decode('utf-8'))
+    except Exception:
+        return None
 
 def get_local_ip():
     """获取本机当前活跃的局域网 IP（无需外网真实连通）"""
@@ -52,8 +59,8 @@ def discover_api(port=PORT):
 
     for url in candidates:
         try:
-            r = requests.get(f"{url}/api/state", timeout=2)
-            if r.status_code == 200:
+            r = _http_get(f"{url}/api/state", timeout=2)
+            if r is not None:
                 return url
         except Exception:
             continue
@@ -62,24 +69,11 @@ def discover_api(port=PORT):
 def fetch():
     api = discover_api(PORT)
     if api:
-        plan = requests.get(f'{api}/api/plan').json()
-        bw = requests.get(f'{api}/api/buywatch').json()
-        stats = requests.get(f'{api}/api/stats').json()
-        export = requests.get(f'{api}/api/export').json()
-        q = requests.get(f'{api}/api/quarantine').json()
-    else:
-        plan = {'date': datetime.datetime.now().strftime('%Y-%m-%d'), 'items': [], 'locked': False, 'content': ''}
-        bw = {'items': [], 'max': 6}
-        stats = {'streak': 0, 'month_overrides': 0}
-        export = {'action_log': [], 'overrides': []}
-        q = {'active': False}
-
-    if api:
-        plan = requests.get(f'{api}/api/plan').json()
-        bw = requests.get(f'{api}/api/buywatch').json()
-        stats = requests.get(f'{api}/api/stats').json()
-        export = requests.get(f'{api}/api/export').json()
-        q = requests.get(f'{api}/api/quarantine').json()
+        plan = _http_get(f'{api}/api/plan')
+        bw = _http_get(f'{api}/api/buywatch')
+        stats = _http_get(f'{api}/api/stats')
+        export = _http_get(f'{api}/api/export')
+        q = _http_get(f'{api}/api/quarantine')
     else:
         plan = {'date': datetime.datetime.now().strftime('%Y-%m-%d'), 'items': [], 'locked': False, 'content': ''}
         bw = {'items': [], 'max': 6}
@@ -106,15 +100,137 @@ def fetch():
         'stats': stats, 'log': export.get('action_log', [])[:50],
         'overrides': export.get('overrides', [])[:20],
         'quarantine': q,
+        'dual_track': plan.get('dual_track', {}),
         'api': api,
         'api_candidates': api_candidates,
         'generated_at': datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
     }
 
+def _render_dual_track(dt):
+    """渲染双轨制结构化数据为HTML"""
+    if not dt or not dt.get('stocks'):
+        return ''
+
+    # CSS (inline style matching locked palette)
+    html = '''<style>
+.dt-card{margin:8px 0;background:#0D1117;border:1px solid #1C2532;border-radius:4px;overflow:hidden}
+.dt-head{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid #1C2532}
+.dt-name{font-size:13px;font-weight:700}
+.dt-code{font-family:'Cascadia Code','Consolas',monospace;font-size:10px;color:#0A84FF;margin-right:6px}
+.dt-meta{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;color:#7A8290;text-align:right}
+.dt-tracks{display:flex;gap:0}
+.dt-track{flex:1;padding:8px 10px;font-size:10px;line-height:1.6;border-top:1px solid rgba(28,37,50,.3)}
+.dt-track-profit{background:rgba(48,209,88,.03);border-left:3px solid #30D158}
+.dt-track-risk{background:rgba(255,59,48,.03);border-left:3px solid #FF3B30}
+.dt-track-title{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.dt-track-profit .dt-track-title{color:#30D158}
+.dt-track-risk .dt-track-title{color:#FF3B30}
+.dt-row{color:#E8ECF2;margin-bottom:2px}
+.dt-row .dt-label{color:#7A8290;font-size:9px;margin-right:4px}
+.dt-row .dt-val{font-family:'Cascadia Code','Consolas',monospace;font-size:10px}
+.dt-row .dt-val-up{color:#30D158}
+.dt-row .dt-val-dn{color:#FF3B30}
+.dt-row .dt-val-amber{color:#FF9F0A}
+.dt-ladder{display:flex;flex-wrap:wrap;gap:3px;margin:3px 0}
+.dt-ladder span{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;padding:1px 5px;border-radius:2px;background:rgba(48,209,88,.08);color:#30D158;border:1px solid rgba(48,209,88,.15)}
+.dt-time-section{margin:10px 0;background:#0D1117;border:1px solid #1C2532;border-radius:4px;overflow:hidden}
+.dt-time-head{padding:8px 12px;background:rgba(255,159,10,.05);border-bottom:1px solid #1C2532;font-family:'Cascadia Code','Consolas',monospace;font-size:10px;font-weight:700;color:#FF9F0A;letter-spacing:1px}
+.dt-time-row{display:flex;align-items:flex-start;padding:6px 12px;border-bottom:1px solid rgba(28,37,50,.2);font-size:10px;gap:8px}
+.dt-time-row:last-child{border-bottom:none}
+.dt-time-row.warn{background:rgba(255,59,48,.04)}
+.dt-time-row.highlight{background:rgba(10,132,255,.04)}
+.dt-time-win{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;color:#0A84FF;min-width:65px;flex-shrink:0}
+.dt-time-lbl{font-size:9px;color:#7A8290;min-width:50px;flex-shrink:0}
+.dt-time-act{color:#E8ECF2;flex:1;line-height:1.4}
+.dt-scenario{margin:6px 0;background:#0D1117;border:1px solid #1C2532;border-radius:4px;overflow:hidden}
+.dt-sc-head{padding:7px 12px;background:rgba(10,132,255,.04);border-bottom:1px solid #1C2532;font-size:11px;font-weight:600;color:#0A84FF}
+.dt-sc-body{display:flex}
+.dt-sc-col{flex:1;padding:6px 10px;font-size:10px;line-height:1.5}
+.dt-sc-col-profit{border-left:2px solid #30D158;color:#E8ECF2}
+.dt-sc-col-risk{border-left:2px solid #FF3B30;color:#E8ECF2}
+.dt-sc-label{font-family:'Cascadia Code','Consolas',monospace;font-size:8px;color:#7A8290;margin-bottom:2px;letter-spacing:.5px}
+.dt-iron{margin:8px 0;padding:8px 12px;background:rgba(255,159,10,.04);border:1px solid rgba(255,159,10,.12);border-radius:4px}
+.dt-iron-title{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;font-weight:700;color:#FF9F0A;letter-spacing:1px;margin-bottom:4px}
+.dt-iron-item{font-size:10px;color:#E8ECF2;line-height:1.6;padding-left:10px;position:relative}
+.dt-iron-item:before{content:"\2022";color:#FF9F0A;position:absolute;left:0}
+.dt-section-title{font-size:9px;font-weight:700;color:#7A8290;letter-spacing:1px;font-family:'Cascadia Code','Consolas',monospace;margin:12px 0 6px;padding:0 2px}
+.bw-prereq{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;color:#FF9F0A;margin-top:3px}
+</style>'''
+
+    # Stock cards
+    for s in dt['stocks']:
+        pt = s['profit_track']
+        rt = s['risk_track']
+        pnl_color = '#30D158' if s['pnl'] >= 0 else '#FF3B30'
+        ladder_html = ''.join(f'<span>{x}</span>' for x in pt['ladder'])
+
+        html += f'''<div class="dt-card">
+  <div class="dt-head">
+    <div><span class="dt-code">{s['code']}</span><span class="dt-name">{s['name']}</span></div>
+    <div class="dt-meta">{s['shares']}股 | {s['weight']}% | <span style="color:{pnl_color}">{s['pnl']:+.1f}%</span></div>
+  </div>
+  <div class="dt-tracks">
+    <div class="dt-track dt-track-profit">
+      <div class="dt-track-title">▲ 盈利轨</div>
+      <div class="dt-row"><span class="dt-label">三梯次</span><div class="dt-ladder">{ladder_html}</div></div>
+      <div class="dt-row"><span class="dt-label">剩余</span><span class="dt-val">{pt['remaining']}</span></div>
+      <div class="dt-row"><span class="dt-label">倒T</span><span class="dt-val dt-val-amber">{pt['t_trade']}</span></div>
+      <div class="dt-row"><span class="dt-label">恐慌低点</span><span class="dt-val dt-val-up">{pt['panic_low']}</span></div>
+    </div>
+    <div class="dt-track dt-track-risk">
+      <div class="dt-track-title">▼ 风控轨</div>
+      <div class="dt-row"><span class="dt-label">硬止损</span><span class="dt-val dt-val-dn">{rt['hard_stop']}</span></div>
+      <div class="dt-row"><span class="dt-label">趋势破位</span><span class="dt-val dt-val-dn">{rt['trend_break']}</span></div>
+      <div class="dt-row"><span class="dt-label">集中度</span><span class="dt-val">{rt['concentration']}</span></div>
+    </div>
+  </div>
+</div>'''
+
+    # Time windows
+    if dt.get('time_windows'):
+        html += '<div class="dt-time-section"><div class="dt-time-head">⏱ 时间窗口执行计划</div>'
+        for tw in dt['time_windows']:
+            cls = ' warn' if tw.get('warn') else (' highlight' if tw.get('highlight') else '')
+            html += f'<div class="dt-time-row{cls}"><span class="dt-time-win">{tw["window"]}</span><span class="dt-time-lbl">{tw["label"]}</span><span class="dt-time-act">{tw["action"]}</span></div>'
+        html += '</div>'
+
+    # Scenarios
+    if dt.get('scenarios'):
+        html += '<div class="dt-section-title">三情景双轨变体</div>'
+        for sc in dt['scenarios']:
+            html += f'''<div class="dt-scenario">
+  <div class="dt-sc-head">{sc['name']}</div>
+  <div class="dt-sc-body">
+    <div class="dt-sc-col dt-sc-col-profit"><div class="dt-sc-label">盈利轨</div>{sc['profit']}</div>
+    <div class="dt-sc-col dt-sc-col-risk"><div class="dt-sc-label">风控轨</div>{sc['risk']}</div>
+  </div>
+</div>'''
+
+    # Iron rules
+    if dt.get('iron_rules'):
+        html += '<div class="dt-iron"><div class="dt-iron-title">铁律</div>'
+        for rule in dt['iron_rules']:
+            html += f'<div class="dt-iron-item">{rule}</div>'
+        html += '</div>'
+
+    # Profit targets
+    if dt.get('profit_targets'):
+        pt = dt['profit_targets']
+        html += '<div class="dt-iron" style="border-color:rgba(48,209,88,.12);background:rgba(48,209,88,.03)">'
+        html += '<div class="dt-iron-title" style="color:#30D158">收益目标</div>'
+        for k, v in pt.items():
+            label = {'max_amplitude':'最大振幅','t_income':'倒T收益','vs_stop_loss':'vs机械止损'}.get(k, k)
+            html += f'<div class="dt-iron-item" style="color:#E8ECF2">{label}: {v}</div>'
+        html += '</div>'
+
+    return html
+
+
 def build(data):
     plan = data['plan']; bw = data['buywatch']; stats = data['stats']
     plan_locked = plan.get('locked', False)
     api = data.get('api')
+    dt = data.get('dual_track', {})
 
     # Offline fallback
     offline_note = ''
@@ -172,12 +288,15 @@ def build(data):
             <span class="override-link" onclick="openOverride({item_id},'{code}','{name}')" title="覆盖">✎</span>
         </div>'''
 
-    # BUY WATCH
+    # BUY WATCH (with 建仓前提)
     bw_html = ''
     for b in bw:
+        prereq = b.get('eta', '')
+        notes = b.get('notes', '')
+        prereq_line = f'<div class="bw-prereq">建仓前提: {prereq}</div>' if prereq and prereq != '--' else ''
         bw_html += f'''<div class="buy-item">
-            <div class="bw-top"><span class="code">{b['code']}</span> {b['name']}<span class="eta">{b.get('eta','')}</span></div>
-            <div class="trigger">{b.get('trigger_cond','')}</div>
+            <div class="bw-top"><span class="code">{b['code']}</span> {b['name']}<span class="eta">{b.get('priority','')}</span></div>
+            <div class="trigger">{b.get('trigger_cond','')}</div>{prereq_line}
         </div>'''
 
     # State
@@ -315,12 +434,14 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHe
 <input type="radio" class="tab-radio" name="tab" id="tr1">
 <input type="radio" class="tab-radio" name="tab" id="tr2">
 <div class="tab-bar">
-    <label class="tab-label" for="tr0">📋 计划</label>
+    <label class="tab-label" for="tr0">📊 双轨</label>
     <label class="tab-label" for="tr1">🎯 候选</label>
     <label class="tab-label" for="tr2">📊 状态</label>
 </div>
 
 <div class="tab-panel" id="tp0">
+    {_render_dual_track(dt) if dt else ''}
+    {'<div class="dt-section-title">执行项</div>' if dt and items_html else ''}
     {items_html if items_html else '<div style="text-align:center;padding:40px 20px"><img src="./assets/empty.png" style="width:120px;height:auto;opacity:.4;margin-bottom:12px"><div style="color:#7A8290;font-size:12px;font-family:monospace">暂无计划项</div></div>'}
 </div>
 <div class="tab-panel" id="tp1">
