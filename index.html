@@ -106,13 +106,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </style></head>
 <body onload="countdownTick();setInterval(countdownTick,60000)">
 <div class="header">
-    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-12 · 周五</div><div class="countdown" id="countdown">距离开盘 16时11分</div></div></div></div>
-    <div class="state-badge state-prep" id="stateBadge">PREP</div>
+    <div class="header-brand"><img class="header-logo" src="./assets/logo.png" alt="L"><div><div class="date">2026-06-22 · 周一</div><div class="countdown" id="countdown">距离开盘 8时24分</div></div></div></div>
+    <div class="state-badge state-locked" id="stateBadge">LOCKED 🔒</div>
 </div>
 
 <div id="connStatus" style="text-align:center;padding:4px;font-size:9px;font-family:'Cascadia Code','Consolas','SF Mono',monospace,monospace"></div>
 <div style="text-align:center;padding:4px;font-size:8px;font-family:monospace"><span id="verTag" style="color:#485268">v?</span> · <a href="javascript:navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));caches.keys().then(k=>k.forEach(x=>caches.delete(x)));location.reload();" style="color:#FF3B30;text-decoration:none">硬核重置</a></div>
-<div style="background:rgba(255,59,48,.08);border:1px solid rgba(255,59,48,.2);color:#FF3B30;padding:8px 14px;margin:8px 16px;font-size:10px;font-family:monospace;text-align:center;border-radius:4px">⚠ 未连接到本地服务器 · 仅查看模式<br>请确保手机与电脑在同一WiFi</div>
+
 
 <!-- banner removed per UI spec §十三 -->
 
@@ -126,29 +126,291 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 
 <div class="tab-panel" id="tp0">
-    
-    
-    <div style="text-align:center;padding:40px 20px"><img src="./assets/empty.png" style="width:120px;height:auto;opacity:.4;margin-bottom:12px"><div style="color:#7A8290;font-size:12px;font-family:monospace">暂无计划项</div></div>
+    <style>
+.dt-card{margin:8px 0;background:#0D1117;border:1px solid #1C2532;border-radius:4px;overflow:hidden}
+.dt-head{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid #1C2532}
+.dt-name{font-size:13px;font-weight:700}
+.dt-code{font-family:'Cascadia Code','Consolas',monospace;font-size:10px;color:#0A84FF;margin-right:6px}
+.dt-meta{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;color:#7A8290;text-align:right}
+.dt-tracks{display:flex;gap:0}
+.dt-track{flex:1;padding:8px 10px;font-size:10px;line-height:1.6;border-top:1px solid rgba(28,37,50,.3)}
+.dt-track-profit{background:rgba(48,209,88,.03);border-left:3px solid #30D158}
+.dt-track-risk{background:rgba(255,59,48,.03);border-left:3px solid #FF3B30}
+.dt-track-title{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.dt-track-profit .dt-track-title{color:#30D158}
+.dt-track-risk .dt-track-title{color:#FF3B30}
+.dt-row{color:#E8ECF2;margin-bottom:2px}
+.dt-row .dt-label{color:#7A8290;font-size:9px;margin-right:4px}
+.dt-row .dt-val{font-family:'Cascadia Code','Consolas',monospace;font-size:10px}
+.dt-row .dt-val-up{color:#30D158}
+.dt-row .dt-val-dn{color:#FF3B30}
+.dt-row .dt-val-amber{color:#FF9F0A}
+.dt-ladder{display:flex;flex-wrap:wrap;gap:3px;margin:3px 0}
+.dt-ladder span{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;padding:1px 5px;border-radius:2px;background:rgba(48,209,88,.08);color:#30D158;border:1px solid rgba(48,209,88,.15)}
+.dt-time-section{margin:10px 0;background:#0D1117;border:1px solid #1C2532;border-radius:4px;overflow:hidden}
+.dt-time-head{padding:8px 12px;background:rgba(255,159,10,.05);border-bottom:1px solid #1C2532;font-family:'Cascadia Code','Consolas',monospace;font-size:10px;font-weight:700;color:#FF9F0A;letter-spacing:1px}
+.dt-time-row{display:flex;align-items:flex-start;padding:6px 12px;border-bottom:1px solid rgba(28,37,50,.2);font-size:10px;gap:8px}
+.dt-time-row:last-child{border-bottom:none}
+.dt-time-row.warn{background:rgba(255,59,48,.04)}
+.dt-time-row.highlight{background:rgba(10,132,255,.04)}
+.dt-time-win{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;color:#0A84FF;min-width:65px;flex-shrink:0}
+.dt-time-lbl{font-size:9px;color:#7A8290;min-width:50px;flex-shrink:0}
+.dt-time-act{color:#E8ECF2;flex:1;line-height:1.4}
+.dt-scenario{margin:6px 0;background:#0D1117;border:1px solid #1C2532;border-radius:4px;overflow:hidden}
+.dt-sc-head{padding:7px 12px;background:rgba(10,132,255,.04);border-bottom:1px solid #1C2532;font-size:11px;font-weight:600;color:#0A84FF}
+.dt-sc-body{display:flex}
+.dt-sc-col{flex:1;padding:6px 10px;font-size:10px;line-height:1.5}
+.dt-sc-col-profit{border-left:2px solid #30D158;color:#E8ECF2}
+.dt-sc-col-risk{border-left:2px solid #FF3B30;color:#E8ECF2}
+.dt-sc-label{font-family:'Cascadia Code','Consolas',monospace;font-size:8px;color:#7A8290;margin-bottom:2px;letter-spacing:.5px}
+.dt-iron{margin:8px 0;padding:8px 12px;background:rgba(255,159,10,.04);border:1px solid rgba(255,159,10,.12);border-radius:4px}
+.dt-iron-title{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;font-weight:700;color:#FF9F0A;letter-spacing:1px;margin-bottom:4px}
+.dt-iron-item{font-size:10px;color:#E8ECF2;line-height:1.6;padding-left:10px;position:relative}
+.dt-iron-item:before{content:"2";color:#FF9F0A;position:absolute;left:0}
+.dt-section-title{font-size:9px;font-weight:700;color:#7A8290;letter-spacing:1px;font-family:'Cascadia Code','Consolas',monospace;margin:12px 0 6px;padding:0 2px}
+.bw-prereq{font-family:'Cascadia Code','Consolas',monospace;font-size:9px;color:#FF9F0A;margin-top:3px}
+</style><div class="dt-card">
+  <div class="dt-head">
+    <div><span class="dt-code">000988</span><span class="dt-name">华工科技</span></div>
+    <div class="dt-meta">1800股 | 30.7% | <span style="color:#30D158">+17.2%</span></div>
+  </div>
+  <div class="dt-tracks">
+    <div class="dt-track dt-track-profit">
+      <div class="dt-track-title">▲ 盈利轨</div>
+      <div class="dt-row"><span class="dt-label">三梯次</span><div class="dt-ladder"><span>182 sell 600</span><span>186 sell 500</span><span>192 sell 400</span></div></div>
+      <div class="dt-row"><span class="dt-label">剩余</span><span class="dt-val">300 shares base</span></div>
+      <div class="dt-row"><span class="dt-label">倒T</span><span class="dt-val dt-val-amber">Reverse-T: 181+ sell 300 -> buy back below 175 | Forward-T: buy 300 at 168-170 -> sell above 176</span></div>
+      <div class="dt-row"><span class="dt-label">恐慌低点</span><span class="dt-val dt-val-up">168 DO NOT SELL</span></div>
+    </div>
+    <div class="dt-track dt-track-risk">
+      <div class="dt-track-title">▼ 风控轨</div>
+      <div class="dt-row"><span class="dt-label">硬止损</span><span class="dt-val dt-val-dn">163.5 (ATR)</span></div>
+      <div class="dt-row"><span class="dt-label">趋势破位</span><span class="dt-val dt-val-dn">170</span></div>
+      <div class="dt-row"><span class="dt-label">集中度</span><span class="dt-val">30.7% -> 20% this week (reduce 800 shares)</span></div>
+    </div>
+  </div>
+</div><div class="dt-card">
+  <div class="dt-head">
+    <div><span class="dt-code">600584</span><span class="dt-name">长电科技</span></div>
+    <div class="dt-meta">3100股 | 24.7% | <span style="color:#30D158">+10.9%</span></div>
+  </div>
+  <div class="dt-tracks">
+    <div class="dt-track dt-track-profit">
+      <div class="dt-track-title">▲ 盈利轨</div>
+      <div class="dt-row"><span class="dt-label">三梯次</span><div class="dt-ladder"><span>85 sell 800</span><span>88.5 sell 700</span><span>92 sell 600</span></div></div>
+      <div class="dt-row"><span class="dt-label">剩余</span><span class="dt-val">1000 shares base</span></div>
+      <div class="dt-row"><span class="dt-label">倒T</span><span class="dt-val dt-val-amber">Reverse-T: 85+ sell 500 -> buy back below 81 | Forward-T: buy 500 at 78 -> sell above 82</span></div>
+      <div class="dt-row"><span class="dt-label">恐慌低点</span><span class="dt-val dt-val-up">77.5 DO NOT SELL</span></div>
+    </div>
+    <div class="dt-track dt-track-risk">
+      <div class="dt-track-title">▼ 风控轨</div>
+      <div class="dt-row"><span class="dt-label">硬止损</span><span class="dt-val dt-val-dn">74.5 (ATR)</span></div>
+      <div class="dt-row"><span class="dt-label">趋势破位</span><span class="dt-val dt-val-dn">78 (below MA20)</span></div>
+      <div class="dt-row"><span class="dt-label">集中度</span><span class="dt-val">24.7% -> 18% this week (reduce 1100 shares)</span></div>
+    </div>
+  </div>
+</div><div class="dt-card">
+  <div class="dt-head">
+    <div><span class="dt-code">601138</span><span class="dt-name">工业富联</span></div>
+    <div class="dt-meta">2000股 | 15.0% | <span style="color:#30D158">+4.4%</span></div>
+  </div>
+  <div class="dt-tracks">
+    <div class="dt-track dt-track-profit">
+      <div class="dt-track-title">▲ 盈利轨</div>
+      <div class="dt-row"><span class="dt-label">三梯次</span><div class="dt-ladder"><span>80 sell 500</span><span>84 sell 400</span><span>87 sell 300</span></div></div>
+      <div class="dt-row"><span class="dt-label">剩余</span><span class="dt-val">800 shares base</span></div>
+      <div class="dt-row"><span class="dt-label">倒T</span><span class="dt-val dt-val-amber">Reverse-T: 79+ sell 400 -> buy back below 75 | Forward-T: buy 300 at 72-73 -> sell above 77</span></div>
+      <div class="dt-row"><span class="dt-label">恐慌低点</span><span class="dt-val dt-val-up">72 DO NOT SELL</span></div>
+    </div>
+    <div class="dt-track dt-track-risk">
+      <div class="dt-track-title">▼ 风控轨</div>
+      <div class="dt-row"><span class="dt-label">硬止损</span><span class="dt-val dt-val-dn">71.5 (prior low)</span></div>
+      <div class="dt-row"><span class="dt-label">趋势破位</span><span class="dt-val dt-val-dn">74</span></div>
+      <div class="dt-row"><span class="dt-label">集中度</span><span class="dt-val">15% -> 10% (reduce 600 shares)</span></div>
+    </div>
+  </div>
+</div><div class="dt-card">
+  <div class="dt-head">
+    <div><span class="dt-code">600118</span><span class="dt-name">中国卫星</span></div>
+    <div class="dt-meta">1500股 | 11.0% | <span style="color:#30D158">+3.7%</span></div>
+  </div>
+  <div class="dt-tracks">
+    <div class="dt-track dt-track-profit">
+      <div class="dt-track-title">▲ 盈利轨</div>
+      <div class="dt-row"><span class="dt-label">三梯次</span><div class="dt-ladder"><span>78 sell 300</span><span>80 sell 300</span><span>83 sell 300</span></div></div>
+      <div class="dt-row"><span class="dt-label">剩余</span><span class="dt-val">600 shares base</span></div>
+      <div class="dt-row"><span class="dt-label">倒T</span><span class="dt-val dt-val-amber">Reverse-T: 78+ sell 200 -> buy back below 75 | Forward-T: buy 200 at 73 -> sell above 76</span></div>
+      <div class="dt-row"><span class="dt-label">恐慌低点</span><span class="dt-val dt-val-up">72.5 DO NOT SELL</span></div>
+    </div>
+    <div class="dt-track dt-track-risk">
+      <div class="dt-track-title">▼ 风控轨</div>
+      <div class="dt-row"><span class="dt-label">硬止损</span><span class="dt-val dt-val-dn">72.0 (prior low)</span></div>
+      <div class="dt-row"><span class="dt-label">趋势破位</span><span class="dt-val dt-val-dn">74.5</span></div>
+      <div class="dt-row"><span class="dt-label">集中度</span><span class="dt-val">11% -> 5% (reduce 900 shares, 3x300)</span></div>
+    </div>
+  </div>
+</div><div class="dt-card">
+  <div class="dt-head">
+    <div><span class="dt-code">002389</span><span class="dt-name">航天彩虹</span></div>
+    <div class="dt-meta">5400股 | 9.7% | <span style="color:#FF3B30">-1.5%</span></div>
+  </div>
+  <div class="dt-tracks">
+    <div class="dt-track dt-track-profit">
+      <div class="dt-track-title">▲ 盈利轨</div>
+      <div class="dt-row"><span class="dt-label">三梯次</span><div class="dt-ladder"><span>19.2 sell 1500</span><span>19.8 sell 1200</span><span>20.5 sell 1000</span></div></div>
+      <div class="dt-row"><span class="dt-label">剩余</span><span class="dt-val">1700 shares base</span></div>
+      <div class="dt-row"><span class="dt-label">倒T</span><span class="dt-val dt-val-amber">Reverse-T: 19+ sell 1000 -> buy back below 18.5 | Forward-T: buy 1500 at 18.0 -> sell above 18.8</span></div>
+      <div class="dt-row"><span class="dt-label">恐慌低点</span><span class="dt-val dt-val-up">17.8 DO NOT SELL</span></div>
+    </div>
+    <div class="dt-track dt-track-risk">
+      <div class="dt-track-title">▼ 风控轨</div>
+      <div class="dt-row"><span class="dt-label">硬止损</span><span class="dt-val dt-val-dn">17.5 (cost*0.92 vs ATR, take 17.5)</span></div>
+      <div class="dt-row"><span class="dt-label">趋势破位</span><span class="dt-val dt-val-dn">18.2</span></div>
+      <div class="dt-row"><span class="dt-label">集中度</span><span class="dt-val">if below 18 without volume -> clear</span></div>
+    </div>
+  </div>
+</div><div class="dt-card">
+  <div class="dt-head">
+    <div><span class="dt-code">600183</span><span class="dt-name">生益科技</span></div>
+    <div class="dt-meta">500股 | 8.8% | <span style="color:#FF3B30">-0.5%</span></div>
+  </div>
+  <div class="dt-tracks">
+    <div class="dt-track dt-track-profit">
+      <div class="dt-track-title">▲ 盈利轨</div>
+      <div class="dt-row"><span class="dt-label">三梯次</span><div class="dt-ladder"><span>188 sell 200</span><span>192 sell 150</span><span>198 sell 100</span></div></div>
+      <div class="dt-row"><span class="dt-label">剩余</span><span class="dt-val">50 shares base</span></div>
+      <div class="dt-row"><span class="dt-label">倒T</span><span class="dt-val dt-val-amber">Reverse-T: 188+ sell 100 -> buy back below 180 | Forward-T: buy 100 at 175 -> sell above 185</span></div>
+      <div class="dt-row"><span class="dt-label">恐慌低点</span><span class="dt-val dt-val-up">172 DO NOT SELL</span></div>
+    </div>
+    <div class="dt-track dt-track-risk">
+      <div class="dt-track-title">▼ 风控轨</div>
+      <div class="dt-row"><span class="dt-label">硬止损</span><span class="dt-val dt-val-dn">170 (cost*0.92)</span></div>
+      <div class="dt-row"><span class="dt-label">趋势破位</span><span class="dt-val dt-val-dn">178</span></div>
+      <div class="dt-row"><span class="dt-label">集中度</span><span class="dt-val">8.8% already small, no forced reduction</span></div>
+    </div>
+  </div>
+</div><div class="dt-time-section"><div class="dt-time-head">⏱ 时间窗口执行计划</div><div class="dt-time-row"><span class="dt-time-win">9:15-9:25</span><span class="dt-time-lbl">auction</span><span class="dt-time-act">Observe volume. If >2% gap up -> place reverse-T sell orders. If >2% gap down -> prepare forward-T buy orders. Hard stop orders already active.</span></div><div class="dt-time-row warn"><span class="dt-time-win">9:30-9:45</span><span class="dt-time-lbl">panic window</span><span class="dt-time-act">NO emotional selling. Only execute forward-T buys. If hard stop triggered -> execute (planned operation, not emotional).</span></div><div class="dt-time-row highlight"><span class="dt-time-win">9:45-10:30</span><span class="dt-time-lbl">bounce window</span><span class="dt-time-act">Execute ladder sells: prioritize China Satellite (weakest) and Huagong Tech (heaviest).</span></div><div class="dt-time-row"><span class="dt-time-win">10:30-11:30</span><span class="dt-time-lbl">mid-morning</span><span class="dt-time-act">Observe volume. Shrinking volume bounce -> accelerate sells. Volume breakout -> pause sells.</span></div><div class="dt-time-row"><span class="dt-time-win">13:00-14:30</span><span class="dt-time-lbl">afternoon</span><span class="dt-time-act">Execute reverse-T closing (sell shares bought in forward-T). Focus on Foxconn and JCET.</span></div><div class="dt-time-row warn"><span class="dt-time-win">14:30-14:50</span><span class="dt-time-lbl">end-of-day</span><span class="dt-time-act">Review. Unfilled ladder orders -> don't chase. If tech sector >3% down -> force all remaining reductions.</span></div></div><div class="dt-section-title">三情景双轨变体</div><div class="dt-scenario">
+  <div class="dt-sc-head">Big gap-down >-3%</div>
+  <div class="dt-sc-body">
+    <div class="dt-sc-col dt-sc-col-profit"><div class="dt-sc-label">盈利轨</div>Forward-T at panic lows: Huagong 168 buy 300, JCET 77.5 buy 500, Foxconn 72 buy 300, Satellite 73 buy 200, Rainbow 17.8 buy 1500, Shengyi 172 buy 100. Sell all T-shares above opening+2%.</div>
+    <div class="dt-sc-col dt-sc-col-risk"><div class="dt-sc-label">风控轨</div>If cannot recover panic low in 30min with volume -> execute hard stops. Satellite first. If tech sector >3% down -> cancel all forward-T buys, only sell.</div>
+  </div>
+</div><div class="dt-scenario">
+  <div class="dt-sc-head">Small gap-down choppy -1%~-3%</div>
+  <div class="dt-sc-body">
+    <div class="dt-sc-col dt-sc-col-profit"><div class="dt-sc-label">盈利轨</div>Narrow range reverse-T: sell near first ladder tier -> buy back at range low. 1-2% per trade.</div>
+    <div class="dt-sc-col dt-sc-col-risk"><div class="dt-sc-label">风控轨</div>If not green in 30min -> accelerate ladder sells, lower tiers by 5%. Rainbow below 18 without volume -> clear.</div>
+  </div>
+</div><div class="dt-scenario">
+  <div class="dt-sc-head">Flat or gap-up</div>
+  <div class="dt-sc-body">
+    <div class="dt-sc-col dt-sc-col-profit"><div class="dt-sc-label">盈利轨</div>Execute ladder sells immediately. Gap-up is best reduction window. Reverse-T: sell high -> buy back low, same capital earns twice.</div>
+    <div class="dt-sc-col dt-sc-col-risk"><div class="dt-sc-label">风控轨</div>Gap-up then reversal to red -> cancel all buys, only sell. Close negative -> continue reducing next day. Tech sector gap-up-then-down -> full reduction.</div>
+  </div>
+</div><div class="dt-iron"><div class="dt-iron-title">铁律</div><div class="dt-iron-item">Hard stops all set before open, cannot cancel intraday</div><div class="dt-iron-item">Ladder sells: prioritize Satellite (weakest) and Huagong (heaviest)</div><div class="dt-iron-item">T-trade: forward-T at panic lows, reverse-T at bounce highs, expected 8-12k profit</div><div class="dt-iron-item">Concentration: Huagong 30.7%->20%, JCET 24.7%->18%, Satellite 11%->5%</div><div class="dt-iron-item">Cash target: 20.8% -> 25%+</div><div class="dt-iron-item">Buy Watch: Zhenhua Tech + iFlytek priority, no ST stocks, new positions <=5%</div><div class="dt-iron-item">System risk: if tech sector >3% down, stop all buys, only execute stops and reductions</div></div><div class="dt-iron" style="border-color:rgba(48,209,88,.12);background:rgba(48,209,88,.03)"><div class="dt-iron-title" style="color:#30D158">收益目标</div><div class="dt-iron-item" style="color:#E8ECF2">最大振幅: Weighted ATR ~6.5%, ~68k intraday range on 1.31M portfolio</div><div class="dt-iron-item" style="color:#E8ECF2">倒T收益: Forward-T (6 stocks x 1 trade, avg 2-3%) + Reverse-T (3-4 trades), total 8,000-12,000 CNY</div><div class="dt-iron-item" style="color:#E8ECF2">vs机械止损: Huagong ladder avg ~186 x 1500 = 279k vs hard stop 163.5 x 1500 = 245k, diff 34k. Total portfolio diff ~80-120k</div></div>
+    <div class="dt-section-title">执行项</div>
+    <div class="item hold" data-id="617">
+            <div class="item-left"><span class="badge badge-hold">持</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">000988</span> <span class="name">华工科技</span> <span class="exec-btn-placeholder" onclick="execItem(617)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">reduce</div>
+                <div class="item-meta">阶梯卖: 182卖600->186卖500->192卖400, 集中度30.7%->20%</div>
+            </div>
+            <span class="override-link" onclick="openOverride(617,'000988','华工科技')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="618">
+            <div class="item-left"><span class="badge badge-hold">持</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">600584</span> <span class="name">长电科技</span> <span class="exec-btn-placeholder" onclick="execItem(618)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">reduce</div>
+                <div class="item-meta">阶梯卖: 85卖800->88.5卖700->92卖600, 集中度24.7%->18%</div>
+            </div>
+            <span class="override-link" onclick="openOverride(618,'600584','长电科技')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="619">
+            <div class="item-left"><span class="badge badge-hold">持</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">601138</span> <span class="name">工业富联</span> <span class="exec-btn-placeholder" onclick="execItem(619)">执行</span></div>
+                <div class="item-meta">阶梯卖: 80卖500->84卖400->87卖300, RSI80偏高但趋势强</div>
+            </div>
+            <span class="override-link" onclick="openOverride(619,'601138','工业富联')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="620">
+            <div class="item-left"><span class="badge badge-hold">持</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">600118</span> <span class="name">中国卫星</span> <span class="exec-btn-placeholder" onclick="execItem(620)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">reduce</div>
+                <div class="item-meta">阶梯卖: 78卖300->80卖300->83卖300, 趋势弱降至5%</div>
+            </div>
+            <span class="override-link" onclick="openOverride(620,'600118','中国卫星')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="621">
+            <div class="item-left"><span class="badge badge-hold">持</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002389</span> <span class="name">航天彩虹</span> <span class="exec-btn-placeholder" onclick="execItem(621)">执行</span></div>
+                <div class="item-meta">阶梯卖: 19.2卖1500->19.8卖1200->20.5卖1000, 跌破18清仓</div>
+            </div>
+            <span class="override-link" onclick="openOverride(621,'002389','航天彩虹')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="622">
+            <div class="item-left"><span class="badge badge-hold">持</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">600183</span> <span class="name">生益科技</span> <span class="exec-btn-placeholder" onclick="execItem(622)">执行</span></div>
+                <div class="item-meta">阶梯卖: 188卖200->192卖150->198卖100, 8.8%不强制减</div>
+            </div>
+            <span class="override-link" onclick="openOverride(622,'600183','生益科技')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="623">
+            <div class="item-left"><span class="badge badge-hold">持</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">000733</span> <span class="name">振华科技</span> <span class="exec-btn-placeholder" onclick="execItem(623)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">watch</div>
+                <div class="item-meta">P0: B类26分, 回调至42元以下建仓3%</div>
+            </div>
+            <span class="override-link" onclick="openOverride(623,'000733','振华科技')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="624">
+            <div class="item-left"><span class="badge badge-hold">持</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002230</span> <span class="name">科大讯飞</span> <span class="exec-btn-placeholder" onclick="execItem(624)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">watch</div>
+                <div class="item-meta">P1: C类21分, 放量突破44或回调至41建仓3%</div>
+            </div>
+            <span class="override-link" onclick="openOverride(624,'002230','科大讯飞')" title="覆盖">✎</span>
+        </div><div class="item hold" data-id="625">
+            <div class="item-left"><span class="badge badge-hold">持</span></div>
+            <div class="item-main">
+                <div class="item-head"><span class="code">002439</span> <span class="name">启明星辰</span> <span class="exec-btn-placeholder" onclick="execItem(625)">执行</span></div><div style="font-size:10px;color:#7A8290;margin-top:2px;line-height:1.3">watch</div>
+                <div class="item-meta">P2: C类25分, 站上13.5且放量建仓2%</div>
+            </div>
+            <span class="override-link" onclick="openOverride(625,'002439','启明星辰')" title="覆盖">✎</span>
+        </div>
 </div>
 <div class="tab-panel" id="tp1">
-    <div style="text-align:center;padding:40px 20px"><img src="./assets/empty.png" style="width:120px;height:auto;opacity:.4;margin-bottom:12px"><div style="color:#7A8290;font-size:12px;font-family:monospace">等待选股</div></div>
+    <div class="buy-item">
+            <div class="bw-top"><span class="code">002456</span> 欧菲光<span class="eta">0</span></div>
+            <div class="trigger">B类,bonus=9,trend=3,RSI=51.2,距60日高-6.65%</div><div class="bw-prereq">建仓前提: 解除PANIC前不观察</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">002916</span> 深南电路<span class="eta">1</span></div>
+            <div class="trigger">B类,bonus=9,trend=3,RSI=58.2,距60日高-8.55%</div><div class="bw-prereq">建仓前提: 390+止盈</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">300308</span> 中际旭创<span class="eta">1</span></div>
+            <div class="trigger">B类,bonus=9,trend=3,RSI=58.3,距60日高-10.61%</div><div class="bw-prereq">建仓前提: 观察</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">300433</span> 蓝思科技<span class="eta">2</span></div>
+            <div class="trigger">B类,bonus=9,trend=4,RSI=62.7,距60日高-6.3%</div><div class="bw-prereq">建仓前提: 观察</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">600584</span> 长电科技<span class="eta">3</span></div>
+            <div class="trigger">C类,bonus=13,trend=2,RSI=49.1,距60日高-20.66%</div><div class="bw-prereq">建仓前提: 已持仓需减仓至15%</div>
+        </div><div class="buy-item">
+            <div class="bw-top"><span class="code">000733</span> 振华科技<span class="eta">3</span></div>
+            <div class="trigger">C类,bonus=10,trend=3,RSI=53.4,距60日高-15.51%</div><div class="bw-prereq">建仓前提: 解除PANIC前不观察</div>
+        </div>
 </div>
 <div class="tab-panel" id="tp2">
     <div class="stats-row">
-        <div class="stat-card"><div class="v" style="color:#30D158">0</div><div class="l">连续遵守</div></div>
-        <div class="stat-card"><div class="v" style="color:#FF3B30">0</div><div class="l">本月覆盖</div></div>
-        <div class="stat-card"><div class="v" style="color:#0A84FF">0</div><div class="l">候选</div></div>
+        <div class="stat-card"><div class="v" style="color:#30D158">1</div><div class="l">连续遵守</div></div>
+        <div class="stat-card"><div class="v" style="color:#FF3B30">4</div><div class="l">本月覆盖</div></div>
+        <div class="stat-card"><div class="v" style="color:#0A84FF">6</div><div class="l">候选</div></div>
     </div>
     <div class="section-title">操作日志</div>
     
 </div>
 
 <div class="float-lock">
-    <div class="lock-btn " id="lockBtn"
+    <div class="lock-btn locked" id="lockBtn"
          ontouchstart="startHold()" ontouchend="cancelHold()" ontouchmove="cancelHold()"
          onmousedown="startHold()" onmouseup="cancelHold()" onmouseleave="cancelHold()">
-        <span style="position:relative;z-index:1">🔓 封印计划</span>
-        <div class="sub" style="position:relative;z-index:1">按住3秒封印</div>
+        <span style="position:relative;z-index:1">🔒 已封印</span>
+        <div class="sub" style="position:relative;z-index:1">盘中照此执行</div>
         <div class="progress" id="lockProgress"></div>
     </div>
 </div>
@@ -182,9 +444,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 </div>
 
 <script>
-var API = '';
-var API_CANDIDATES = ["http://10.251.245.9:8766", "http://192.168.43.100:8766", "http://192.168.43.101:8766", "http://172.20.10.2:8766", "http://172.20.10.3:8766", "http://127.0.0.1:8766"];
-var locked = false;
+var API = 'http://192.168.1.5:8766';
+var API_CANDIDATES = ["http://192.168.1.5:8766", "http://192.168.43.100:8766", "http://192.168.43.101:8766", "http://172.20.10.2:8766", "http://172.20.10.3:8766", "http://127.0.0.1:8766"];
+var locked = true;
 var overrideItemId = null, selectedTag = '';
 var qTimer = null, isOnline = false;
 var localState = {};
